@@ -140,3 +140,15 @@ Confirma que `Settings` → `Pages` use `Source: GitHub Actions`, y que el traba
 ### El monitor falla en una fuente
 
 Revisa `data/status.json` y los logs de la ejecución. El motor conserva el estado anterior si todas las fuentes fallan, para no interpretar una caída como un cambio legislativo.
+
+## 14. Actualización de vigencia v1.0.3
+
+La versión 1.0.3 elimina de la cartera publicada los proyectos terminados y los antecedentes antiguos sin movimientos recientes. La BCN queda como fuente histórica de descubrimiento, pero todo candidato debe acreditar vigencia mediante Cámara o Senado.
+
+Después de reemplazar los archivos, ejecuta manualmente:
+
+```text
+Actions → Monitor legislativo UAF → Run workflow
+```
+
+La ejecución migrará automáticamente el estado anterior: mantendrá los proyectos que sigan vigentes y retirará del dashboard los archivados, terminados o inactivos. No se requiere crear secrets adicionales.

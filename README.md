@@ -8,22 +8,34 @@ Motor en Python para vigilar diariamente proyectos de ley de Chile que:
 El sistema descubre iniciativas nuevas, actualiza los proyectos vigilados, compara cada ejecución con el estado anterior, genera un dashboard y envía un correo solo cuando detecta alertas nuevas.
 
 
-## Cambios de la versión 1.0.2
+## Cambios de la versión 1.0.3
 
-- navegación lateral completamente funcional;
-- botones rápidos para separar modificaciones directas a la Ley N.º 19.913 de otros cambios normativos;
-- gráfico de exposición institucional más compacto;
-- gráfico temporal mensual de movimientos detectados, separado por nivel de vinculación;
-- historial acumulado de alertas visible en el dashboard;
-- estimación de áreas UAF potencialmente responsables;
-- secciones operativas de auditoría de fuentes y salud del monitor;
-- las alertas guardan `detected_at`, permitiendo construir la serie temporal histórica.
+- elimina de la cartera publicada leyes ya promulgadas o publicadas y proyectos terminados, archivados, retirados, rechazados o inadmisibles;
+- descarta proyectos antiguos que mantienen una etiqueta de trámite, pero no registran actividad oficial dentro de la ventana vigente;
+- exige simultáneamente relevancia UAF y vigencia legislativa comprobada;
+- utiliza la BCN únicamente como fuente histórica de descubrimiento, nunca como prueba suficiente de vigencia;
+- incorpora categorías y filtros para **nuevas / ingreso reciente**, **próximo hito legislativo** y **en tramitación activa**;
+- conserva en el dashboard solamente la cartera vigente;
+- registra en `data/exclusion_summary.json` cuántos candidatos fueron descartados y por qué, sin publicarlos como proyectos activos;
+- genera una alerta de cierre solo cuando un proyecto previamente validado por esta versión pasa realmente a un estado terminal.
+
+### Regla de vigencia
+
+Un proyecto aparece en el dashboard solo si, además de ser relevante para la UAF, cumple al menos una de estas condiciones:
+
+- ingreso dentro de los últimos `new_project_days`;
+- movimiento oficial dentro de los últimos `active_movement_days`;
+- presencia en una fuente de movimientos recientes;
+- urgencia vigente;
+- votación, citación, Comisión Mixta, informe u otro próximo hito comprobable.
+
+Por defecto, la ventana para iniciativas nuevas es de 180 días y la ventana máxima de actividad es de 730 días. Ambas se configuran en `config/monitor_config.json`.
 
 ## Fuentes utilizadas
 
 - Datos abiertos XML de la Cámara de Diputadas y Diputados: mensajes, mociones y detalle por boletín.
 - Fichas de tramitación y movimientos recientes del Senado.
-- Lista de proyectos asociados a la Ley N.º 19.913 de la Biblioteca del Congreso Nacional, como control complementario.
+- Lista histórica de proyectos asociados a la Ley N.º 19.913 de la Biblioteca del Congreso Nacional, utilizada solo para descubrir candidatos que luego deben validarse en Cámara o Senado.
 
 La información oficial y la inferencia analítica se almacenan separadamente. La clasificación estratégica requiere validación jurídica antes de adoptar decisiones institucionales.
 
@@ -164,7 +176,8 @@ Actions → Probar correo del monitor → Run workflow
 - `data/discovery_index.json`: todos los boletines ya observados; permite reconocer nuevas iniciativas.
 - `data/alerts.json`: alertas acumuladas y deduplicadas.
 - `data/history.jsonl`: historial inmutable de alertas detectadas.
-- `data/status.json`: salud de fuentes, cantidad de candidatos, proyectos enriquecidos y resultado del correo.
+- `data/status.json`: salud de fuentes, cantidad de candidatos, proyectos vigentes, exclusiones y resultado del correo.
+- `data/exclusion_summary.json`: resumen de proyectos omitidos por término, antigüedad o falta de vigencia comprobada.
 
 El workflow guarda automáticamente estos archivos mediante un commit. Por eso el historial de Git también funciona como respaldo y auditoría de cambios.
 
@@ -174,7 +187,10 @@ Edita `config/monitor_config.json`:
 
 - `direct_terms`: expresiones que activan nivel 1.
 - `secondary_topics`: dimensiones, términos y peso de nivel 2.
-- `seed_bulletins`: proyectos históricos que deben revisarse siempre.
+- `seed_bulletins`: proyectos recientes o estratégicos que deben revisarse siempre; no debe utilizarse para cargar catálogos históricos completos.
+- `new_project_days`: ventana para considerar una iniciativa nueva.
+- `active_movement_days`: antigüedad máxima admitida para acreditar actividad legislativa.
+- `terminal_state_terms`, `active_state_terms` y `upcoming_terms`: vocabulario de vigencia y cierre.
 - `critical_change_terms`: cambios que elevan la alerta.
 - `minimum_secondary_score`: sensibilidad del segundo nivel.
 
