@@ -62,3 +62,33 @@ def test_camara_detail_parser(monkeypatch):
     assert project.bulletin == "19000-25"
     assert "Primer trámite" in project.stage
     assert "Suma urgencia" in project.urgency
+
+
+def test_dashboard_includes_active_navigation_and_temporal_chart(tmp_path):
+    from monitor_uaf.render import render_dashboard
+
+    project = classify(
+        CandidateProject(
+            bulletin="19002-25",
+            title="Modifica la ley N° 19.913 para incorporar nuevos sujetos obligados",
+            latest_movement="Pasa a segundo trámite constitucional",
+            latest_movement_date="2026-08-03",
+        ),
+        CONFIG,
+    )
+    alert = {
+        "id": "demo-alert",
+        "detected_at": "2026-08-03T12:00:00-04:00",
+        "bulletin": project["bulletin"],
+        "title": project["title"],
+        "severity": "Alta",
+        "relevance_level": 1,
+        "changes": [],
+    }
+    output = tmp_path / "index.html"
+    render_dashboard([project], [alert], {"alerts_generated": 1, "sources": {}}, output)
+    page = output.read_text(encoding="utf-8")
+    assert "Análisis temporal de movimientos" in page
+    assert "Modifican Ley 19.913" in page
+    assert "navigate('direct'" in page
+    assert "demo-alert" in page
