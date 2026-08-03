@@ -1,0 +1,975 @@
+[
+  {
+    "bulletin": "16808-25",
+    "title": "Modifica la ley N° 19.913 para prevenir y sancionar con mayor rigurosidad el lavado de activos asociado al comercio ilegal.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16808-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para prevenir y sancionar con mayor rigurosidad el lavado de activos asociado al comercio ilegal.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 1,
+    "relevance_label": "Modificación directa / impacto explícito",
+    "relevance_score": 89,
+    "priority_score": 74,
+    "priority": "Alta",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Delitos base": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "comercio ilegal"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "ros"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "comercio ilegal"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "ros"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+    ],
+    "analysis_summary": "La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF. Sus principales dimensiones de impacto son Delitos base, Sujetos obligados, Reportes y operaciones.",
+    "fingerprint": "395cfe593b297a9b2138534d9643ffb5148fd83419ae45cee356aa3d21f6497f"
+  },
+  {
+    "bulletin": "16928-07",
+    "title": "Modifica la ley N° 19.913 para establecer la obligación de informar remesas enviadas a América Latina y el Caribe.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16928-07"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para establecer la obligación de informar remesas enviadas a América Latina y el Caribe.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 1,
+    "relevance_label": "Modificación directa / impacto explícito",
+    "relevance_score": 81,
+    "priority_score": 68,
+    "priority": "Alta",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "obligación de informar",
+          "obligacion de informar",
+          "remesas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Reportes y operaciones",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "obligación de informar",
+          "obligacion de informar",
+          "remesas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+    ],
+    "analysis_summary": "La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF. Sus principales dimensiones de impacto son Reportes y operaciones, Sujetos obligados.",
+    "fingerprint": "1367e1f0280a791b876a59cb6b7a6e5f3ca0de38d015f92aef055d03c4911862"
+  },
+  {
+    "bulletin": "18373-07",
+    "title": "Modifica la ley N° 19.913 para agilizar el acceso a información amparada por secreto o reserva bancaria, manteniendo control judicial previo.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18373-07"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para agilizar el acceso a información amparada por secreto o reserva bancaria, manteniendo control judicial previo.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 1,
+    "relevance_label": "Modificación directa / impacto explícito",
+    "relevance_score": 70,
+    "priority_score": 60,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Acceso a información": {
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "reserva bancaria",
+          "acceso a información",
+          "acceso a informacion"
+        ],
+        "recommendation": "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Acceso a información",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "reserva bancaria",
+          "acceso a información",
+          "acceso a informacion"
+        ],
+        "recommendation": "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+    ],
+    "analysis_summary": "La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF. Sus principales dimensiones de impacto son Acceso a información.",
+    "fingerprint": "e3bf19dbd7cbc6fdc8c11e45f765126c7df823edce57cfc0f846f2722f1ce950"
+  },
+  {
+    "bulletin": "17912-25",
+    "title": "Modifica la ley N° 19.913 para incorporar delitos contra la propiedad industrial al catálogo de precedentes de lavado de activos.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17912-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para incorporar delitos contra la propiedad industrial al catálogo de precedentes de lavado de activos.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 1,
+    "relevance_label": "Modificación directa / impacto explícito",
+    "relevance_score": 69,
+    "priority_score": 59,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Delitos base": {
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "propiedad industrial"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "propiedad industrial"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+    ],
+    "analysis_summary": "La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF. Sus principales dimensiones de impacto son Delitos base.",
+    "fingerprint": "3c17c8936ba519ec42c176a00a04218c72a7bb14bcf1406d22de40c621d12d0b"
+  },
+  {
+    "bulletin": "16529-05",
+    "title": "Modifica la ley N° 19.913 para disponer la inscripción de órganos y servicios públicos en el Registro de Entidades Reportantes.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16529-05"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para disponer la inscripción de órganos y servicios públicos en el Registro de Entidades Reportantes.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 1,
+    "relevance_label": "Modificación directa / impacto explícito",
+    "relevance_score": 69,
+    "priority_score": 59,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "entidades reportantes",
+          "registro de entidades reportantes"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Sujetos obligados",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "entidades reportantes",
+          "registro de entidades reportantes"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+    ],
+    "analysis_summary": "La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF. Sus principales dimensiones de impacto son Sujetos obligados.",
+    "fingerprint": "27c983f24b0466b683719f552298f228ed4fbfa95bedb119095b06bf3e262b84"
+  },
+  {
+    "bulletin": "16764-03",
+    "title": "Modifica la ley N° 19.913 para fijar un monto máximo para transacciones en dinero efectivo.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16764-03"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para fijar un monto máximo para transacciones en dinero efectivo.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 1,
+    "relevance_label": "Modificación directa / impacto explícito",
+    "relevance_score": 55,
+    "priority_score": 49,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {},
+    "top_impacts": [],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional."
+    ],
+    "analysis_summary": "La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF.",
+    "fingerprint": "678e3ceab7c61538ee7c2b1fdb813c2ab78508684bb861d6994a7599d05215bb"
+  },
+  {
+    "bulletin": "17881-25",
+    "title": "Previene y sanciona la extorsión y el secuestro exprés y mejora la trazabilidad de remesas vinculadas al crimen organizado.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17881-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Previene y sanciona la extorsión y el secuestro exprés y mejora la trazabilidad de remesas vinculadas al crimen organizado.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 2,
+    "relevance_label": "Impacto legal potencial sobre la labor UAF",
+    "relevance_score": 48,
+    "priority_score": 44,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Delitos base": {
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "crimen organizado",
+          "extorsión",
+          "extorsion",
+          "secuestro"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      "Tecnología y datos": {
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "crimen organizado",
+          "extorsión",
+          "extorsion",
+          "secuestro"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Delitos base, Sujetos obligados, Reportes y operaciones.",
+    "fingerprint": "4e176598aa8ebdb836afa140664f29d5f0a384ddb7c5e5b45b520ea5926ea435"
+  },
+  {
+    "bulletin": "15975-25",
+    "title": "Crea el Subsistema de Inteligencia Económica y establece medidas para prevenir y alertar actividades relacionadas con el crimen organizado.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15975-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Crea el Subsistema de Inteligencia Económica y establece medidas para prevenir y alertar actividades relacionadas con el crimen organizado.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 2,
+    "relevance_label": "Impacto legal potencial sobre la labor UAF",
+    "relevance_score": 29,
+    "priority_score": 31,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Delitos base": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "crimen organizado"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Responsabilidades UAF": {
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "crimen organizado"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      }
+    ],
+    "decisions": [
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Responsabilidades UAF, Delitos base.",
+    "fingerprint": "ffa811eac44cfff0f8018d83689913b0f37653494f51cd48205026b41bb19148"
+  },
+  {
+    "bulletin": "18080-03",
+    "title": "Fortalece la transparencia y trazabilidad financiera en operaciones prendarias.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Fortalece la transparencia y trazabilidad financiera en operaciones prendarias.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 2,
+    "relevance_label": "Impacto legal potencial sobre la labor UAF",
+    "relevance_score": 30,
+    "priority_score": 31,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      "Tecnología y datos": {
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    ],
+    "decisions": [
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Sujetos obligados, Reportes y operaciones, Tecnología y datos.",
+    "fingerprint": "dad99fbae9666827327b8009c467dc62da5168aa1bcefa984e425f5e94a57310"
+  },
+  {
+    "bulletin": "12680-07",
+    "title": "Incorpora a empresas automotoras entre las entidades obligadas a informar operaciones sospechosas.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=12680-07"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Incorpora a empresas automotoras entre las entidades obligadas a informar operaciones sospechosas.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 2,
+    "relevance_label": "Impacto legal potencial sobre la labor UAF",
+    "relevance_score": 22,
+    "priority_score": 26,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "automotoras"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "operaciones sospechosas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "automotoras"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "operaciones sospechosas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    ],
+    "decisions": [
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Sujetos obligados, Reportes y operaciones.",
+    "fingerprint": "aa5bb8553214e4c87f1c9f64e666f7e55a06a02feb6fc9ee27555b9bd4d74de4"
+  },
+  {
+    "bulletin": "18407-25",
+    "title": "Aumenta las sanciones aplicables al delito de lavado de activos.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Aumenta las sanciones aplicables al delito de lavado de activos.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 2,
+    "relevance_label": "Impacto legal potencial sobre la labor UAF",
+    "relevance_score": 21,
+    "priority_score": 25,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Delitos base": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Fiscalización y sanciones": {
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Delitos base, Fiscalización y sanciones.",
+    "fingerprint": "8cecfd1c07ea4384ca195aeb22c715d4528fddc4e6db4bd8cb6e7ee554af1bba"
+  },
+  {
+    "bulletin": "14838-03",
+    "title": "Regula el desarrollo de plataformas de apuestas en línea.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14838-03"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Regula el desarrollo de plataformas de apuestas en línea.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 0,
+    "relevance_label": "Sin impacto suficiente",
+    "relevance_score": 14,
+    "priority_score": 20,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "apuestas en línea",
+          "apuestas en linea"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Sujetos obligados",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "apuestas en línea",
+          "apuestas en linea"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Sujetos obligados.",
+    "fingerprint": "6f41863519e9afe86ea9cb3d9361120789347baf270ae394b4248866f14880d4"
+  },
+  {
+    "bulletin": "14539-07",
+    "title": "Establece la obligación de informar operaciones sobre vehículos pagadas en efectivo.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14539-07"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Establece la obligación de informar operaciones sobre vehículos pagadas en efectivo.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 0,
+    "relevance_label": "Sin impacto suficiente",
+    "relevance_score": 12,
+    "priority_score": 18,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Reportes y operaciones": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "obligación de informar",
+          "obligacion de informar"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Reportes y operaciones",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "obligación de informar",
+          "obligacion de informar"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    ],
+    "decisions": [
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+    ],
+    "analysis_summary": "Sus principales dimensiones de impacto son Reportes y operaciones.",
+    "fingerprint": "7bc4b0f02e118e1e43c0fdfb7f9f85a332c898f597f69fc63e149b22a817f1b8"
+  },
+  {
+    "bulletin": "12602-07",
+    "title": "Prohíbe el uso de dinero efectivo como medio de pago en determinadas operaciones.",
+    "entry_date": "",
+    "initiative_type": "",
+    "origin_chamber": "",
+    "state": "Pendiente de primera verificación automática",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=12602-07"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Prohíbe el uso de dinero efectivo como medio de pago en determinadas operaciones.",
+    "raw_hash": "",
+    "metadata": {},
+    "relevance_level": 0,
+    "relevance_label": "Sin impacto suficiente",
+    "relevance_score": 0,
+    "priority_score": 10,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {},
+    "top_impacts": [],
+    "decisions": [],
+    "analysis_summary": "",
+    "fingerprint": "17fc605bdf99c72e35e2eed8b371385da1a123a03b569a9032c092a29e444726"
+  }
+]

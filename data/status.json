@@ -1,0 +1,10 @@
+{
+  "finished_at": "",
+  "sources": {
+    "Cámara XML": {"ok": false, "error": "Pendiente de primera ejecución"},
+    "Senado movimientos": {"ok": false, "error": "Pendiente de primera ejecución"},
+    "BCN Ley 19.913": {"ok": false, "error": "Pendiente de primera ejecución"}
+  },
+  "alerts_generated": 0,
+  "baseline": true
+}
