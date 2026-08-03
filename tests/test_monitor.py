@@ -92,3 +92,49 @@ def test_dashboard_includes_active_navigation_and_temporal_chart(tmp_path):
     assert "Modifican Ley 19.913" in page
     assert "navigate('direct'" in page
     assert "demo-alert" in page
+
+
+def test_terminal_project_is_excluded_from_active_portfolio():
+    project = CandidateProject(
+        bulletin="12000-25",
+        title="Modifica la ley 19.913",
+        state="Tramitación terminada (Ley N° 21.999 - Diario Oficial)",
+        latest_movement_date="2026-07-01",
+    )
+    result = classify(project, CONFIG)
+    assert result["relevance_level"] == 1
+    assert result["is_current"] is False
+    assert result["lifecycle_code"] == "terminal"
+
+
+def test_stale_first_stage_is_not_considered_current():
+    project = CandidateProject(
+        bulletin="9000-25",
+        title="Modifica la ley 19.913",
+        entry_date="10/03/2002",
+        state="Primer trámite constitucional",
+        latest_movement="Cuenta del proyecto",
+        latest_movement_date="10/03/2002",
+    )
+    result = classify(project, CONFIG)
+    assert result["is_current"] is False
+    assert result["lifecycle_code"] == "stale"
+
+
+def test_recent_project_is_current_and_new():
+    from datetime import timedelta
+    from monitor_uaf.utils import local_now
+
+    recent = (local_now(CONFIG["timezone"]).date() - timedelta(days=20)).isoformat()
+    project = CandidateProject(
+        bulletin="19999-25",
+        title="Modifica la ley 19.913",
+        entry_date=recent,
+        state="Primer trámite constitucional",
+        latest_movement="Ingreso de proyecto",
+        latest_movement_date=recent,
+    )
+    result = classify(project, CONFIG)
+    assert result["is_current"] is True
+    assert "new" in result["lifecycle_flags"]
+    assert "active" in result["lifecycle_flags"]
