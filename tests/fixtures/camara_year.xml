@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProyectosLeyColeccion xmlns="http://opendata.camara.cl/camaradiputados/v1">
+  <ProyectoLey>
+    <Id>1</Id><NumeroBoletin>19000-25</NumeroBoletin>
+    <Nombre>Modifica la ley N° 19.913 para incorporar nuevos sujetos obligados</Nombre>
+    <FechaIngreso>2026-08-01T00:00:00</FechaIngreso>
+    <TipoIniciativa><Nombre>Moción</Nombre></TipoIniciativa>
+    <CamaraOrigen><Nombre>Cámara de Diputados</Nombre></CamaraOrigen>
+  </ProyectoLey>
+  <ProyectoLey>
+    <Id>2</Id><NumeroBoletin>19001-07</NumeroBoletin>
+    <Nombre>Crea un registro nacional de beneficiarios finales</Nombre>
+    <FechaIngreso>2026-08-02T00:00:00</FechaIngreso>
+  </ProyectoLey>
+</ProyectosLeyColeccion>
