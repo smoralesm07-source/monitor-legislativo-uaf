@@ -7,6 +7,18 @@ Motor en Python para vigilar diariamente proyectos de ley de Chile que:
 
 El sistema descubre iniciativas nuevas, actualiza los proyectos vigilados, compara cada ejecución con el estado anterior, genera un dashboard y envía un correo solo cuando detecta alertas nuevas.
 
+
+## Cambios de la versión 1.0.2
+
+- navegación lateral completamente funcional;
+- botones rápidos para separar modificaciones directas a la Ley N.º 19.913 de otros cambios normativos;
+- gráfico de exposición institucional más compacto;
+- gráfico temporal mensual de movimientos detectados, separado por nivel de vinculación;
+- historial acumulado de alertas visible en el dashboard;
+- estimación de áreas UAF potencialmente responsables;
+- secciones operativas de auditoría de fuentes y salud del monitor;
+- las alertas guardan `detected_at`, permitiendo construir la serie temporal histórica.
+
 ## Fuentes utilizadas
 
 - Datos abiertos XML de la Cámara de Diputadas y Diputados: mensajes, mociones y detalle por boletín.
