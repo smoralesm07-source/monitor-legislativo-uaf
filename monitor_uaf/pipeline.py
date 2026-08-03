@@ -131,6 +131,7 @@ class MonitorPipeline:
 
         alerts = compare_projects(previous_state, current_projects, self.config)
         finished_at = iso_now(self.timezone)
+        alerts_with_time = [{"detected_at": finished_at, **alert} for alert in alerts]
         status = {
             "version": self.config.get("version"),
             "started_at": started_at,
@@ -146,7 +147,7 @@ class MonitorPipeline:
 
         previous_alerts = read_json(DATA_DIR / "alerts.json", [])
         existing_ids = {item.get("id") for item in previous_alerts}
-        merged_alerts = alerts + [item for item in previous_alerts if item.get("id") not in {a["id"] for a in alerts}]
+        merged_alerts = alerts_with_time + [item for item in previous_alerts if item.get("id") not in {a["id"] for a in alerts_with_time}]
         merged_alerts = merged_alerts[:250]
 
         new_discovery_map = discovery.get("bulletins", {})
@@ -162,22 +163,22 @@ class MonitorPipeline:
         write_json(DATA_DIR / "status.json", status)
 
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
-        render_dashboard(project_list, alerts, status, DOCS_DIR / "index.html")
+        render_dashboard(project_list, merged_alerts, status, DOCS_DIR / "index.html")
         write_json(DOCS_DIR / "projects.json", project_list)
-        write_json(DOCS_DIR / "alerts.json", alerts)
+        write_json(DOCS_DIR / "alerts.json", merged_alerts)
         write_json(DOCS_DIR / "status.json", status)
 
         if alerts:
             history_path = DATA_DIR / "history.jsonl"
             with history_path.open("a", encoding="utf-8") as fh:
-                for alert in alerts:
-                    fh.write(json.dumps({"detected_at": finished_at, **alert}, ensure_ascii=False) + "\n")
+                for alert in alerts_with_time:
+                    fh.write(json.dumps(alert, ensure_ascii=False) + "\n")
 
         email_sent = False
         email_message = "Correo omitido por parámetro"
         if not no_email:
             try:
-                email_sent, email_message = send_alert_email(alerts, status)
+                email_sent, email_message = send_alert_email(alerts_with_time, status)
             except Exception as exc:  # noqa: BLE001
                 LOGGER.exception("Falló envío de correo")
                 email_message = f"Error al enviar correo: {exc}"
@@ -185,7 +186,7 @@ class MonitorPipeline:
         status["email_message"] = email_message
         write_json(DATA_DIR / "status.json", status)
         write_json(DOCS_DIR / "status.json", status)
-        render_dashboard(project_list, alerts, status, DOCS_DIR / "index.html")
+        render_dashboard(project_list, merged_alerts, status, DOCS_DIR / "index.html")
         return status
 
 
