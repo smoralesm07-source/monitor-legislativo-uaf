@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import timedelta
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -48,13 +48,13 @@ class MonitorPipeline:
                     candidates[item.bulletin] = item
 
         now = local_now(self.timezone)
-        years = [now.year - offset for offset in range(int(self.config.get("discovery_years", 2)))]
+        years = [now.year - offset for offset in range(int(self.config.get("discovery_years", 3)))]
         try:
             camara_items: list[CandidateProject] = []
             for year in years:
                 camara_items.extend(self.camara.list_by_year(year))
             merge_many(camara_items)
-            source_health["Cámara XML"] = {"ok": True, "items": len(camara_items)}
+            source_health["Cámara XML"] = {"ok": True, "items": len(camara_items), "years": years}
         except Exception as exc:  # noqa: BLE001
             LOGGER.exception("Falló descubrimiento Cámara")
             source_health["Cámara XML"] = {"ok": False, "error": str(exc)}
@@ -70,26 +70,45 @@ class MonitorPipeline:
         try:
             bcn_items = self.bcn.list_associated()
             merge_many(bcn_items)
-            source_health["BCN Ley 19.913"] = {"ok": True, "items": len(bcn_items)}
+            source_health["BCN Ley 19.913"] = {
+                "ok": True,
+                "items": len(bcn_items),
+                "note": "Fuente histórica utilizada solo para descubrir candidatos; no acredita vigencia.",
+            }
         except Exception as exc:  # noqa: BLE001
             LOGGER.exception("Falló lista BCN")
             source_health["BCN Ley 19.913"] = {"ok": False, "error": str(exc)}
 
         for bulletin in self.config.get("seed_bulletins", []):
-            candidates.setdefault(bulletin, CandidateProject(
-                bulletin=bulletin,
-                title="",
-                source_urls=[self.senado.DETAIL_URL.format(bulletin=bulletin)],
-                discovered_from=["Configuración inicial"],
-            ))
+            candidates.setdefault(
+                bulletin,
+                CandidateProject(
+                    bulletin=bulletin,
+                    title="",
+                    source_urls=[self.senado.DETAIL_URL.format(bulletin=bulletin)],
+                    discovered_from=["Configuración inicial vigente"],
+                ),
+            )
+
+        # Los proyectos ya vigentes se vuelven a consultar aunque no aparezcan en las listas recientes.
         for bulletin, old in previous_projects.items():
             previous_candidate = CandidateProject(
                 bulletin=bulletin,
-                title=old.get("title", ""), state=old.get("state", ""), stage=old.get("stage", ""),
-                commission=old.get("commission", ""), urgency=old.get("urgency", ""),
-                latest_movement=old.get("latest_movement", ""), latest_movement_date=old.get("latest_movement_date", ""),
-                source_urls=old.get("source_urls", []), discovered_from=old.get("discovered_from", []),
-                evidence_text=old.get("evidence_text", ""), raw_hash=old.get("raw_hash", ""), metadata=old.get("metadata", {}),
+                title=old.get("title", ""),
+                entry_date=old.get("entry_date", ""),
+                initiative_type=old.get("initiative_type", ""),
+                origin_chamber=old.get("origin_chamber", ""),
+                state=old.get("state", ""),
+                stage=old.get("stage", ""),
+                commission=old.get("commission", ""),
+                urgency=old.get("urgency", ""),
+                latest_movement=old.get("latest_movement", ""),
+                latest_movement_date=old.get("latest_movement_date", ""),
+                source_urls=old.get("source_urls", []),
+                discovered_from=old.get("discovered_from", []),
+                evidence_text=old.get("evidence_text", ""),
+                raw_hash=old.get("raw_hash", ""),
+                metadata=old.get("metadata", {}),
             )
             candidates.setdefault(bulletin, previous_candidate).merge(previous_candidate)
 
@@ -101,11 +120,16 @@ class MonitorPipeline:
 
         enriched_count = 0
         current_projects: dict[str, Any] = {}
+        excluded_projects: dict[str, Any] = {}
         for bulletin, candidate in sorted(candidates.items()):
+            candidate.metadata["newly_discovered"] = bulletin in newly_discovered and not is_first_discovery
             initial = classify(candidate, self.config)
             should_enrich = (
-                bulletin in seed or bulletin in tracked or bulletin in direct_bcn or
-                initial["relevance_level"] > 0 or (bulletin in newly_discovered and not is_first_discovery)
+                bulletin in seed
+                or bulletin in tracked
+                or bulletin in direct_bcn
+                or initial["relevance_level"] > 0
+                or (bulletin in newly_discovered and not is_first_discovery)
             )
             if should_enrich:
                 detail_success = False
@@ -121,17 +145,29 @@ class MonitorPipeline:
                     LOGGER.warning("No se obtuvo detalle Senado para %s: %s", bulletin, exc)
                 if detail_success:
                     enriched_count += 1
-            analyzed = classify(candidate, self.config)
-            if analyzed["relevance_level"] > 0 or bulletin in tracked or bulletin in seed or bulletin in direct_bcn:
-                current_projects[bulletin] = analyzed
 
-        # Si fallaron todas las fuentes, no reemplazar el estado por información parcial.
+            analyzed = classify(candidate, self.config)
+            if analyzed["relevance_level"] <= 0:
+                continue
+            if analyzed.get("is_current"):
+                current_projects[bulletin] = analyzed
+            else:
+                excluded_projects[bulletin] = analyzed
+
+        # Si fallaron todas las fuentes, conservar la cartera vigente anterior para no generar bajas falsas.
         if source_health and not any(item.get("ok") for item in source_health.values()):
             current_projects = previous_projects
+            excluded_projects = {}
 
-        alerts = compare_projects(previous_state, current_projects, self.config)
+        alerts = compare_projects(previous_state, current_projects, self.config, excluded_projects)
         finished_at = iso_now(self.timezone)
         alerts_with_time = [{"detected_at": finished_at, **alert} for alert in alerts]
+        exclusion_counts = Counter(item.get("lifecycle_code", "unknown") for item in excluded_projects.values())
+        lifecycle_counts = Counter(
+            flag
+            for item in current_projects.values()
+            for flag in item.get("lifecycle_flags", [])
+        )
         status = {
             "version": self.config.get("version"),
             "started_at": started_at,
@@ -143,11 +179,18 @@ class MonitorPipeline:
             "projects_enriched": enriched_count,
             "alerts_generated": len(alerts),
             "baseline": not bool(previous_projects),
+            "lifecycle_counts": dict(lifecycle_counts),
+            "excluded_count": len(excluded_projects),
+            "exclusion_counts": dict(exclusion_counts),
+            "eligibility_rule": (
+                "Solo se publican iniciativas relevantes para la UAF con ingreso reciente, "
+                "movimiento oficial reciente, urgencia vigente o próximo hito comprobable."
+            ),
         }
 
         previous_alerts = read_json(DATA_DIR / "alerts.json", [])
-        existing_ids = {item.get("id") for item in previous_alerts}
-        merged_alerts = alerts_with_time + [item for item in previous_alerts if item.get("id") not in {a["id"] for a in alerts_with_time}]
+        new_ids = {a["id"] for a in alerts_with_time}
+        merged_alerts = alerts_with_time + [item for item in previous_alerts if item.get("id") not in new_ids]
         merged_alerts = merged_alerts[:250]
 
         new_discovery_map = discovery.get("bulletins", {})
@@ -161,6 +204,15 @@ class MonitorPipeline:
         write_json(DATA_DIR / "projects.json", project_list)
         write_json(DATA_DIR / "alerts.json", merged_alerts)
         write_json(DATA_DIR / "status.json", status)
+        write_json(
+            DATA_DIR / "exclusion_summary.json",
+            {
+                "generated_at": finished_at,
+                "total": len(excluded_projects),
+                "by_reason": dict(exclusion_counts),
+                "rule": status["eligibility_rule"],
+            },
+        )
 
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
         render_dashboard(project_list, merged_alerts, status, DOCS_DIR / "index.html")

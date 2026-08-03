@@ -13,7 +13,7 @@ from pypdf import PdfReader
 
 from .http_client import HttpClient
 from .models import CandidateProject
-from .utils import BULLETIN_RE, DATE_RE, compact_text, local_tag, stable_hash, unique
+from .utils import BULLETIN_RE, DATE_RE, compact_text, latest_dated_text, local_tag, stable_hash, unique
 
 LOGGER = logging.getLogger(__name__)
 
@@ -93,9 +93,8 @@ class CamaraOpenDataSource:
         commissions = self._collect_named_blocks(root, {"Comision", "ComisionDestino", "ComisionOrigen"})
         urgencies = self._collect_named_blocks(root, {"Urgencia", "TipoUrgencia"})
         states = self._collect_named_blocks(root, {"Estado", "EstadoProyectoLey"})
-        movements = self._collect_named_blocks(root, {"Tramite", "Movimiento", "Oficio", "Sesion"}, limit=30)
-        latest_movement = movements[-1] if movements else ""
-        dates = DATE_RE.findall(" ".join(movements))
+        movements = self._collect_named_blocks(root, {"Tramite", "Movimiento", "Oficio", "Sesion"}, limit=60)
+        latest_movement, latest_movement_date = latest_dated_text(movements)
         return CandidateProject(
             bulletin=bulletin,
             title=self._first_text(root, ["Nombre"]),
@@ -107,12 +106,12 @@ class CamaraOpenDataSource:
             commission=" | ".join(commissions[:5]),
             urgency=" | ".join(urgencies[:3]),
             latest_movement=latest_movement,
-            latest_movement_date=dates[-1] if dates else "",
+            latest_movement_date=latest_movement_date,
             source_urls=[f"https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN={bulletin}"],
             discovered_from=["Cámara XML detalle"],
             evidence_text=raw_text,
             raw_hash=stable_hash(raw_text),
-            metadata={"camara_movements": movements[-10:], "title_rank": 4},
+            metadata={"camara_movements": movements[-20:], "title_rank": 4},
         )
 
 
@@ -136,17 +135,18 @@ class SenadoSource:
             if not bulletin_match:
                 continue
             bulletin = bulletin_match.group(1)
-            date_match = DATE_RE.search(text)
+            _, recent_date = latest_dated_text([text])
             links = [urljoin(self.RECENT_URL, a.get("href", "")) for a in row.find_all("a") if a.get("href")]
             project = CandidateProject(
                 bulletin=bulletin,
                 title=text,
                 latest_movement=text,
-                latest_movement_date=date_match.group(1) if date_match else "",
+                latest_movement_date=recent_date,
                 source_urls=[self.DETAIL_URL.format(bulletin=bulletin)] + links,
                 discovered_from=["Senado últimos movimientos"],
                 evidence_text=text,
                 raw_hash=stable_hash(text),
+                metadata={"title_rank": 1},
             )
             projects.setdefault(bulletin, project).merge(project)
         return list(projects.values())
@@ -180,8 +180,7 @@ class SenadoSource:
             heading = soup.find(["h1", "h2", "h3"])
             title = compact_text(heading.get_text(" ", strip=True), 2000) if heading else ""
         date_rows = [row for row in rows if DATE_RE.search(row)]
-        latest = date_rows[-1] if date_rows else ""
-        latest_date = DATE_RE.search(latest).group(1) if latest and DATE_RE.search(latest) else ""
+        latest, latest_date = latest_dated_text(date_rows)
         return CandidateProject(
             bulletin=bulletin,
             title=title,

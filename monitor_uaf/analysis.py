@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from datetime import date
 from typing import Any
 
 from .models import CandidateProject
-from .utils import normalize_text, stable_hash, unique
+from .utils import local_now, normalize_text, parse_legislative_date, stable_hash, unique
 
 
 IMPACT_RECOMMENDATIONS = {
@@ -18,6 +19,98 @@ IMPACT_RECOMMENDATIONS = {
     "Presupuesto y dotación": "Preparar estimación de costo, perfiles, dotación, licencias, infraestructura y plazo de implementación.",
     "Cooperación institucional": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
 }
+
+
+def _has_any(text: str, terms: list[str]) -> list[str]:
+    return [term for term in terms if normalize_text(term) in text]
+
+
+def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any]:
+    """Determina si una iniciativa sigue siendo útil para la cartera activa del monitor."""
+    today = local_now(config.get("timezone", "America/Santiago")).date()
+    authoritative = normalize_text(" ".join([
+        project.state, project.stage, project.urgency, project.latest_movement,
+    ]))
+    terminal_hits = _has_any(authoritative, config.get("terminal_state_terms", []))
+    active_hits = _has_any(authoritative, config.get("active_state_terms", []))
+    upcoming_hits = _has_any(authoritative, config.get("upcoming_terms", []))
+
+    entry = parse_legislative_date(project.entry_date)
+    movement = parse_legislative_date(project.latest_movement_date) or parse_legislative_date(project.latest_movement)
+    reference = movement or entry
+    recency_days = (today - reference).days if reference else None
+    entry_days = (today - entry).days if entry else None
+
+    new_days = int(config.get("new_project_days", 180))
+    active_days = int(config.get("active_movement_days", 730))
+    recent_entry = entry_days is not None and -31 <= entry_days <= new_days
+    recent_movement = recency_days is not None and -31 <= recency_days <= active_days
+    recent_feed = bool(project.metadata.get("recent_feed"))
+    explicit_urgency = bool(project.urgency.strip())
+
+    if terminal_hits:
+        return {
+            "is_current": False,
+            "lifecycle_code": "terminal",
+            "lifecycle_status": "Tramitación terminada",
+            "lifecycle_reason": "La fuente oficial contiene un estado terminal: " + ", ".join(terminal_hits[:3]),
+            "lifecycle_flags": [],
+            "reference_date": reference.isoformat() if reference else "",
+            "recency_days": recency_days,
+        }
+
+    flags: list[str] = []
+    if recent_entry:
+        flags.append("new")
+    if upcoming_hits and (recent_movement or recent_entry or recent_feed or explicit_urgency):
+        flags.append("upcoming")
+    if recent_movement or recent_feed or (active_hits and recent_entry) or (active_hits and explicit_urgency):
+        flags.append("active")
+
+    if "upcoming" in flags:
+        status = "Próximo hito legislativo"
+        code = "upcoming"
+        reason = "Se detectó una votación, urgencia, citación, paso de etapa u otro hito próximo."
+    elif "new" in flags:
+        status = "Nueva / ingreso reciente"
+        code = "new"
+        reason = f"La iniciativa ingresó dentro de los últimos {new_days} días."
+    elif "active" in flags:
+        status = "En tramitación activa"
+        code = "active"
+        reason = f"Registra actividad oficial dentro de los últimos {active_days} días."
+    else:
+        if active_hits and reference and recency_days is not None and recency_days > active_days:
+            code = "stale"
+            status = "Sin actividad reciente"
+            reason = f"Aunque conserva una etapa legislativa, no registra movimientos dentro de los últimos {active_days} días."
+        elif active_hits and not reference:
+            code = "unverified"
+            status = "Vigencia no comprobada"
+            reason = "La etapa parece activa, pero no existe una fecha reciente que permita comprobar su vigencia."
+        else:
+            code = "historical"
+            status = "Antecedente histórico"
+            reason = "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa."
+        return {
+            "is_current": False,
+            "lifecycle_code": code,
+            "lifecycle_status": status,
+            "lifecycle_reason": reason,
+            "lifecycle_flags": [],
+            "reference_date": reference.isoformat() if reference else "",
+            "recency_days": recency_days,
+        }
+
+    return {
+        "is_current": True,
+        "lifecycle_code": code,
+        "lifecycle_status": status,
+        "lifecycle_reason": reason,
+        "lifecycle_flags": unique(flags),
+        "reference_date": reference.isoformat() if reference else "",
+        "recency_days": recency_days,
+    }
 
 
 def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any]:
@@ -64,6 +157,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         relevance_level = 0
         relevance_label = "Sin impacto suficiente"
 
+    lifecycle = assess_lifecycle(project, config)
     top_impacts = sorted(
         ({"name": name, **payload} for name, payload in impacts.items()),
         key=lambda item: item["score"],
@@ -89,6 +183,8 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         summary_parts.append("La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF.")
     if top_impacts:
         summary_parts.append("Sus principales dimensiones de impacto son " + ", ".join(item["name"] for item in top_impacts[:3]) + ".")
+    if lifecycle["is_current"]:
+        summary_parts.append("Vigencia: " + lifecycle["lifecycle_status"] + ".")
     if project.latest_movement:
         summary_parts.append("Último antecedente detectado: " + project.latest_movement[:260])
 
@@ -103,10 +199,13 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "fallback_raw_hash": project.raw_hash if not any([project.state, project.stage, project.commission, project.urgency, project.latest_movement]) else "",
         "relevance_level": relevance_level,
         "impact_names": [item["name"] for item in top_impacts],
+        "lifecycle_code": lifecycle["lifecycle_code"],
+        "reference_date": lifecycle["reference_date"],
     }
 
     return {
         **asdict(project),
+        **lifecycle,
         "relevance_level": relevance_level,
         "relevance_label": relevance_label,
         "relevance_score": relevance_score,
@@ -130,7 +229,7 @@ def estimate_probability(project: CandidateProject) -> int:
         ("simple urgencia", 14), ("comision mixta", 24), ("tercer tramite", 23),
         ("segundo tramite", 17), ("primer tramite", 8), ("aprobado", 18),
         ("despachado", 25), ("votacion", 10), ("informe", 7), ("archivado", -30),
-        ("rechazado", -18), ("retirado", -35),
+        ("rechazado", -18), ("retirado", -35), ("tramitacion terminada", -45),
     ]
     for term, delta in rules:
         if term in text:
@@ -138,7 +237,12 @@ def estimate_probability(project: CandidateProject) -> int:
     return max(5, min(98, score))
 
 
-def compare_projects(previous: dict[str, Any], current: dict[str, Any], config: dict[str, Any]) -> list[dict[str, Any]]:
+def compare_projects(
+    previous: dict[str, Any],
+    current: dict[str, Any],
+    config: dict[str, Any],
+    excluded: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     alerts: list[dict[str, Any]] = []
     previous_projects = previous.get("projects", {}) if previous else {}
     first_run = not bool(previous_projects)
@@ -155,13 +259,23 @@ def compare_projects(previous: dict[str, Any], current: dict[str, Any], config: 
         if old.get("fingerprint") != new.get("fingerprint"):
             alerts.append(build_alert("project_changed", old, new, config))
 
+    # Solo avisar cierres reales de proyectos que ya habían sido validados por esta versión.
+    for bulletin, old in previous_projects.items():
+        if bulletin in current or old.get("is_current") is not True:
+            continue
+        closed = (excluded or {}).get(bulletin)
+        if closed and closed.get("lifecycle_code") == "terminal":
+            alerts.append(build_alert("project_closed", old, closed, config))
+
     return sorted(alerts, key=lambda item: (severity_rank(item["severity"]), item["priority_score"]), reverse=True)
 
 
 def build_alert(kind: str, old: dict[str, Any] | None, new: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
-    watched = ["title", "state", "stage", "commission", "urgency", "latest_movement", "latest_movement_date", "relevance_level"]
+    watched = ["title", "state", "stage", "commission", "urgency", "latest_movement", "latest_movement_date", "relevance_level", "lifecycle_code"]
     changes: list[dict[str, str]] = []
-    if old:
+    if kind == "project_closed":
+        changes.append({"field": "lifecycle", "before": str(old.get("lifecycle_status", "En tramitación") if old else ""), "after": new.get("lifecycle_status", "Tramitación terminada")})
+    elif old:
         for field in watched:
             before = str(old.get(field, "") or "")
             after = str(new.get(field, "") or "")
@@ -172,7 +286,9 @@ def build_alert(kind: str, old: dict[str, Any] | None, new: dict[str, Any], conf
 
     change_text = normalize_text(" ".join(change["after"] for change in changes))
     critical_hit = any(normalize_text(term) in change_text for term in config["critical_change_terms"])
-    if new.get("relevance_level") == 1 and critical_hit:
+    if kind == "project_closed":
+        severity = "Alta"
+    elif new.get("relevance_level") == 1 and critical_hit:
         severity = "Crítica"
     elif new.get("relevance_level") == 1:
         severity = "Alta"
@@ -191,6 +307,7 @@ def build_alert(kind: str, old: dict[str, Any] | None, new: dict[str, Any], conf
         "priority_score": new.get("priority_score", 0),
         "relevance_level": new.get("relevance_level", 0),
         "relevance_label": new.get("relevance_label", ""),
+        "lifecycle_status": new.get("lifecycle_status", ""),
         "changes": changes,
         "top_impacts": new.get("top_impacts", [])[:5],
         "decisions": new.get("decisions", [])[:4],
