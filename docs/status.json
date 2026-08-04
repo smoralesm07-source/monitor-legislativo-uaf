@@ -1,7 +1,7 @@
 {
-  "version": "1.0.7",
-  "started_at": "2026-08-03T22:19:42-04:00",
-  "finished_at": "2026-08-03T22:20:50-04:00",
+  "version": "1.0.8",
+  "started_at": "2026-08-03T22:33:48-04:00",
+  "finished_at": "2026-08-03T22:34:38-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
@@ -12,9 +12,10 @@
         2024
       ]
     },
-    "Senado XML movimientos": {
-      "ok": false,
-      "error": "{'fecha': '03/08/2023'}: No fue posible obtener https://tramitacion.senado.cl/wspublico/proyectos.php: 404 Client Error: Not Found for url: https://tramitacion.senado.cl/wspublico/proyectos.php?fecha=03%2F08%2F2023 | {'fecha': '2023-08-03'}: No fue posible obtener https://tramitacion.senado.cl/wspublico/proyectos.php: 404 Client Error: Not Found for url: https://tramitacion.senado.cl/wspublico/proyectos.php?fecha=2023-08-03 | {'fecha_inicio': '2023-08-03'}: No fue posible obtener https://tramitacion.senado.cl/wspublico/proyectos.php: 404 Client Error: Not Found for url: https://tramitacion.senado.cl/wspublico/proyectos.php?fecha_inicio=2023-08-03"
+    "Senado descubrimiento": {
+      "ok": true,
+      "items": 0,
+      "note": "Descubrimiento complementado mediante fichas oficiales por boletín; no se consulta el endpoint retirado que respondía 404."
     },
     "Cámara detalle oficial": {
       "ok": true,
@@ -33,21 +34,20 @@
   },
   "candidates_discovered": 1982,
   "newly_discovered": 0,
-  "projects_monitored": 0,
+  "projects_monitored": 11,
   "projects_enriched": 11,
   "alerts_generated": 0,
   "baseline": true,
-  "lifecycle_counts": {},
-  "excluded_count": 11,
-  "irrelevant_discarded": 1971,
-  "initiative_groups": 0,
-  "direct_projects": 0,
-  "laft_related_projects": 0,
-  "legislative_history_years": 3,
-  "exclusion_counts": {
-    "unverified": 2,
-    "historical": 9
+  "lifecycle_counts": {
+    "active": 11
   },
+  "excluded_count": 0,
+  "irrelevant_discarded": 1971,
+  "initiative_groups": 11,
+  "direct_projects": 7,
+  "laft_related_projects": 4,
+  "legislative_history_years": 3,
+  "exclusion_counts": {},
   "eligibility_rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base.",
   "email_sent": false,
   "email_message": "Sin alertas legislativas nuevas no enviadas",

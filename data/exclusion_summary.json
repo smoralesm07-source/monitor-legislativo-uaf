@@ -1,10 +1,9 @@
 {
-  "generated_at": "2026-08-03T22:20:50-04:00",
-  "total": 11,
+  "generated_at": "2026-08-03T22:34:38-04:00",
+  "total": 0,
   "by_reason": {
-    "unverified": 2,
-    "historical": 9,
     "irrelevant_no_laft": 1971
   },
-  "rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base."
+  "rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base.",
+  "samples": []
 }
