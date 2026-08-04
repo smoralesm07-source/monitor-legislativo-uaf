@@ -39,6 +39,9 @@ def compact() -> None:
     project_source = list(clean_mapping.values()) or [
         item for item in read_json(DATA_DIR / "projects.json", [])
         if item.get("bulletin") not in excluded
+    ] or [
+        item for item in read_json(DATA_DIR / "bootstrap_projects.json", [])
+        if item.get("bulletin") not in excluded
     ]
     projects = prepare_dashboard_projects(project_source)
     alerts = prepare_dashboard_alerts([

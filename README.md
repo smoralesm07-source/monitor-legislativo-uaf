@@ -9,7 +9,7 @@ El sistema descubre iniciativas nuevas, actualiza los proyectos vigilados, compa
 
 
 
-## Cambios de la versión 1.2.0
+## Cambios de la versión 1.2.1
 
 - excluye de manera explícita el boletín histórico **2975-07** en configuración, estado heredado, alertas y renderizado;
 - exige vigencia oficial comprobada y actividad legislativa dentro de una ventana de 540 días;
@@ -253,3 +253,8 @@ Ningún monitor puede garantizar que las páginas oficiales estén siempre dispo
 ## Guía detallada de despliegue
 
 Consulta `GUIA_INSTALACION_GITHUB.md` para el procedimiento completo usando solamente el navegador.
+
+
+## Protección contra tablero vacío (v1.2.1)
+
+La ejecución conserva el último portafolio válido si las fuentes oficiales bloquean al robot, cambian su HTML o devuelven cero filas. Además, usa la ficha HTML oficial de la Cámara como respaldo del XML y del Senado. Un validador impide publicar un dashboard vacío.
