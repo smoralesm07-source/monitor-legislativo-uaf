@@ -214,3 +214,17 @@ Ningún monitor puede garantizar que las páginas oficiales estén siempre dispo
 ## Guía detallada de despliegue
 
 Consulta `GUIA_INSTALACION_GITHUB.md` para el procedimiento completo usando solamente el navegador.
+
+## Corrección v1.0.4: control de tamaño
+
+La versión 1.0.4 evita que la evidencia cruda descargada desde Cámara y Senado se acumule dentro de los JSON persistentes. `evidence_text` se utiliza solo durante la clasificación y se elimina antes de guardar el estado.
+
+El workflow ejecuta `maintenance_compact.py` antes de cada barrido y valida al final que ningún archivo generado supere el límite interno configurado en `max_generated_file_mb`.
+
+Para reparar un repositorio que ya contiene archivos grandes:
+
+```text
+Actions → Reparar archivos grandes del monitor → Run workflow
+```
+
+El workflow compacta `state.json`, `projects.json`, `alerts.json`, `history.jsonl` y el dashboard, guarda la reparación y vuelve a publicar GitHub Pages.
