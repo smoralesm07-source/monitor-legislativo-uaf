@@ -55,6 +55,9 @@ jobs:
       - name: Ejecutar barrido legislativo
         run: python monitor.py
 
+      - name: Validar que el portafolio no esté vacío
+        run: python validate_monitor_output.py
+
       - name: Validar tamaños de salida
         run: python maintenance_compact.py --check-only
 
