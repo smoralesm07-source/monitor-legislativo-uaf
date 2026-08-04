@@ -4,7 +4,7 @@ import hashlib
 import json
 import re
 import unicodedata
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterable
 from zoneinfo import ZoneInfo
@@ -12,8 +12,9 @@ from zoneinfo import ZoneInfo
 BULLETIN_RE = re.compile(r"\b(\d{4,5}-\d{2})\b")
 DATE_RE = re.compile(r"\b(\d{1,2}[/-]\d{1,2}[/-]\d{4}|\d{4}-\d{2}-\d{2})\b")
 TEXT_DATE_RE = re.compile(
-    r"\b(\d{1,2})\s+(ene(?:ro)?|feb(?:rero)?|mar(?:zo)?|abr(?:il)?|may(?:o)?|jun(?:io)?|"
-    r"jul(?:io)?|ago(?:sto)?|sep(?:tiembre)?|sept(?:iembre)?|oct(?:ubre)?|nov(?:iembre)?|dic(?:iembre)?)\.?\s+(\d{4})\b",
+    r"\b(\d{1,2})\s+(?:de\s+)?(ene(?:ro)?|feb(?:rero)?|mar(?:zo)?|abr(?:il)?|may(?:o)?|jun(?:io)?|"
+    r"jul(?:io)?|ago(?:sto)?|sep(?:tiembre)?|sept(?:iembre)?|oct(?:ubre)?|nov(?:iembre)?|dic(?:iembre)?)"
+    r"\.?\s*(?:de\s+)?[,]?\s*(\d{4})\b",
     re.IGNORECASE,
 )
 MONTHS = {
@@ -40,13 +41,26 @@ def compact_text(value: str | None, max_len: int = 5000) -> str:
     return text[:max_len]
 
 
+def contains_term(normalized_text: str, term: str) -> bool:
+    """Busca frases con límites de palabra; evita que ROS coincida con profesores/otros."""
+    needle = normalize_text(term)
+    if not normalized_text or not needle:
+        return False
+    pattern = rf"(?<![\w]){re.escape(needle)}(?![\w])"
+    return re.search(pattern, normalized_text, flags=re.IGNORECASE) is not None
+
+
+def matching_terms(normalized_text: str, terms: Iterable[str]) -> list[str]:
+    return unique(term for term in terms if contains_term(normalized_text, term))
+
+
 def bulletin_from_text(value: str | None) -> str | None:
     match = BULLETIN_RE.search(value or "")
     return match.group(1) if match else None
 
 
 def parse_legislative_date(value: str | None) -> date | None:
-    """Extrae una fecha desde formatos habituales de Cámara y Senado."""
+    """Extrae la fecha completa más reciente desde formatos oficiales habituales."""
     if not value:
         return None
     text = str(value).strip()
@@ -72,16 +86,29 @@ def parse_legislative_date(value: str | None) -> date | None:
     return max(candidates) if candidates else None
 
 
-def latest_dated_text(items: Iterable[str]) -> tuple[str, str]:
-    """Retorna el texto con la fecha más reciente y la fecha ISO correspondiente."""
+def latest_dated_text(
+    items: Iterable[str],
+    *,
+    not_after: date | None = None,
+    not_before: date | None = None,
+    bulletin: str | None = None,
+) -> tuple[str, str]:
+    """Retorna el movimiento oficial más reciente dentro de límites razonables."""
     best_text = ""
     best_date: date | None = None
     fallback = ""
+    ceiling = not_after or (date.today() + timedelta(days=2))
     for item in items:
-        if item:
-            fallback = item
+        if not item:
+            continue
+        fallback = item
+        bulletins = set(BULLETIN_RE.findall(item))
+        if bulletin and bulletins and bulletin not in bulletins:
+            continue
         parsed = parse_legislative_date(item)
-        if parsed and (best_date is None or parsed > best_date):
+        if not parsed or parsed > ceiling or (not_before and parsed < not_before):
+            continue
+        if best_date is None or parsed > best_date:
             best_date = parsed
             best_text = item
     if best_date:

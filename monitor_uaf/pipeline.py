@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .analysis import classify, compare_projects, sanitize_project_record
+from .analysis import annotate_initiative_groups, classify, compare_projects, sanitize_project_record
 from .config import DATA_DIR, DOCS_DIR, load_config
 from .http_client import HttpClient
 from .models import CandidateProject
@@ -60,14 +60,6 @@ class MonitorPipeline:
             source_health["Cámara XML"] = {"ok": False, "error": str(exc)}
 
         try:
-            senate_recent = self.senado.recent_movements()
-            merge_many(senate_recent)
-            source_health["Senado movimientos"] = {"ok": True, "items": len(senate_recent)}
-        except Exception as exc:  # noqa: BLE001
-            LOGGER.exception("Falló movimientos Senado")
-            source_health["Senado movimientos"] = {"ok": False, "error": str(exc)}
-
-        try:
             bcn_items = self.bcn.list_associated()
             merge_many(bcn_items)
             source_health["BCN Ley 19.913"] = {
@@ -113,7 +105,7 @@ class MonitorPipeline:
                 metadata={
                     key: value
                     for key, value in (old.get("metadata", {}) or {}).items()
-                    if key in {"bcn_associated", "newly_discovered", "recent_feed", "title_rank"}
+                    if key in {"bcn_associated", "newly_discovered", "recent_feed", "title_rank", "movement_rank", "movement_source", "official_date_verified"}
                 },
             )
             candidates.setdefault(bulletin, previous_candidate).merge(previous_candidate)
@@ -125,6 +117,11 @@ class MonitorPipeline:
         tracked = set(previous_projects)
 
         enriched_count = 0
+        camara_detail_ok = 0
+        camara_detail_fail = 0
+        senado_detail_ok = 0
+        senado_detail_fail = 0
+        irrelevant_count = 0
         current_projects: dict[str, Any] = {}
         excluded_projects: dict[str, Any] = {}
         for bulletin, candidate in sorted(candidates.items()):
@@ -141,24 +138,46 @@ class MonitorPipeline:
                 detail_success = False
                 try:
                     candidate.merge(self.camara.detail(bulletin))
+                    camara_detail_ok += 1
                     detail_success = True
                 except Exception as exc:  # noqa: BLE001
+                    camara_detail_fail += 1
                     LOGGER.warning("No se obtuvo detalle Cámara para %s: %s", bulletin, exc)
                 try:
                     candidate.merge(self.senado.detail(bulletin))
+                    senado_detail_ok += 1
                     detail_success = True
                 except Exception as exc:  # noqa: BLE001
+                    senado_detail_fail += 1
                     LOGGER.warning("No se obtuvo detalle Senado para %s: %s", bulletin, exc)
                 if detail_success:
                     enriched_count += 1
 
             analyzed = classify(candidate, self.config)
             if analyzed["relevance_level"] <= 0:
+                irrelevant_count += 1
                 continue
             if analyzed.get("is_current"):
                 current_projects[bulletin] = analyzed
             else:
                 excluded_projects[bulletin] = analyzed
+
+        source_health["Cámara detalle oficial"] = {
+            "ok": camara_detail_ok > 0,
+            "items": camara_detail_ok,
+            "errors": camara_detail_fail,
+            "attempts": camara_detail_ok + camara_detail_fail,
+            "note": "Fechas y movimientos obtenidos del XML oficial por boletín.",
+        }
+        source_health["Senado fichas oficiales"] = {
+            "ok": senado_detail_ok > 0,
+            "items": senado_detail_ok,
+            "errors": senado_detail_fail,
+            "attempts": senado_detail_ok + senado_detail_fail,
+            "note": "Se consultan las fichas oficiales; no se usa la lista de 'últimos vistos' para fechar trámites.",
+        }
+
+        current_projects = annotate_initiative_groups(current_projects, self.config)
 
         # Si fallaron todas las fuentes, conservar la cartera vigente anterior para no generar bajas falsas.
         if source_health and not any(item.get("ok") for item in source_health.values()):
@@ -197,17 +216,21 @@ class MonitorPipeline:
             "baseline": not bool(previous_projects),
             "lifecycle_counts": dict(lifecycle_counts),
             "excluded_count": len(excluded_projects),
+            "irrelevant_discarded": irrelevant_count,
+            "initiative_groups": len({item.get("initiative_group_id", item.get("bulletin")) for item in current_projects.values()}),
             "exclusion_counts": dict(exclusion_counts),
             "eligibility_rule": (
-                "Solo se publican iniciativas relevantes para la UAF con ingreso reciente, "
-                "movimiento oficial reciente, urgencia vigente o próximo hito comprobable."
+                "Solo se publican iniciativas vigentes que modifican la Ley 19.913 o presentan una conexión "
+                "explícita y verificable con prevención de lavado de activos o financiamiento del terrorismo."
             ),
         }
 
         previous_alerts = read_json(DATA_DIR / "alerts.json", [])
         new_ids = {a["id"] for a in alerts_with_time}
         merged_alerts = alerts_with_time + [item for item in previous_alerts if item.get("id") not in new_ids]
-        merged_alerts = merged_alerts[:250]
+        # Elimina del historial visible las alertas de boletines que la nueva clasificación
+        # precisa determinó ajenos a Ley 19.913/LAFT.
+        merged_alerts = [item for item in merged_alerts if item.get("bulletin") in current_projects][:250]
 
         new_discovery_map = discovery.get("bulletins", {})
         for bulletin, candidate in candidates.items():
@@ -227,7 +250,7 @@ class MonitorPipeline:
             {
                 "generated_at": finished_at,
                 "total": len(excluded_projects),
-                "by_reason": dict(exclusion_counts),
+                "by_reason": {**dict(exclusion_counts), "irrelevant_no_laft": irrelevant_count},
                 "rule": status["eligibility_rule"],
             },
         )

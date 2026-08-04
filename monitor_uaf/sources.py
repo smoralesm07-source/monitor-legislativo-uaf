@@ -4,18 +4,36 @@ import io
 import logging
 import re
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import date, timedelta
 from typing import Iterable
-from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
 
 from .http_client import HttpClient
 from .models import CandidateProject
-from .utils import BULLETIN_RE, DATE_RE, compact_text, latest_dated_text, local_tag, stable_hash, unique
+from .utils import (
+    BULLETIN_RE,
+    DATE_RE,
+    compact_text,
+    contains_term,
+    latest_dated_text,
+    local_tag,
+    normalize_text,
+    parse_legislative_date,
+    stable_hash,
+    unique,
+)
 
 LOGGER = logging.getLogger(__name__)
+
+MOVEMENT_TERMS = [
+    "ingreso de proyecto", "cuenta del proyecto", "oficio", "informe de comisión",
+    "informe de comision", "indicación", "indicacion", "votación", "votacion",
+    "aprobado", "rechazado", "pasa a", "trámite constitucional", "tramite constitucional",
+    "comisión mixta", "comision mixta", "urgencia", "discusión", "discusion",
+    "sesión", "sesion", "promulgado", "publicado", "archivado", "retirado",
+]
 
 
 class CamaraOpenDataSource:
@@ -58,6 +76,18 @@ class CamaraOpenDataSource:
                     out.append(block)
         return unique(out)[:limit]
 
+    @classmethod
+    def _movement_blocks(cls, root: ET.Element) -> list[str]:
+        out: list[str] = []
+        movement_tags = {"Tramite", "Movimiento", "Oficio"}
+        for elem in root.iter():
+            if local_tag(elem.tag) not in movement_tags:
+                continue
+            block = compact_text(" ".join(t.strip() for t in elem.itertext() if t and t.strip()), 3000)
+            if block and parse_legislative_date(block):
+                out.append(block)
+        return unique(out)[:150]
+
     def list_by_year(self, year: int) -> list[CandidateProject]:
         projects: dict[str, CandidateProject] = {}
         for method, label in [("retornarMensajesXAnno", "Cámara XML mensajes"), ("retornarMocionesXAnno", "Cámara XML mociones")]:
@@ -93,12 +123,18 @@ class CamaraOpenDataSource:
         commissions = self._collect_named_blocks(root, {"Comision", "ComisionDestino", "ComisionOrigen"})
         urgencies = self._collect_named_blocks(root, {"Urgencia", "TipoUrgencia"})
         states = self._collect_named_blocks(root, {"Estado", "EstadoProyectoLey"})
-        movements = self._collect_named_blocks(root, {"Tramite", "Movimiento", "Oficio", "Sesion"}, limit=60)
-        latest_movement, latest_movement_date = latest_dated_text(movements)
+        movements = self._movement_blocks(root)
+        entry_date = self._first_text(root, ["FechaIngreso"])
+        entry = parse_legislative_date(entry_date)
+        latest_movement, latest_movement_date = latest_dated_text(
+            movements,
+            not_before=(entry - timedelta(days=5)) if entry else None,
+            bulletin=bulletin,
+        )
         return CandidateProject(
             bulletin=bulletin,
             title=self._first_text(root, ["Nombre"]),
-            entry_date=self._first_text(root, ["FechaIngreso"]),
+            entry_date=entry_date,
             initiative_type=self._first_text(root, ["TipoIniciativa"]),
             origin_chamber=self._first_text(root, ["CamaraOrigen"]),
             state=" | ".join(states[:3]),
@@ -111,11 +147,19 @@ class CamaraOpenDataSource:
             discovered_from=["Cámara XML detalle"],
             evidence_text=raw_text,
             raw_hash=stable_hash(raw_text),
-            metadata={"camara_movements": movements[-20:], "title_rank": 4},
+            metadata={
+                "camara_movements": movements[-20:],
+                "title_rank": 5,
+                "movement_rank": 5,
+                "movement_source": "Cámara XML oficial",
+                "official_date_verified": bool(latest_movement_date),
+            },
         )
 
 
 class SenadoSource:
+    # Esta URL se conserva como referencia, pero NO se utiliza para fechar movimientos:
+    # corresponde a elementos vistos recientemente, no a la cronología oficial de cada boletín.
     RECENT_URL = "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion"
     DETAIL_URL = "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini={bulletin}"
 
@@ -123,33 +167,76 @@ class SenadoSource:
         self.client = client
 
     def recent_movements(self) -> list[CandidateProject]:
-        result = self.client.get(self.RECENT_URL)
-        soup = BeautifulSoup(result.text, "html.parser")
-        projects: dict[str, CandidateProject] = {}
+        """Deshabilitado como fuente de fechas para evitar confundir 'últimos vistos' con trámites."""
+        return []
+
+    @staticmethod
+    def _key_value_pairs(soup: BeautifulSoup, bulletin: str) -> dict[str, str]:
+        pairs: dict[str, str] = {}
+        accepted = {
+            "titulo", "título", "fecha de ingreso", "estado", "trámite constitucional",
+            "tramite constitucional", "etapa", "comisión", "comision", "urgencia actual",
+            "urgencia", "cámara de origen", "camara de origen", "iniciativa",
+        }
         for row in soup.find_all("tr"):
-            text = compact_text(row.get_text(" ", strip=True), 3000)
-            bulletin_match = BULLETIN_RE.search(text)
-            if not bulletin_match:
-                href_text = " ".join(a.get("href", "") for a in row.find_all("a"))
-                bulletin_match = BULLETIN_RE.search(href_text)
-            if not bulletin_match:
+            cells = [compact_text(cell.get_text(" ", strip=True), 3000) for cell in row.find_all(["th", "td"])]
+            cells = [cell for cell in cells if cell]
+            if len(cells) < 2:
                 continue
-            bulletin = bulletin_match.group(1)
-            _, recent_date = latest_dated_text([text])
-            links = [urljoin(self.RECENT_URL, a.get("href", "")) for a in row.find_all("a") if a.get("href")]
-            project = CandidateProject(
-                bulletin=bulletin,
-                title=text,
-                latest_movement=text,
-                latest_movement_date=recent_date,
-                source_urls=[self.DETAIL_URL.format(bulletin=bulletin)] + links,
-                discovered_from=["Senado últimos movimientos"],
-                evidence_text=text,
-                raw_hash=stable_hash(text),
-                metadata={"title_rank": 1},
-            )
-            projects.setdefault(bulletin, project).merge(project)
-        return list(projects.values())
+            row_bulletins = set(BULLETIN_RE.findall(" ".join(cells)))
+            if row_bulletins and bulletin not in row_bulletins:
+                continue
+            key = normalize_text(cells[0]).strip(" :")
+            if any(key == normalize_text(label) or key.startswith(normalize_text(label) + ":") for label in accepted):
+                pairs.setdefault(key, " | ".join(cells[1:]))
+        return pairs
+
+    @staticmethod
+    def _pick(pairs: dict[str, str], *needles: str) -> str:
+        for key, value in pairs.items():
+            if any(normalize_text(needle) in key for needle in needles):
+                return value
+        return ""
+
+    @staticmethod
+    def _movement_rows(soup: BeautifulSoup, bulletin: str, entry: date | None) -> list[str]:
+        best_rows: list[str] = []
+        best_score = -10_000
+        for table in soup.find_all("table"):
+            candidate_rows: list[str] = []
+            score = 0
+            for row in table.find_all("tr"):
+                cells = [compact_text(cell.get_text(" ", strip=True), 2500) for cell in row.find_all(["th", "td"])]
+                cells = [cell for cell in cells if cell]
+                if not cells:
+                    continue
+                text = " | ".join(cells)
+                bulletins = set(BULLETIN_RE.findall(text))
+                if bulletins and bulletin not in bulletins:
+                    score -= 8
+                    continue
+                parsed = parse_legislative_date(text)
+                if not parsed or parsed > date.today() + timedelta(days=2):
+                    continue
+                if entry and parsed < entry - timedelta(days=10):
+                    continue
+                normalized = normalize_text(text)
+                action = any(contains_term(normalized, term) for term in MOVEMENT_TERMS)
+                # Las tablas cronológicas oficiales normalmente tienen la fecha en la primera
+                # o segunda celda. Este requisito excluye listados laterales y contenido general.
+                leading_date = any(parse_legislative_date(cell) for cell in cells[:2])
+                if action and leading_date:
+                    candidate_rows.append(text)
+                    score += 4
+                elif leading_date and len(cells) >= 3:
+                    candidate_rows.append(text)
+                    score += 2
+            if len(candidate_rows) >= 2:
+                score += min(len(candidate_rows), 20)
+            if score > best_score:
+                best_score = score
+                best_rows = candidate_rows
+        return unique(best_rows)[:150]
 
     def detail(self, bulletin: str) -> CandidateProject:
         url = self.DETAIL_URL.format(bulletin=bulletin)
@@ -158,43 +245,42 @@ class SenadoSource:
         for tag in soup(["script", "style", "noscript"]):
             tag.decompose()
         body_text = compact_text(soup.get_text(" ", strip=True), 60000)
-        pairs: dict[str, str] = {}
-        rows: list[str] = []
-        for row in soup.find_all("tr"):
-            cells = [compact_text(cell.get_text(" ", strip=True), 3000) for cell in row.find_all(["th", "td"])]
-            cells = [cell for cell in cells if cell]
-            if not cells:
-                continue
-            rows.append(" | ".join(cells))
-            if len(cells) >= 2:
-                key = cells[0].lower()
-                value = " | ".join(cells[1:])
-                pairs[key] = value
-        def pick(*needles: str) -> str:
-            for key, value in pairs.items():
-                if any(needle in key for needle in needles):
-                    return value
-            return ""
-        title = pick("título", "titulo", "materia", "nombre")
+        pairs = self._key_value_pairs(soup, bulletin)
+        title = self._pick(pairs, "título", "titulo")
         if not title:
             heading = soup.find(["h1", "h2", "h3"])
             title = compact_text(heading.get_text(" ", strip=True), 2000) if heading else ""
-        date_rows = [row for row in rows if DATE_RE.search(row)]
-        latest, latest_date = latest_dated_text(date_rows)
+        entry_date = self._pick(pairs, "fecha de ingreso")
+        entry = parse_legislative_date(entry_date)
+        movement_rows = self._movement_rows(soup, bulletin, entry)
+        latest, latest_date = latest_dated_text(
+            movement_rows,
+            not_before=(entry - timedelta(days=10)) if entry else None,
+            bulletin=bulletin,
+        )
         return CandidateProject(
             bulletin=bulletin,
             title=title,
-            state=pick("estado"),
-            stage=pick("trámite constitucional", "tramite constitucional", "etapa"),
-            commission=pick("comisión", "comision"),
-            urgency=pick("urgencia"),
+            entry_date=entry_date,
+            initiative_type=self._pick(pairs, "iniciativa"),
+            origin_chamber=self._pick(pairs, "cámara de origen", "camara de origen"),
+            state=self._pick(pairs, "estado"),
+            stage=self._pick(pairs, "trámite constitucional", "tramite constitucional", "etapa"),
+            commission=self._pick(pairs, "comisión", "comision"),
+            urgency=self._pick(pairs, "urgencia actual", "urgencia"),
             latest_movement=latest,
             latest_movement_date=latest_date,
             source_urls=[url],
-            discovered_from=["Senado ficha de tramitación"],
+            discovered_from=["Senado ficha oficial de tramitación"],
             evidence_text=body_text,
             raw_hash=stable_hash(body_text),
-            metadata={"senado_rows": rows[-30:], "title_rank": 3},
+            metadata={
+                "senado_rows": movement_rows[-30:],
+                "title_rank": 4,
+                "movement_rank": 4,
+                "movement_source": "Senado ficha oficial",
+                "official_date_verified": bool(latest_date),
+            },
         )
 
 

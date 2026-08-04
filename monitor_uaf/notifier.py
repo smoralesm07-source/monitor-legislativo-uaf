@@ -56,8 +56,9 @@ def build_plain_text(alerts: list[dict[str, Any]], status: dict[str, Any], dashb
     ]
     for alert in alerts:
         lines.extend([
-            f"[{alert['severity']}] Boletín {alert['bulletin']} — {alert['title']}",
+            f"[{alert['severity']}] {alert.get('initiative_name') or alert['title']} — Boletín {alert['bulletin']}",
             alert.get("relevance_label", ""),
+            alert.get("linkage_summary", ""),
         ])
         for change in alert.get("changes", []):
             lines.append(f"- {change['field']}: {change['after']}")
@@ -86,8 +87,11 @@ def build_html(alerts: list[dict[str, Any]], status: dict[str, Any], dashboard_u
         cards.append(f"""
         <div style="border:1px solid #dce4eb;border-left:5px solid {colors.get(alert['severity'], '#356b8c')};border-radius:10px;padding:16px;margin:14px 0;background:#fff">
           <div style="font-size:12px;font-weight:800;color:{colors.get(alert['severity'], '#356b8c')}">{html.escape(alert['severity'])} · BOLETÍN {html.escape(alert['bulletin'])}</div>
-          <h3 style="margin:6px 0 8px;font-size:17px;color:#10263a">{html.escape(alert['title'])}</h3>
+          <h3 style="margin:6px 0 8px;font-size:17px;color:#10263a">{html.escape(alert.get('initiative_name') or alert['title'])}</h3>
+          <div style="font-size:12px;color:#6b7d8d;margin-bottom:6px">{html.escape(alert['title'])}</div>
           <div style="font-size:13px;color:#4c6071">{html.escape(alert.get('relevance_label',''))}</div>
+          <div style="font-size:13px;color:#263e52;margin-top:6px">{html.escape(alert.get('linkage_summary',''))}</div>
+          <div style="font-size:12px;margin-top:8px"><b>Tópicos LA/FT:</b> {html.escape(', '.join(alert.get('laft_topics', [])[:6]) or 'Por revisar')}</div>
           <ul style="font-size:13px;line-height:1.5;color:#263e52">{changes}</ul>
           <div style="font-size:12px"><b>Impactos:</b> {impacts or 'Por revisar'}</div>
           <div style="font-size:12px;margin-top:8px"><b>Decisiones sugeridas:</b><ol>{decisions}</ol></div>
