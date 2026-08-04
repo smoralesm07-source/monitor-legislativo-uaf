@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -313,5 +313,7 @@
     "oficio de ley",
     "informe de comisión",
     "informe de comision"
-  ]
+  ],
+  "max_generated_file_mb": 8,
+  "history_max_entries": 2000
 }
