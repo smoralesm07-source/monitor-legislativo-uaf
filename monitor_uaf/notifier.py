@@ -8,10 +8,59 @@ from typing import Any
 
 from .config import env_bool
 
+PRODUCTION_ALERT_KINDS = frozenset({"new_project", "project_changed", "project_closed"})
+
+
+def production_alerts(alerts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Devuelve únicamente alertas legislativas reales.
+
+    Las alertas de prueba o de diagnóstico nunca pueden salir por el canal
+    productivo, aunque un script auxiliar las entregue accidentalmente.
+    """
+    return [
+        alert
+        for alert in alerts
+        if alert.get("kind") in PRODUCTION_ALERT_KINDS and alert.get("id")
+    ]
+
+
+def filter_unsent_alerts(
+    alerts: list[dict[str, Any]],
+    email_log: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    """Excluye alertas ya enviadas, usando su identificador estable."""
+    sent_ids = set((email_log or {}).get("sent_alert_ids", []))
+    return [alert for alert in production_alerts(alerts) if alert["id"] not in sent_ids]
+
+
+def updated_email_log(
+    email_log: dict[str, Any] | None,
+    sent_alerts: list[dict[str, Any]],
+    sent_at: str,
+    *,
+    max_ids: int = 2000,
+) -> dict[str, Any]:
+    """Actualiza el registro persistente solo después de un envío exitoso."""
+    existing = list((email_log or {}).get("sent_alert_ids", []))
+    new_ids = [alert["id"] for alert in production_alerts(sent_alerts)]
+    combined: list[str] = []
+    seen: set[str] = set()
+    # Los IDs nuevos quedan primero para conservar los más recientes al recortar.
+    for alert_id in new_ids + existing:
+        if alert_id and alert_id not in seen:
+            seen.add(alert_id)
+            combined.append(alert_id)
+    return {
+        "last_sent_at": sent_at,
+        "last_sent_count": len(new_ids),
+        "sent_alert_ids": combined[:max(1, int(max_ids))],
+    }
+
 
 def send_alert_email(alerts: list[dict[str, Any]], status: dict[str, Any]) -> tuple[bool, str]:
+    alerts = production_alerts(alerts)
     if not alerts:
-        return False, "Sin alertas nuevas"
+        return False, "Sin alertas legislativas nuevas"
     if not env_bool("MONITOR_EMAIL_ACTIVE", False):
         return False, "Correo desactivado"
 
@@ -27,7 +76,7 @@ def send_alert_email(alerts: list[dict[str, Any]], status: dict[str, Any]) -> tu
     dashboard_url = os.getenv("PUBLIC_DASHBOARD_URL", "").strip()
 
     critical = sum(1 for item in alerts if item["severity"] == "Crítica")
-    subject = f"[Monitor Legislativo UAF] {len(alerts)} alerta(s) nueva(s)"
+    subject = f"[Monitor Legislativo UAF] {len(alerts)} alerta(s) legislativa(s) nueva(s)"
     if critical:
         subject = f"[ALERTA CRÍTICA UAF] {critical} cambio(s) crítico(s) y {len(alerts)} alerta(s)"
 
@@ -47,11 +96,29 @@ def send_alert_email(alerts: list[dict[str, Any]], status: dict[str, Any]) -> tu
     return True, f"Correo enviado a {len(recipients)} destinatario(s)"
 
 
+def send_test_email(alert: dict[str, Any], status: dict[str, Any]) -> tuple[bool, str]:
+    """Envío de prueba protegido por doble confirmación explícita.
+
+    No se utiliza en el workflow diario. Requiere simultáneamente:
+    ALLOW_TEST_EMAIL=true y TEST_EMAIL_CONFIRM=ENVIAR.
+    """
+    if not env_bool("ALLOW_TEST_EMAIL", False):
+        return False, "Correo de prueba bloqueado: ALLOW_TEST_EMAIL no está activo"
+    if os.getenv("TEST_EMAIL_CONFIRM", "").strip().upper() != "ENVIAR":
+        return False, "Correo de prueba bloqueado: falta TEST_EMAIL_CONFIRM=ENVIAR"
+
+    test_alert = dict(alert)
+    test_alert["kind"] = "new_project"
+    test_alert["id"] = f"manual-test-{status.get('finished_at', 'sin-fecha')}"
+    test_alert["title"] = f"PRUEBA MANUAL — {test_alert.get('title', 'Monitor Legislativo UAF')}"
+    return send_alert_email([test_alert], status)
+
+
 def build_plain_text(alerts: list[dict[str, Any]], status: dict[str, Any], dashboard_url: str) -> str:
     lines = [
         "MONITOR LEGISLATIVO UAF",
         f"Ejecución: {status.get('finished_at', '')}",
-        f"Alertas nuevas: {len(alerts)}",
+        f"Alertas legislativas nuevas: {len(alerts)}",
         "",
     ]
     for alert in alerts:

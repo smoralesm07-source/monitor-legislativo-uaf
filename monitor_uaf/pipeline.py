@@ -10,7 +10,7 @@ from .analysis import annotate_initiative_groups, classify, compare_projects, sa
 from .config import DATA_DIR, DOCS_DIR, load_config
 from .http_client import HttpClient
 from .models import CandidateProject
-from .notifier import send_alert_email
+from .notifier import filter_unsent_alerts, send_alert_email, updated_email_log
 from .render import prepare_dashboard_alerts, prepare_dashboard_projects, render_dashboard
 from .sources import BCNAssociatedProjectsSource, CamaraOpenDataSource, SenadoSource
 from .utils import iso_now, local_now, read_json, write_json
@@ -267,16 +267,34 @@ class MonitorPipeline:
                 for alert in alerts_with_time:
                     fh.write(json.dumps(alert, ensure_ascii=False) + "\n")
 
+        email_log_path = DATA_DIR / "email_log.json"
+        email_log = read_json(email_log_path, {"sent_alert_ids": [], "last_sent_at": ""})
+        unsent_alerts = filter_unsent_alerts(alerts_with_time, email_log)
+
         email_sent = False
         email_message = "Correo omitido por parámetro"
         if not no_email:
-            try:
-                email_sent, email_message = send_alert_email(alerts_with_time, status)
-            except Exception as exc:  # noqa: BLE001
-                LOGGER.exception("Falló envío de correo")
-                email_message = f"Error al enviar correo: {exc}"
+            if not unsent_alerts:
+                email_message = "Sin alertas legislativas nuevas no enviadas"
+            else:
+                try:
+                    email_sent, email_message = send_alert_email(unsent_alerts, status)
+                    if email_sent:
+                        email_log = updated_email_log(
+                            email_log,
+                            unsent_alerts,
+                            finished_at,
+                            max_ids=int(self.config.get("email_log_max_ids", 2000)),
+                        )
+                        write_json(email_log_path, email_log)
+                except Exception as exc:  # noqa: BLE001
+                    LOGGER.exception("Falló envío de correo")
+                    email_message = f"Error al enviar correo: {exc}"
         status["email_sent"] = email_sent
         status["email_message"] = email_message
+        status["email_alerts_detected"] = len(alerts_with_time)
+        status["email_alerts_pending"] = len(unsent_alerts)
+        status["email_alerts_previously_sent"] = len(alerts_with_time) - len(unsent_alerts)
         write_json(DATA_DIR / "status.json", status)
         write_json(DOCS_DIR / "status.json", status)
         render_dashboard(project_list, merged_alerts, status, DOCS_DIR / "index.html")

@@ -482,9 +482,12 @@ def compare_projects(
         if old is None:
             alerts.append(build_alert("new_project", None, new, config))
             continue
+        # Solo los cambios legislativos materialmente verificables generan correo.
+        # Se excluyen título, texto descriptivo del movimiento, clasificación analítica
+        # y fechas auxiliares, porque pueden variar por normalización o extracción sin
+        # representar un avance parlamentario real.
         material_fields = [
-            "title", "state", "stage", "commission", "urgency", "latest_movement",
-            "latest_movement_date", "relevance_level", "lifecycle_code", "reference_date",
+            "state", "stage", "commission", "urgency", "latest_movement_date", "lifecycle_code",
         ]
         if any(str(old.get(field, "") or "") != str(new.get(field, "") or "") for field in material_fields):
             alerts.append(build_alert("project_changed", old, new, config))
@@ -529,7 +532,15 @@ def build_alert(kind: str, old: dict[str, Any] | None, new: dict[str, Any], conf
     else:
         severity = "Media"
 
-    alert_id = stable_hash({"kind": kind, "bulletin": new["bulletin"], "changes": changes, "fingerprint": new.get("fingerprint")})[:20]
+    # El identificador depende únicamente del cambio legislativo material. No incluye
+    # la huella completa del proyecto, porque metadatos o textos auxiliares pueden
+    # cambiar entre barridos y provocar correos duplicados.
+    alert_id = stable_hash({
+        "kind": kind,
+        "bulletin": new["bulletin"],
+        "changes": changes,
+        "official_movement_date": new.get("latest_movement_date", ""),
+    })[:20]
     return {
         "id": alert_id,
         "kind": kind,
