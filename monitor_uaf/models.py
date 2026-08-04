@@ -97,7 +97,50 @@ class CandidateProject:
         if self.bulletin != other.bulletin:
             raise ValueError("No se pueden fusionar boletines distintos")
 
+        # El movimiento y su fecha forman una pareja. Entre fuentes oficiales de
+        # autoridad comparable prevalece la fecha más reciente. Una extracción
+        # oficial nueva, sin embargo, debe poder corregir un dato heredado de una
+        # versión defectuosa aunque la fecha correcta sea anterior.
+        current_movement_date = self.latest_movement_date
+        incoming_movement_date = other.latest_movement_date
+        current_rank = self._rank(self.metadata, "latest_movement_date")
+        incoming_rank = self._rank(other.metadata, "latest_movement_date")
+        current_parsed = None
+        incoming_parsed = None
+        try:
+            from .utils import parse_legislative_date
+            current_parsed = parse_legislative_date(current_movement_date)
+            incoming_parsed = parse_legislative_date(incoming_movement_date)
+        except Exception:
+            pass
+
+        replace_movement_pair = False
+        authoritative_clear = bool(other.metadata.get("movement_authoritative")) and incoming_rank >= current_rank + 50
+        if authoritative_clear:
+            # También permite borrar una fecha heredada cuando la tabla exacta del
+            # boletín fue encontrada, pero no contiene ese supuesto movimiento.
+            replace_movement_pair = True
+        elif incoming_movement_date or other.latest_movement:
+            if incoming_rank >= current_rank + 50:
+                replace_movement_pair = True
+            elif current_rank >= incoming_rank + 50:
+                replace_movement_pair = False
+            elif incoming_parsed and (not current_parsed or incoming_parsed > current_parsed):
+                replace_movement_pair = True
+            elif incoming_parsed and current_parsed and incoming_parsed == current_parsed:
+                replace_movement_pair = incoming_rank >= current_rank
+            elif not current_movement_date and not self.latest_movement:
+                replace_movement_pair = True
+            elif not incoming_parsed and not current_parsed:
+                replace_movement_pair = incoming_rank > current_rank
+
+        if replace_movement_pair:
+            self.latest_movement = other.latest_movement or ""
+            self.latest_movement_date = other.latest_movement_date or ""
+
         for field_name in self._SCALAR_FIELDS:
+            if field_name in {"latest_movement", "latest_movement_date"}:
+                continue
             current = getattr(self, field_name)
             incoming = getattr(other, field_name)
             if not incoming:
@@ -107,11 +150,6 @@ class CandidateProject:
             should_replace = (
                 not current
                 or incoming_rank > current_rank
-                or (
-                    incoming_rank == current_rank
-                    and field_name == "latest_movement_date"
-                    and incoming > current
-                )
                 or (
                     incoming_rank == current_rank
                     and field_name == "title"

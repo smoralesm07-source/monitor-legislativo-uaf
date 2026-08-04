@@ -26,17 +26,52 @@ def _has_any(text: str, terms: list[str]) -> list[str]:
 
 
 def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any]:
-    """Determina si una iniciativa sigue siendo útil para la cartera activa del monitor."""
+    """Determina vigencia con evidencia oficial y fechas del mismo boletín.
+
+    Una etiqueta histórica de "primer trámite" no basta. Para aparecer en el
+    dashboard la iniciativa debe tener ingreso reciente, movimiento legislativo
+    verificado dentro de la ventana o una señal vigente de la lista oficial de
+    proyectos recientes. Los estados terminales y exclusiones expresas prevalecen.
+    """
     today = local_now(config.get("timezone", "America/Santiago")).date()
+    exclusions = config.get("excluded_bulletins", {}) or {}
+    exclusion_reason = exclusions.get(project.bulletin) if isinstance(exclusions, dict) else (
+        "Exclusión configurada" if project.bulletin in exclusions else ""
+    )
+    if exclusion_reason:
+        return {
+            "is_current": False,
+            "lifecycle_code": "excluded",
+            "lifecycle_status": "Antecedente excluido",
+            "lifecycle_reason": str(exclusion_reason),
+            "lifecycle_flags": [],
+            "reference_date": "",
+            "recency_days": None,
+        }
+
+    metadata = project.metadata or {}
     authoritative = normalize_text(" ".join([
-        project.state, project.stage, project.urgency, project.latest_movement,
+        project.state,
+        project.stage,
+        project.urgency,
+        str(metadata.get("official_registry_status", "") or ""),
     ]))
     terminal_hits = _has_any(authoritative, config.get("terminal_state_terms", []))
     active_hits = _has_any(authoritative, config.get("active_state_terms", []))
-    upcoming_hits = _has_any(authoritative, config.get("upcoming_terms", []))
+    upcoming_hits = _has_any(
+        normalize_text(" ".join([project.stage, project.urgency, project.latest_movement])),
+        config.get("upcoming_terms", []),
+    )
 
-    entry = parse_legislative_date(project.entry_date)
-    movement = parse_legislative_date(project.latest_movement_date) or parse_legislative_date(project.latest_movement)
+    entry_verified = bool(metadata.get("entry_date_verified"))
+    movement_verified = bool(metadata.get("movement_verified"))
+    status_verified = bool(metadata.get("official_status_verified"))
+    current_list_verified = bool(metadata.get("senate_current_list_verified"))
+
+    entry = parse_legislative_date(project.entry_date) if entry_verified else None
+    movement = None
+    if movement_verified:
+        movement = parse_legislative_date(project.latest_movement_date)
     reference = movement or entry
     recency_days = (today - reference).days if reference else None
     entry_days = (today - entry).days if entry else None
@@ -44,16 +79,37 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
     new_days = int(config.get("new_project_days", 180))
     active_days = int(config.get("active_movement_days", 730))
     recent_entry = entry_days is not None and -31 <= entry_days <= new_days
-    recent_movement = recency_days is not None and -31 <= recency_days <= active_days
-    recent_feed = bool(project.metadata.get("recent_feed"))
-    explicit_urgency = bool(project.urgency.strip())
+    recent_movement = movement is not None and recency_days is not None and -31 <= recency_days <= active_days
+    historical_cutoff_year = int(config.get("historical_entry_cutoff_year", 2018))
+    old_entry_without_recent_movement = bool(
+        entry and entry.year < historical_cutoff_year and not recent_movement
+    )
+    explicit_urgency = (
+        status_verified
+        and bool(project.urgency.strip())
+        and normalize_text(project.urgency) not in {"sin urgencia", "sin urgencia informada", "sin urgencia actual"}
+    )
 
-    if terminal_hits:
+    if terminal_hits and status_verified:
         return {
             "is_current": False,
             "lifecycle_code": "terminal",
             "lifecycle_status": "Tramitación terminada",
-            "lifecycle_reason": "La fuente oficial contiene un estado terminal: " + ", ".join(terminal_hits[:3]),
+            "lifecycle_reason": "La ficha oficial contiene un estado terminal: " + ", ".join(unique(terminal_hits)[:3]),
+            "lifecycle_flags": [],
+            "reference_date": reference.isoformat() if reference else "",
+            "recency_days": recency_days,
+        }
+
+    if old_entry_without_recent_movement:
+        return {
+            "is_current": False,
+            "lifecycle_code": "historical",
+            "lifecycle_status": "Antecedente histórico",
+            "lifecycle_reason": (
+                f"El proyecto ingresó antes de {historical_cutoff_year} y no registra "
+                f"movimientos oficiales dentro de los últimos {active_days} días."
+            ),
             "lifecycle_flags": [],
             "reference_date": reference.isoformat() if reference else "",
             "recency_days": recency_days,
@@ -62,15 +118,32 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
     flags: list[str] = []
     if recent_entry:
         flags.append("new")
-    if upcoming_hits and (recent_movement or recent_entry or recent_feed or explicit_urgency):
+    if upcoming_hits and (recent_movement or recent_entry or explicit_urgency or current_list_verified):
         flags.append("upcoming")
-    if recent_movement or recent_feed or (active_hits and recent_entry) or (active_hits and explicit_urgency):
+    if recent_movement or explicit_urgency or current_list_verified:
         flags.append("active")
+
+    # Con validación obligatoria, no se publica una ficha cuya etapa solo provenga
+    # de un catálogo histórico o de una versión anterior sin evidencia actual.
+    has_official_evidence = (
+        status_verified or movement_verified or current_list_verified
+        or (entry_verified and recent_entry)
+    )
+    if config.get("official_validation_required", True) and not has_official_evidence:
+        return {
+            "is_current": False,
+            "lifecycle_code": "unverified",
+            "lifecycle_status": "Vigencia no comprobada",
+            "lifecycle_reason": "No fue posible validar la vigencia en una ficha o movimiento oficial del mismo boletín.",
+            "lifecycle_flags": [],
+            "reference_date": "",
+            "recency_days": None,
+        }
 
     if "upcoming" in flags:
         status = "Próximo hito legislativo"
         code = "upcoming"
-        reason = "Se detectó una votación, urgencia, citación, paso de etapa u otro hito próximo."
+        reason = "La fuente oficial registra una votación, urgencia, citación, paso de etapa u otro hito próximo."
     elif "new" in flags:
         status = "Nueva / ingreso reciente"
         code = "new"
@@ -78,20 +151,23 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
     elif "active" in flags:
         status = "En tramitación activa"
         code = "active"
-        reason = f"Registra actividad oficial dentro de los últimos {active_days} días."
+        if current_list_verified and not recent_movement:
+            reason = "La lista oficial del Senado la mantiene entre los proyectos recientes en tramitación."
+        else:
+            reason = f"Registra actividad legislativa fechada y verificada dentro de los últimos {active_days} días."
     else:
-        if active_hits and reference and recency_days is not None and recency_days > active_days:
+        if movement and recency_days is not None and recency_days > active_days:
             code = "stale"
             status = "Sin actividad reciente"
-            reason = f"Aunque conserva una etapa legislativa, no registra movimientos dentro de los últimos {active_days} días."
-        elif active_hits and not reference:
-            code = "unverified"
-            status = "Vigencia no comprobada"
-            reason = "La etapa parece activa, pero no existe una fecha reciente que permita comprobar su vigencia."
+            reason = f"No registra movimientos legislativos verificados dentro de los últimos {active_days} días."
+        elif active_hits and status_verified:
+            code = "stale"
+            status = "Sin actividad reciente"
+            reason = "La ficha conserva una etapa formalmente abierta, pero no registra ingreso o movimiento reciente dentro de la ventana configurada."
         else:
             code = "historical"
             status = "Antecedente histórico"
-            reason = "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa."
+            reason = "No existe evidencia oficial suficiente de ingreso reciente o actividad legislativa vigente."
         return {
             "is_current": False,
             "lifecycle_code": code,
@@ -111,7 +187,6 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
         "reference_date": reference.isoformat() if reference else "",
         "recency_days": recency_days,
     }
-
 
 
 def _matter_profile(project: CandidateProject, relevance_level: int, impacts: dict[str, dict[str, Any]]) -> tuple[str, list[str], list[str]]:
@@ -279,6 +354,15 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "legislative_detail_hash": stable_hash({
             "senado_proceedings": project.metadata.get("senado_proceedings", []),
             "commission_presentations": project.metadata.get("commission_presentations", []),
+            "official_document_reviews": [
+                {
+                    "url": item.get("url", ""),
+                    "date": item.get("date", ""),
+                    "text_hash": item.get("text_hash", ""),
+                }
+                for item in project.metadata.get("official_document_reviews", []) or []
+                if isinstance(item, dict)
+            ],
         }),
         "fallback_raw_hash": project.raw_hash if not any([project.state, project.stage, project.commission, project.urgency, project.latest_movement]) else "",
         "relevance_level": relevance_level,

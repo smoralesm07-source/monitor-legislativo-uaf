@@ -20,13 +20,25 @@ from .utils import iso_now, local_now, parse_legislative_date, read_json, write_
 LOGGER = logging.getLogger(__name__)
 
 
-def _project_order(item: dict[str, Any]) -> tuple[int, int, str, int]:
+def _project_order(item: dict[str, Any]) -> tuple[str, int, int, int]:
+    """Ordena primero por la última modificación oficial del boletín.
+
+    La pertinencia se usa como desempate, no como agrupación principal. Los
+    proyectos sin movimiento fechado quedan detrás de aquellos con actividad
+    verificada y se ordenan por fecha de ingreso.
+    """
     level = int(item.get("relevance_level", 9) or 9)
     level_rank = 2 if level == 1 else 1 if level == 2 else 0
+    reference_date = str(
+        item.get("latest_movement_date")
+        or item.get("reference_date")
+        or item.get("entry_date")
+        or "0000-00-00"
+    )
     return (
+        reference_date,
         level_rank,
         int(item.get("pertinence_score", 0) or 0),
-        str(item.get("latest_movement_date", "") or ""),
         int(item.get("priority_score", 0) or 0),
     )
 
@@ -50,6 +62,21 @@ class MonitorPipeline:
         previous_state = read_json(DATA_DIR / "state.json", {"projects": {}})
         discovery = read_json(DATA_DIR / "discovery_index.json", {"bulletins": {}})
         previous_projects: dict[str, Any] = previous_state.get("projects", {})
+        excluded_cfg = self.config.get("excluded_bulletins", {}) or {}
+        excluded_bulletins = set(excluded_cfg if isinstance(excluded_cfg, dict) else excluded_cfg)
+        # La depuración es previa a cualquier respaldo: un boletín excluido no puede
+        # reaparecer por fallback de estado, alertas históricas o fallas de fuentes.
+        previous_projects = {
+            bulletin: value for bulletin, value in previous_projects.items()
+            if bulletin not in excluded_bulletins
+        }
+        if isinstance(previous_state, dict):
+            previous_state["projects"] = previous_projects
+        if isinstance(discovery, dict) and isinstance(discovery.get("bulletins"), dict):
+            discovery["bulletins"] = {
+                bulletin: value for bulletin, value in discovery["bulletins"].items()
+                if bulletin not in excluded_bulletins
+            }
         is_first_discovery = not bool(discovery.get("bulletins"))
 
         source_health: dict[str, dict[str, Any]] = {}
@@ -75,12 +102,30 @@ class MonitorPipeline:
             source_health["Cámara XML"] = {"ok": False, "error": str(exc)}
 
         try:
+            senate_current = self.senado.list_current_projects(
+                int(self.config.get("senate_discovery_days", 420))
+            )
+            merge_many(senate_current)
+            source_health["Senado proyectos recientes"] = {
+                "ok": True,
+                "items": len(senate_current),
+                "note": "Portada oficial: solo filas En tramitación con fecha reciente.",
+            }
+        except Exception as exc:  # noqa: BLE001
+            LOGGER.exception("Falló descubrimiento de proyectos recientes del Senado")
+            source_health["Senado proyectos recientes"] = {"ok": False, "error": str(exc)}
+
+        try:
             senate_recent = self.senado.recent_movements()
             merge_many(senate_recent)
-            source_health["Senado movimientos"] = {"ok": True, "items": len(senate_recent)}
+            source_health["Senado actividad reciente"] = {
+                "ok": True,
+                "items": len(senate_recent),
+                "note": "Filas exactas de Sala y comisiones tratadas recientemente.",
+            }
         except Exception as exc:  # noqa: BLE001
-            LOGGER.exception("Falló movimientos Senado")
-            source_health["Senado movimientos"] = {"ok": False, "error": str(exc)}
+            LOGGER.exception("Falló actividad reciente del Senado")
+            source_health["Senado actividad reciente"] = {"ok": False, "error": str(exc)}
 
         try:
             bcn_items = self.bcn.list_associated()
@@ -95,6 +140,8 @@ class MonitorPipeline:
             source_health["BCN Ley 19.913"] = {"ok": False, "error": str(exc)}
 
         for bulletin in self.config.get("seed_bulletins", []):
+            if bulletin in excluded_bulletins:
+                continue
             candidates.setdefault(
                 bulletin,
                 CandidateProject(
@@ -104,11 +151,24 @@ class MonitorPipeline:
                 ),
             )
 
+        for bulletin in excluded_bulletins:
+            candidates.pop(bulletin, None)
+
         # La ficha anterior es respaldo de continuidad, con autoridad menor que
         # cualquier nueva extracción oficial.
         for bulletin, old in previous_projects.items():
             previous_meta = dict(old.get("metadata", {}) or {})
             previous_meta["field_ranks"] = {field: 5 for field in CandidateProject._SCALAR_FIELDS}
+            # La ficha heredada sirve como respaldo descriptivo, pero no puede
+            # acreditar por sí sola que un proyecto siga vigente. Esto evita que
+            # boletines históricos reaparezcan cuando una fuente puntual falla.
+            for verification_key in (
+                "entry_date_verified", "official_status_verified", "movement_verified",
+                "movement_authoritative", "senate_current_list_verified",
+                "official_detail_verified",
+            ):
+                previous_meta[verification_key] = False
+            previous_meta["inherited_fallback"] = True
             previous_candidate = CandidateProject(
                 bulletin=bulletin,
                 title=old.get("title", ""), entry_date=old.get("entry_date", ""),
@@ -137,6 +197,8 @@ class MonitorPipeline:
             today = local_now(self.timezone).date()
             eligible_for_scan = []
             for bulletin, candidate in candidates.items():
+                if bulletin in excluded_bulletins:
+                    continue
                 initial = classify(candidate, self.config)
                 entry = parse_legislative_date(candidate.entry_date)
                 recent = bool(entry and -31 <= (today - entry).days <= scan_days)
@@ -145,7 +207,7 @@ class MonitorPipeline:
             eligible_for_scan.sort(reverse=True)
             for _, bulletin, candidate in eligible_for_scan[:scan_limit]:
                 try:
-                    scanned = self.documents.scan(candidate)
+                    scanned = self.documents.scan(candidate, include_all=False)
                     document_scanned += 1
                     if scanned.metadata.get("official_documents_matched"):
                         document_matches += len(scanned.metadata["official_documents_matched"] or [])
@@ -160,9 +222,13 @@ class MonitorPipeline:
             }
 
         enriched_count = 0
+        verified_stage_count = 0
+        verified_movement_count = 0
         current_projects: dict[str, Any] = {}
         excluded_projects: dict[str, Any] = {}
         for bulletin, candidate in sorted(candidates.items()):
+            if bulletin in excluded_bulletins:
+                continue
             candidate.metadata["newly_discovered"] = bulletin in newly_discovered and not is_first_discovery
             initial = classify(candidate, self.config)
             should_enrich = (
@@ -173,19 +239,40 @@ class MonitorPipeline:
             if should_enrich:
                 detail_success = False
                 try:
-                    candidate.merge(self.camara.detail(bulletin))
+                    camara_detail = self.camara.detail(bulletin)
+                    candidate.merge(camara_detail)
                     detail_success = True
                 except Exception as exc:  # noqa: BLE001
                     LOGGER.warning("No se obtuvo detalle Cámara para %s: %s", bulletin, exc)
                 try:
-                    # Se consulta después de Cámara. Sus rangos de autoridad
-                    # aseguran que la etapa vigente del Senado prevalezca.
-                    candidate.merge(self.senado.detail(bulletin))
+                    # La ficha individual del Senado se consulta después. Sus
+                    # campos de etapa e informe tienen la mayor autoridad, pero
+                    # el movimiento se fusiona por fecha entre fuentes oficiales.
+                    senate_detail = self.senado.detail(bulletin)
+                    candidate.merge(senate_detail)
                     detail_success = True
                 except Exception as exc:  # noqa: BLE001
                     LOGGER.warning("No se obtuvo detalle Senado para %s: %s", bulletin, exc)
                 if detail_success:
                     enriched_count += 1
+                if candidate.metadata.get("official_status_verified") and candidate.stage:
+                    verified_stage_count += 1
+                if candidate.metadata.get("movement_verified") and candidate.latest_movement_date:
+                    verified_movement_count += 1
+
+                # Con la ficha legislativa ya enriquecida se revisan también los
+                # documentos enlazados en la columna Documentos del Senado y las
+                # presentaciones ante comisión. Esta segunda pasada construye
+                # reseñas para la ficha, no solo señales de descubrimiento.
+                try:
+                    document_detail = self.documents.scan(candidate, include_all=True)
+                    candidate.merge(document_detail)
+                    document_scanned += 1
+                    document_matches += len(
+                        document_detail.metadata.get("official_document_reviews", []) or []
+                    )
+                except Exception as exc:  # noqa: BLE001
+                    LOGGER.warning("No se pudieron reseñar documentos de %s: %s", bulletin, exc)
 
             analyzed = classify(candidate, self.config)
             if analyzed["relevance_level"] <= 0:
@@ -195,9 +282,24 @@ class MonitorPipeline:
             else:
                 excluded_projects[bulletin] = analyzed
 
+        if self.config.get("official_document_scan_enabled", True):
+            source_health["Documentos oficiales"] = {
+                "ok": True,
+                "items": document_matches,
+                "projects_searched": document_scanned,
+                "note": (
+                    "Se leen enlaces de Cámara y de la columna Documentos del Senado; "
+                    "las reseñas son extractivas y quedan vinculadas al documento original."
+                ),
+            }
+
         # Si fallaron las fuentes legislativas principales, conservar la cartera
         # anterior para no generar cierres falsos.
-        official_checks = [source_health.get("Cámara XML", {}), source_health.get("Senado movimientos", {})]
+        official_checks = [
+            source_health.get("Cámara XML", {}),
+            source_health.get("Senado proyectos recientes", {}),
+            source_health.get("Senado actividad reciente", {}),
+        ]
         if official_checks and not any(item.get("ok") for item in official_checks):
             current_projects = previous_projects
             excluded_projects = {}
@@ -242,24 +344,35 @@ class MonitorPipeline:
             "newly_discovered": len(newly_discovered),
             "projects_monitored": len(current_projects),
             "projects_enriched": enriched_count,
+            "stages_verified": verified_stage_count,
+            "movements_verified": verified_movement_count,
             "alerts_generated": len(alerts),
             "baseline": not bool(previous_projects),
             "lifecycle_counts": dict(lifecycle_counts),
             "excluded_count": len(excluded_projects),
             "exclusion_counts": dict(exclusion_counts),
             "eligibility_rule": (
-                "Solo iniciativas vigentes con impacto directo en Ley 19.913 o pertinencia LA/FT comprobable; "
-                "la etapa vigente prioriza la ficha oficial de la cámara en que se tramita actualmente."
+                "Solo iniciativas recientes o con movimiento legislativo verificado, de relevancia directa para la Ley 19.913 "
+                "o pertinencia LA/FT comprobable. La etapa e informe provienen de la ficha individual oficial; las fechas "
+                "solo se publican cuando pertenecen a una fila de tramitación del mismo boletín."
             ),
         }
 
-        previous_alerts = read_json(DATA_DIR / "alerts.json", [])
+        previous_alerts = [
+            item for item in read_json(DATA_DIR / "alerts.json", [])
+            if item.get("bulletin") not in excluded_bulletins
+        ]
         new_ids = {a["id"] for a in alerts_with_time}
         merged_alerts = alerts_with_time + [item for item in previous_alerts if item.get("id") not in new_ids]
         merged_alerts = merged_alerts[:250]
 
-        new_discovery_map = discovery.get("bulletins", {})
+        new_discovery_map = {
+            bulletin: value for bulletin, value in discovery.get("bulletins", {}).items()
+            if bulletin not in excluded_bulletins
+        }
         for bulletin, candidate in candidates.items():
+            if bulletin in excluded_bulletins:
+                continue
             record = new_discovery_map.setdefault(bulletin, {"first_seen": finished_at})
             record["last_seen"] = finished_at
             record["title"] = candidate.title or record.get("title", "")
