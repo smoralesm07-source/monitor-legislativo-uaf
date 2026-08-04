@@ -1,31 +1,18 @@
-name: Monitor legislativo UAF
+name: Reparar archivos grandes del monitor
 
 on:
   workflow_dispatch:
-  schedule:
-    # Dos barridos diarios. GitHub interpreta este cron en UTC.
-    - cron: "17 12,21 * * *"
 
 concurrency:
   group: monitor-legislativo-uaf
   cancel-in-progress: false
 
 jobs:
-  monitor:
+  repair:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 15
     permissions:
       contents: write
-    env:
-      MONITOR_EMAIL_ACTIVE: ${{ secrets.MONITOR_EMAIL_ACTIVE }}
-      SMTP_HOST: ${{ secrets.SMTP_HOST }}
-      SMTP_PORT: ${{ secrets.SMTP_PORT }}
-      SMTP_USER: ${{ secrets.SMTP_USER }}
-      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-      MAIL_FROM_NAME: ${{ secrets.MAIL_FROM_NAME }}
-      MAIL_TO: ${{ secrets.MAIL_TO }}
-      PUBLIC_DASHBOARD_URL: ${{ secrets.PUBLIC_DASHBOARD_URL }}
-
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v7
@@ -41,27 +28,21 @@ jobs:
       - name: Instalar dependencias
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
 
-      - name: Compactar estado heredado
+      - name: Compactar estado, datos y dashboard
         run: python maintenance_compact.py
 
       - name: Ejecutar pruebas
         run: pytest -q
 
-      - name: Ejecutar barrido legislativo
-        run: python monitor.py
-
-      - name: Validar tamaños de salida
-        run: python maintenance_compact.py --check-only
-
-      - name: Guardar estado y dashboard en el repositorio
+      - name: Guardar reparación
         run: |
           git config user.name "monitor-legislativo-uaf[bot]"
           git config user.email "monitor-legislativo-uaf[bot]@users.noreply.github.com"
           git add data docs
           if git diff --cached --quiet; then
-            echo "No hay cambios para guardar"
+            echo "No hay archivos que reparar"
           else
-            git commit -m "Actualización automática monitor legislativo UAF"
+            git commit -m "Reparar archivos sobredimensionados del monitor"
             git push
           fi
 
@@ -71,8 +52,8 @@ jobs:
           path: docs
 
   deploy:
-    name: Publicar dashboard
-    needs: monitor
+    name: Publicar dashboard reparado
+    needs: repair
     runs-on: ubuntu-latest
     permissions:
       pages: write
