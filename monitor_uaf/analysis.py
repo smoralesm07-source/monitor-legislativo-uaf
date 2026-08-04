@@ -113,15 +113,82 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
     }
 
 
+
+def _matter_profile(project: CandidateProject, relevance_level: int, impacts: dict[str, dict[str, Any]]) -> tuple[str, list[str], list[str]]:
+    """Construye una lectura material separada del último movimiento legislativo."""
+    title = project.title.strip()
+    normalized = normalize_text(" ".join([title, project.evidence_text]))
+    promoters = unique(project.metadata.get("promoters", []) if isinstance(project.metadata.get("promoters", []), list) else [project.metadata.get("promoters", "")])
+    areas: list[str] = []
+
+    mapping = [
+        (("ley 19.913", "unidad de analisis financiero", "uaf"), "Ley N.º 19.913 y estatuto orgánico de la UAF"),
+        (("articulo 3", "sujeto obligado", "entidad reportante"), "Sujetos obligados, deberes de reporte e inscripción"),
+        (("articulo 27", "delito precedente", "delitos base"), "Catálogo de delitos precedentes del lavado de activos"),
+        (("comercio ilegal", "contrabando", "mercaderias falsificadas", "propiedad industrial"), "Comercio ilícito, contrabando y falsificación"),
+        (("secreto bancario", "reserva bancaria", "informacion bancaria"), "Acceso y reserva de información financiera"),
+        (("dinero en efectivo", "transacciones en efectivo"), "Límites al efectivo y trazabilidad de medios de pago"),
+        (("remesa", "transferencia de dinero"), "Remesas y transferencias transfronterizas"),
+        (("activo virtual", "criptoactivo", "fintech"), "Activos virtuales y servicios financieros digitales"),
+        (("decomiso", "comiso"), "Decomiso y recuperación de activos"),
+        (("sancion", "multa", "fiscalizacion"), "Fiscalización y régimen sancionatorio"),
+        (("intercambio de informacion", "interoperabilidad", "inteligencia economica"), "Intercambio de información y coordinación interinstitucional"),
+    ]
+    for terms, label in mapping:
+        if any(term in normalized for term in terms):
+            areas.append(label)
+    areas.extend(name for name in impacts if name not in areas)
+    areas = unique(areas)[:10]
+
+    if "reconstruccion nacional" in normalized and ("unidad de analisis financiero" in normalized or "operacion sospechosa" in normalized):
+        matter = (
+            "La iniciativa contiene un paquete amplio de reconstrucción y desarrollo económico. Dentro de su tramitación "
+            "se incorporaron disposiciones que exigen a bancos analizar determinadas operaciones y reportar a la Unidad de "
+            "Análisis Financiero aquellas que resulten sospechosas, además de mecanismos de colaboración e intercambio de "
+            "información con organismos públicos. Su impacto UAF no surge del título, sino de indicaciones y textos posteriores."
+        )
+    elif "comercio ilegal" in normalized:
+        matter = (
+            "La iniciativa busca fortalecer la prevención y sanción del lavado de activos vinculado al comercio ilegal. "
+            "Su foco es seguir la ruta financiera de cadenas de contrabando, falsificación y comercialización ilícita, "
+            "incorporando o reforzando deberes preventivos y herramientas de análisis bajo la Ley N.º 19.913."
+        )
+    elif "propiedad industrial" in normalized:
+        matter = (
+            "La iniciativa propone incorporar delitos contra la propiedad industrial al catálogo de delitos precedentes "
+            "del lavado de activos, conectando la falsificación y comercialización fraudulenta con el análisis patrimonial."
+        )
+    elif "inteligencia economica" in normalized:
+        matter = (
+            "La iniciativa crea o fortalece un sistema de inteligencia económica para enfrentar el crimen organizado, "
+            "con efectos sobre las facultades de análisis, el acceso a información y la coordinación de la UAF con otros organismos."
+        )
+    elif "dinero en efectivo" in normalized or "transacciones en efectivo" in normalized:
+        matter = (
+            "La iniciativa regula operaciones de alto valor realizadas en efectivo para aumentar la trazabilidad de los pagos "
+            "y reducir espacios de ocultamiento o fraccionamiento de fondos de origen ilícito."
+        )
+    elif "secreto bancario" in normalized or "reserva bancaria" in normalized:
+        matter = (
+            "La iniciativa modifica el procedimiento o las condiciones de acceso a información bancaria, materia relevante "
+            "para la oportunidad, trazabilidad y control jurídico del análisis financiero."
+        )
+    elif title:
+        matter = f"La iniciativa aborda la siguiente materia: {title.rstrip('.')}."
+    else:
+        matter = "La materia de la iniciativa está pendiente de una extracción más completa desde el texto oficial."
+
+    if relevance_level == 1:
+        matter += " Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones."
+    elif relevance_level == 2:
+        matter += " Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base."
+    return matter, promoters, areas
+
 def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any]:
     evidence = " ".join([
-        project.title,
-        project.state,
-        project.stage,
-        project.commission,
-        project.urgency,
-        project.latest_movement,
-        project.evidence_text,
+        project.title, project.state, project.stage, project.commission,
+        project.urgency, project.latest_movement, project.evidence_text,
+        " ".join(project.metadata.get("matters", []) if isinstance(project.metadata.get("matters", []), list) else []),
     ])
     normalized = normalize_text(evidence)
 
@@ -132,8 +199,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
     impacts: dict[str, dict[str, Any]] = {}
     secondary_score = 0
     for topic, rule in config["secondary_topics"].items():
-        hits = [term for term in rule["terms"] if normalize_text(term) in normalized]
-        hits = unique(hits)
+        hits = unique([term for term in rule["terms"] if normalize_text(term) in normalized])
         if hits:
             raw = int(rule["weight"]) + min(len(hits) - 1, 4) * 2
             score = min(raw, 20)
@@ -149,10 +215,10 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
     relevance_score = min(100, direct_score + secondary_score)
     if direct_hits:
         relevance_level = 1
-        relevance_label = "Modificación directa / impacto explícito"
+        relevance_label = "Ley 19.913 o impacto explícito en funciones UAF"
     elif secondary_score >= int(config["minimum_secondary_score"]):
         relevance_level = 2
-        relevance_label = "Impacto legal potencial sobre la labor UAF"
+        relevance_label = "Otra materia LA/FT con impacto potencial"
     else:
         relevance_level = 0
         relevance_label = "Sin impacto suficiente"
@@ -160,8 +226,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
     lifecycle = assess_lifecycle(project, config)
     top_impacts = sorted(
         ({"name": name, **payload} for name, payload in impacts.items()),
-        key=lambda item: item["score"],
-        reverse=True,
+        key=lambda item: item["score"], reverse=True,
     )
     decisions = unique([item["recommendation"] for item in top_impacts[:5]])
     if relevance_level == 1:
@@ -178,15 +243,28 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
     else:
         priority = "Baja"
 
-    summary_parts = []
-    if direct_hits:
-        summary_parts.append("La iniciativa presenta una vinculación expresa con la Ley 19.913 o con la UAF.")
-    if top_impacts:
-        summary_parts.append("Sus principales dimensiones de impacto son " + ", ".join(item["name"] for item in top_impacts[:3]) + ".")
-    if lifecycle["is_current"]:
-        summary_parts.append("Vigencia: " + lifecycle["lifecycle_status"] + ".")
-    if project.latest_movement:
-        summary_parts.append("Último antecedente detectado: " + project.latest_movement[:260])
+    matter_summary, promoters, affected_areas = _matter_profile(project, relevance_level, impacts)
+    promoter_text = ", ".join(promoters[:8])
+    analysis_parts = [matter_summary]
+    if promoter_text:
+        if "mensaje" in normalize_text(project.initiative_type):
+            analysis_parts.append("Iniciativa del Ejecutivo promovida por " + promoter_text + ".")
+        else:
+            analysis_parts.append("Promovida por " + promoter_text + (" y otros parlamentarios." if len(promoters) > 8 else "."))
+    if affected_areas:
+        analysis_parts.append("Ámbitos jurídicos afectados: " + "; ".join(affected_areas[:6]) + ".")
+
+    # La pertinencia ordena primero las modificaciones directas y luego las demás
+    # materias LA/FT, combinando precisión jurídica, etapa y actividad reciente.
+    stage_bonus = 0
+    stage_norm = normalize_text(project.stage)
+    if "tercer tramite" in stage_norm or "comision mixta" in stage_norm:
+        stage_bonus = 18
+    elif "segundo tramite" in stage_norm:
+        stage_bonus = 12
+    elif "primer tramite" in stage_norm:
+        stage_bonus = 5
+    pertinence_score = (200 if relevance_level == 1 else 100 if relevance_level == 2 else 0) + relevance_score + stage_bonus
 
     fingerprint_payload = {
         "title": project.title,
@@ -196,6 +274,8 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "urgency": project.urgency,
         "latest_movement": project.latest_movement,
         "latest_movement_date": project.latest_movement_date,
+        "promoters": promoters,
+        "matters": project.metadata.get("matters", []),
         "legislative_detail_hash": stable_hash({
             "senado_proceedings": project.metadata.get("senado_proceedings", []),
             "commission_presentations": project.metadata.get("commission_presentations", []),
@@ -213,6 +293,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "relevance_level": relevance_level,
         "relevance_label": relevance_label,
         "relevance_score": relevance_score,
+        "pertinence_score": pertinence_score,
         "priority_score": priority_score,
         "priority": priority,
         "probability": probability,
@@ -220,7 +301,10 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "impacts": impacts,
         "top_impacts": top_impacts,
         "decisions": decisions,
-        "analysis_summary": " ".join(summary_parts),
+        "promoters": promoters,
+        "affected_legal_areas": affected_areas,
+        "matter_summary": matter_summary,
+        "analysis_summary": " ".join(analysis_parts),
         "fingerprint": stable_hash(fingerprint_payload),
     }
 
@@ -352,7 +436,6 @@ def build_alert(kind: str, old: dict[str, Any] | None, new: dict[str, Any], conf
 def severity_rank(value: str) -> int:
     return {"Crítica": 3, "Alta": 2, "Media": 1, "Baja": 0}.get(value, 0)
 
-
 def sanitize_project_record(record: dict[str, Any], *args: Any, **kwargs: Any) -> dict[str, Any]:
     """Devuelve una copia compacta y serializable de una ficha legislativa.
 
@@ -439,6 +522,7 @@ def sanitize_project_record(record: dict[str, Any], *args: Any, **kwargs: Any) -
 
     cleaned = compact(record)
     return cleaned if isinstance(cleaned, dict) else {}
+
 def annotate_initiative_groups(projects: Any, *args: Any, **kwargs: Any) -> Any:
     """Anota proyectos refundidos o relacionados sin alterar el tipo de entrada.
 

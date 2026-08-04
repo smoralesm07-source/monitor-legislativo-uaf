@@ -83,7 +83,7 @@ class CamaraOpenDataSource:
                     source_urls=[f"https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN={bulletin}"],
                     discovered_from=[label],
                     evidence_text=self._all_text(node),
-                    metadata={"title_rank": 2},
+                    metadata={"title_rank": 2, "field_ranks": {"title": 20, "entry_date": 20, "initiative_type": 20, "origin_chamber": 20}},
                 )
                 projects.setdefault(bulletin, project).merge(project)
         return list(projects.values())
@@ -124,7 +124,25 @@ class CamaraOpenDataSource:
             discovered_from=["Cámara XML detalle"],
             evidence_text=raw_text,
             raw_hash=stable_hash(raw_text),
-            metadata={"camara_movements": movements[-20:], "camara_proceedings": camara_proceedings, "title_rank": 4},
+            metadata={
+                "camara_movements": movements[-20:],
+                "camara_proceedings": camara_proceedings,
+                "promoters": self._collect_named_blocks(root, {"Autor", "Autores", "Parlamentario", "Diputado", "Diputada", "Senador", "Senadora"}, limit=40),
+                "matters": self._collect_named_blocks(root, {"Materia", "Materias", "Descripcion", "Objetivo"}, limit=20),
+                "title_rank": 4,
+                "field_ranks": {
+                    "title": 70,
+                    "entry_date": 80,
+                    "initiative_type": 80,
+                    "origin_chamber": 80,
+                    "state": 60,
+                    "stage": 60,
+                    "commission": 60,
+                    "urgency": 65,
+                    "latest_movement": 65,
+                    "latest_movement_date": 65,
+                },
+            },
         )
 
 
@@ -159,7 +177,7 @@ class SenadoSource:
                 discovered_from=["Senado últimos movimientos"],
                 evidence_text=text,
                 raw_hash=stable_hash(text),
-                metadata={"title_rank": 1},
+                metadata={"title_rank": 1, "field_ranks": {"title": 10, "latest_movement": 30, "latest_movement_date": 30}},
             )
             projects.setdefault(bulletin, project).merge(project)
         return list(projects.values())
@@ -222,6 +240,11 @@ class SenadoSource:
                 continue
 
             def column(*needles: str) -> int | None:
+                # Primero coincidencia exacta: evita que "etapa" capture
+                # indebidamente la columna "subetapa".
+                for idx, header in enumerate(headers):
+                    if any(header == needle for needle in needles):
+                        return idx
                 for idx, header in enumerate(headers):
                     if any(needle in header for needle in needles):
                         return idx
@@ -284,6 +307,26 @@ class SenadoSource:
 
         return dedupe(proceedings), dedupe(presentations), found
 
+    @staticmethod
+    def _extract_people(text: str) -> list[str]:
+        """Extrae nombres desde etiquetas de autoría sin confundir intervenciones."""
+        clean = compact_text(text, 12000)
+        candidates: list[str] = []
+        patterns = [
+            r"(?:Autor(?:es)?|Patrocinante(?:s)?|Mocionantes?)\s*[:|]\s*([^\n]{5,2000})",
+            r"(?:Diputad[oa]s?|Senador(?:a|es)?)\s+(?:señor(?:a|es)?\s+)?([^\n]{5,1800})",
+        ]
+        for pattern in patterns:
+            for match in re.finditer(pattern, clean, flags=re.IGNORECASE):
+                segment = match.group(1)
+                segment = re.split(r"(?:Tramitación|Informes|Oficios|Indicaciones|Urgencias|Votaciones)", segment, flags=re.IGNORECASE)[0]
+                for item in re.split(r"\s*\|\s*|\s*;\s*|\s*,\s*(?=[A-ZÁÉÍÓÚÑ])", segment):
+                    item = compact_text(re.sub(r"\([^)]*\)", "", item), 180)
+                    norm = normalize_text(item)
+                    if 2 <= len(item.split()) <= 7 and not any(term in norm for term in ("camara", "comision", "proyecto", "boletin", "fecha")):
+                        candidates.append(item)
+        return unique(candidates)[:40]
+
     def detail(self, bulletin: str) -> CandidateProject:
         url = self.DETAIL_URL.format(bulletin=bulletin)
         result = self.client.get(url)
@@ -305,12 +348,11 @@ class SenadoSource:
             if len(cells) == 1:
                 standalone_rows.append(cells[0])
                 continue
-            # Las fichas del Senado suelen usar dos pares etiqueta/valor en una fila.
             for index in range(0, len(cells) - 1, 2):
                 raw_key = cells[index].strip().rstrip(":")
                 raw_value = cells[index + 1]
                 key = normalize_text(raw_key)
-                if key and len(key) <= 80 and raw_value:
+                if key and len(key) <= 90 and raw_value:
                     pairs[key] = raw_value
 
         def pick(*needles: str) -> str:
@@ -322,34 +364,89 @@ class SenadoSource:
 
         title = pick("título", "titulo", "materia", "nombre")
         if not title:
-            # Evitar tomar "Boletín 12345-00" como título cuando existe otro encabezado.
             headings = [compact_text(h.get_text(" ", strip=True), 2000) for h in soup.find_all(["h1", "h2", "h3"])]
             title = next((h for h in headings if h and not BULLETIN_RE.search(h) and normalize_text(h) not in {"tramitacion", "presentaciones ante comision"}), "")
 
         proceedings, presentations, table_found = self._parse_legislative_tables(soup, url)
-        activity_rows: list[str] = []
+
+        # El estado vigente se toma de la fila legislativa fechada más reciente.
+        # Las presentaciones ante comisión son antecedentes documentales, no etapas.
+        dated_proceedings = []
         for item in proceedings:
-            activity_rows.append(" | ".join(filter(None, [item.get("date", ""), item.get("substage", ""), item.get("stage", "")])))
-        for item in presentations:
-            activity_rows.append(" | ".join(filter(None, [item.get("date", ""), "Presentación ante comisión", item.get("title", ""), item.get("commission", "")])))
+            parsed = parse_legislative_date(item.get("date", ""))
+            dated_proceedings.append((parsed, item))
+        dated_proceedings.sort(key=lambda pair: pair[0] or datetime.min.date(), reverse=True)
+        latest_item = dated_proceedings[0][1] if dated_proceedings else None
+
+        activity_rows = [
+            " | ".join(filter(None, [item.get("date", ""), item.get("substage", ""), item.get("stage", "")]))
+            for item in proceedings
+        ]
         if not activity_rows:
             activity_rows = [row for row in rows if DATE_RE.search(row)]
         latest, latest_date = latest_dated_text(activity_rows)
 
+        explicit_stage = pick("trámite constitucional", "tramite constitucional", "etapa")
+        latest_stage = compact_text((latest_item or {}).get("stage", ""), 1200)
+        stage = latest_stage or explicit_stage
+
+        # El informe vigente se toma primero de la cronología más reciente de la
+        # etapa actual; así una ficha histórica de primer trámite no reemplaza el
+        # informe del segundo trámite en el Senado.
+        current_stage_norm = normalize_text(stage)
         committee_report = next(
-            (row for row in standalone_rows if "informe" in normalize_text(row) and "comision" in normalize_text(row)),
+            (
+                compact_text(item.get("substage", ""), 1200)
+                for _, item in dated_proceedings
+                if "informe" in normalize_text(item.get("substage", ""))
+                and "comision" in normalize_text(item.get("substage", ""))
+                and (not current_stage_norm or normalize_text(item.get("stage", "")) == current_stage_norm)
+            ),
             "",
         )
-        commission = pick("comisión", "comision") or committee_report
+        if not committee_report:
+            committee_report = next(
+                (
+                    row for row in standalone_rows
+                    if "informe" in normalize_text(row) and "comision" in normalize_text(row)
+                ),
+                "",
+            )
+        if not committee_report:
+            committee_report = pick("informe de comisión", "informe de comision", "informe")
+        commission = pick("comisión", "comision")
+        if committee_report and (not commission or len(committee_report) > len(commission)):
+            commission = committee_report
+
+        promoters = self._extract_people(" ".join([pick("autor", "autores", "mocionantes"), body_text]))
+        matters = unique([
+            pick("materia", "objetivo", "idea matriz"),
+            title,
+        ])
         metadata = {
             "senado_rows": rows[-100:],
-            "senado_detail_schema": "2",
+            "senado_detail_schema": "3",
             "title_rank": 5,
             "project_type": pick("tipo de proyecto"),
             "refunded": pick("refundido"),
             "committee_report": committee_report,
+            "promoters": promoters,
+            "matters": matters,
+            "official_stage_source": "Senado ficha oficial",
             "senado_proceedings_table_found": table_found["proceedings"],
             "senado_presentations_table_found": table_found["presentations"],
+            "field_ranks": {
+                "title": 90,
+                "entry_date": 90,
+                "initiative_type": 90,
+                "origin_chamber": 90,
+                "state": 95,
+                "stage": 100,
+                "commission": 100,
+                "urgency": 100,
+                "latest_movement": 100,
+                "latest_movement_date": 100,
+            },
         }
         if table_found["proceedings"]:
             metadata["senado_proceedings"] = proceedings[-150:]
@@ -362,8 +459,8 @@ class SenadoSource:
             entry_date=pick("fecha de ingreso"),
             initiative_type=pick("iniciativa"),
             origin_chamber=pick("cámara de origen", "camara de origen"),
-            state=pick("estado"),
-            stage=pick("trámite constitucional", "tramite constitucional", "etapa"),
+            state=pick("estado") or ("En tramitación" if stage else ""),
+            stage=stage,
             commission=commission,
             urgency=pick("urgencia actual", "urgencia"),
             latest_movement=latest,
@@ -405,7 +502,7 @@ class BCNAssociatedProjectsSource:
                 discovered_from=["BCN proyectos asociados a Ley 19.913"],
                 evidence_text=compact_text(chunk, 5000),
                 raw_hash=stable_hash(chunk),
-                metadata={"bcn_associated": True, "title_rank": 2},
+                metadata={"bcn_associated": True, "title_rank": 2, "field_ranks": {"title": 15}},
             )
             projects[bulletin] = project
         return list(projects.values())

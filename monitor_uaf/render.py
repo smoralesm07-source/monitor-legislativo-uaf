@@ -1,363 +1,125 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from .config import DOCS_DIR
+from .analysis import sanitize_project_record
 
 
-def render_dashboard(
-    projects: list[dict[str, Any]],
-    alerts: list[dict[str, Any]],
-    status: dict[str, Any],
-    output: Path | None = None,
-) -> Path:
-    output_path = output or DOCS_DIR / "index.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    replacements = {
-        "__PROJECTS_JSON__": json.dumps(projects, ensure_ascii=False).replace("</", "<\\/"),
-        "__ALERTS_JSON__": json.dumps(alerts, ensure_ascii=False).replace("</", "<\\/"),
-        "__STATUS_JSON__": json.dumps(status, ensure_ascii=False).replace("</", "<\\/"),
-    }
-    document = _template()
-    for marker, value in replacements.items():
-        document = document.replace(marker, value)
-    output_path.write_text(document, encoding="utf-8")
-    return output_path
+def prepare_dashboard_projects(payload: Any, *args: Any, **kwargs: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, dict) and "projects" in payload:
+        payload = payload.get("projects")
+    if isinstance(payload, dict):
+        items = list(payload.values())
+    elif isinstance(payload, list):
+        items = payload
+    else:
+        items = []
+    deduped: dict[str, dict[str, Any]] = {}
+    for raw in items:
+        if not isinstance(raw, dict):
+            continue
+        item = sanitize_project_record(raw)
+        bulletin = str(item.get("bulletin", "") or "").strip()
+        if not bulletin:
+            continue
+        current = deduped.get(bulletin)
+        if current is None or int(item.get("pertinence_score", item.get("priority_score", 0)) or 0) >= int(current.get("pertinence_score", current.get("priority_score", 0)) or 0):
+            deduped[bulletin] = item
+    return sorted(
+        deduped.values(),
+        key=lambda item: (
+            2 if int(item.get("relevance_level", 9) or 9) == 1 else 1,
+            int(item.get("pertinence_score", 0) or 0),
+            str(item.get("latest_movement_date", "") or ""),
+            int(item.get("priority_score", 0) or 0),
+        ),
+        reverse=True,
+    )
 
 
-def _template() -> str:
-    return r'''<!doctype html>
+def prepare_dashboard_alerts(payload: Any, *args: Any, **kwargs: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, dict) and "alerts" in payload:
+        payload = payload.get("alerts")
+    items = payload if isinstance(payload, list) else []
+    deduped: dict[str, dict[str, Any]] = {}
+    for raw in items:
+        if not isinstance(raw, dict):
+            continue
+        item = deepcopy(raw)
+        marker = str(item.get("id") or f"{item.get('bulletin')}|{item.get('detected_at')}|{item.get('kind')}")
+        deduped.setdefault(marker, item)
+    return sorted(deduped.values(), key=lambda item: str(item.get("detected_at", "")), reverse=True)[:250]
+
+
+def render_dashboard(projects: list[dict[str, Any]], alerts: list[dict[str, Any]], status: dict[str, Any], output: Path) -> Path:
+    projects = prepare_dashboard_projects(projects)
+    alerts = prepare_dashboard_alerts(alerts)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    data_projects = json.dumps(projects, ensure_ascii=False).replace("</", "<\\/")
+    data_alerts = json.dumps(alerts, ensure_ascii=False).replace("</", "<\\/")
+    data_status = json.dumps(status or {}, ensure_ascii=False).replace("</", "<\\/")
+    html = TEMPLATE.replace("__PROJECTS__", data_projects).replace("__ALERTS__", data_alerts).replace("__STATUS__", data_status)
+    output.write_text(html, encoding="utf-8")
+    return output
+
+
+TEMPLATE = r'''<!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Observatorio Legislativo Estratégico UAF</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monitor Legislativo UAF</title>
 <style>
-:root{--navy:#0b2033;--navy2:#123653;--blue:#1a6f9e;--cyan:#3a9fc2;--bg:#f2f5f8;--card:#fff;--text:#13283b;--muted:#66798b;--line:#dbe4eb;--critical:#b42318;--high:#c85f00;--medium:#886800;--violet:#654ca3;--green:#20845a}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.shell{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:linear-gradient(180deg,var(--navy),#071421);color:#dceaf3;padding:20px 15px;position:sticky;top:0;height:100vh;overflow:auto}
-.brand{display:flex;gap:10px;align-items:center;padding:4px 6px 22px}.logo{width:42px;height:42px;border-radius:11px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:900}.brand b{font-size:14px;line-height:1.25}.brand small{display:block;color:#9eb9ca;margin-top:3px}
-.navtitle{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#779ab1;margin:17px 9px 7px}.nav{display:block;width:100%;padding:10px;border:0;border-radius:8px;font-size:12px;margin:3px 0;text-align:left;background:transparent;color:#dceaf3;cursor:pointer}.nav:hover,.nav.active{background:#173b59;color:#fff}.nav .navcount{float:right;background:#294e69;border-radius:99px;padding:1px 6px;font-size:9px}.health{margin-top:24px;border:1px solid #244660;border-radius:11px;padding:12px;background:#0d2940;font-size:11px;line-height:1.5;color:#b9cdda}
-main{min-width:0}header{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 26px;position:sticky;top:0;z-index:5}header h1{font-size:17px;margin:0;min-width:155px}.search{flex:1;max-width:650px}.search input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#f8fafb}.run{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#28a664;margin-right:6px}.dot.bad{background:#cf3f35}
-.content{padding:24px 27px 55px}.hero{display:flex;justify-content:space-between;gap:20px;margin-bottom:14px}.hero h2{font-size:25px;margin:0 0 6px}.hero p{font-size:13px;color:var(--muted);max-width:830px;line-height:1.5;margin:0}.pill{font-size:10px;font-weight:800;border-radius:99px;padding:5px 8px;background:#e8f2f8;color:#175f88;white-space:nowrap;height:max-content}
-.segmented{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0 10px}.segmented.lifecycle{margin-top:0;margin-bottom:17px}.segment{border:1px solid var(--line);background:#fff;color:#35566e;border-radius:99px;padding:8px 12px;font-size:10.5px;font-weight:800;cursor:pointer}.segment:hover,.segment.active{background:var(--navy2);border-color:var(--navy2);color:#fff}.segment.direct.active{background:#175f88;border-color:#175f88}.segment.indirect.active{background:var(--violet);border-color:var(--violet)}.segment.new.active{background:#20845a;border-color:#20845a}.segment.upcoming.active{background:#c85f00;border-color:#c85f00}.segment.activeflow.active{background:#2d5f88;border-color:#2d5f88}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:17px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px}.kpi .label{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.45px}.kpi .value{font-size:27px;font-weight:850;margin:8px 0 4px}.kpi .note{font-size:10px;color:var(--muted)}
-.analytics-grid{display:grid;grid-template-columns:minmax(260px,.65fr) minmax(480px,1.35fr);gap:13px;margin-bottom:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}.panel.compact{padding:14px}.panel-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.panel h3{font-size:14px;margin:0 0 4px}.sub{font-size:10px;color:var(--muted);margin-bottom:12px}.impact-bars{display:flex;flex-direction:column;gap:7px}.barrow{display:grid;grid-template-columns:118px 1fr 28px;gap:7px;align-items:center;font-size:9px}.barlabel{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.track{height:7px;background:#e9eff3;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#42a3c6,#174f76);border-radius:99px}.small-action{border:0;background:#eef5f9;color:#1c638c;border-radius:7px;padding:6px 8px;font-size:9px;font-weight:800;cursor:pointer}
-.temporal-wrap{overflow-x:auto;padding-bottom:4px}.temporal-chart{min-width:500px;height:220px;display:grid;grid-template-columns:40px 1fr;grid-template-rows:1fr 30px}.y-axis{grid-row:1;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding:0 7px 4px 0;font-size:8px;color:var(--muted)}.plot{grid-column:2;grid-row:1;position:relative;border-left:1px solid var(--line);border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(25% - 1px),#edf2f5 25%)}.month-bars{position:absolute;inset:0;display:flex;align-items:flex-end;gap:7px;padding:0 10px}.month-group{height:100%;flex:1;min-width:28px;display:flex;align-items:flex-end;justify-content:center;gap:3px}.month-bar{width:min(13px,38%);min-height:0;border-radius:4px 4px 0 0;cursor:pointer}.month-bar.direct{background:var(--blue)}.month-bar.indirect{background:var(--violet)}.month-bar:hover{filter:brightness(.88)}.x-axis{grid-column:2;grid-row:2;display:flex;gap:7px;padding:5px 10px 0}.month-label{flex:1;min-width:28px;text-align:center;font-size:8px;color:var(--muted);transform:rotate(-35deg);transform-origin:top center;white-space:nowrap}.legend{display:flex;gap:13px;align-items:center;font-size:9px;color:var(--muted);margin-top:7px}.legend span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}.legend .ld:before{background:var(--blue)}.legend .li:before{background:var(--violet)}
-.secondary-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:13px;margin-bottom:14px}.alerts-list{max-height:310px;overflow:auto}.alert{border-left:4px solid var(--blue);padding:9px 10px;background:#f7fafc;border-radius:7px;margin:8px 0;cursor:pointer}.alert.Crítica{border-left-color:var(--critical);background:#fff5f4}.alert.Alta{border-left-color:var(--high);background:#fff8ef}.alert.level2{border-left-color:var(--violet)}.alert b{font-size:10.5px;display:block}.alert span{font-size:10px;color:var(--muted);line-height:1.35}.alerttime{font-size:8.5px!important;color:#8292a0!important;margin-top:4px;display:block}
-.area-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.area-card{border:1px solid var(--line);border-radius:9px;padding:9px}.area-card strong{font-size:10.5px}.area-card small{display:block;color:var(--muted);font-size:9px;margin-top:4px}.area-meter{height:5px;background:#e9eff3;border-radius:99px;margin-top:7px;overflow:hidden}.area-meter div{height:100%;background:linear-gradient(90deg,#55a7c5,#235679)}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 10px}select{padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:white;font-size:11px}.toolbar .spacer{flex:1}.count{font-size:11px;color:var(--muted)}
-.tablewrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:auto}table{width:100%;border-collapse:collapse;min-width:980px}th{background:#f7f9fb;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:10px;border-bottom:1px solid var(--line)}td{padding:11px 10px;border-bottom:1px solid #edf1f4;font-size:11px;vertical-align:top}tr:hover{background:#f8fbfd}.title{font-weight:750;font-size:11.5px;margin-bottom:4px}.bulletin{color:var(--blue);font-weight:800;font-size:9.5px}.badge{display:inline-block;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:800}.badge.Crítica{background:#fde8e6;color:var(--critical)}.badge.Alta{background:#fff0df;color:#ae5200}.badge.Media{background:#fff6d8;color:#7c6100}.badge.Baja{background:#e8f4ec;color:#287143}.badge.life-new{background:#e5f5eb;color:#23734d}.badge.life-upcoming{background:#fff0df;color:#a94f00}.badge.life-active{background:#e7f0fb;color:#214f78}.level1{background:#e7f0fb;color:#164e7c}.level2{background:#eee9fb;color:#5b4298}.tags{display:flex;flex-wrap:wrap;gap:4px;max-width:310px}.tag{background:#edf4f8;color:#345a73;border-radius:5px;padding:3px 5px;font-size:8.5px}.details-btn{border:0;border-radius:7px;padding:6px 8px;background:#e7f2f8;color:#155e87;font-weight:750;font-size:9.5px;cursor:pointer}
-.audit-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:13px;margin-top:14px}.source-table{width:100%;min-width:0}.source-table th,.source-table td{font-size:9.5px}.status-ok{color:var(--green);font-weight:800}.status-bad{color:var(--critical);font-weight:800}.health-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.health-card{border:1px solid var(--line);border-radius:9px;padding:10px}.health-card b{font-size:10px}.health-card div{font-size:18px;font-weight:850;margin:6px 0}.health-card small{font-size:8.5px;color:var(--muted)}
-.modal{position:fixed;inset:0;background:#081521ad;display:none;justify-content:flex-end;z-index:20}.modal.open{display:flex}.drawer{width:min(940px,97vw);height:100%;background:white;overflow:auto}.dhead{background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;padding:22px;position:relative}.close{position:absolute;right:16px;top:15px;background:#ffffff24;color:white;width:32px;height:32px;border:0;border-radius:7px;cursor:pointer}.dhead h2{font-size:21px;margin:7px 40px 6px 0}.dhead p{font-size:11px;color:#bfd2df;line-height:1.45}.dmeta{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.dmeta span{background:#ffffff1c;border-radius:99px;padding:5px 7px;font-size:9px}.dbody{padding:20px 23px 35px}.section{margin-bottom:21px}.section h4{font-size:10px;text-transform:uppercase;letter-spacing:.55px;color:#496376;margin:0 0 9px}.callout{border-left:4px solid var(--blue);background:#f0f7fb;border-radius:7px;padding:11px;font-size:11.5px;line-height:1.5}.facts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fact{border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:#fbfcfd}.fact b{display:block;font-size:8.5px;text-transform:uppercase;letter-spacing:.4px;color:#6b7e8e;margin-bottom:4px}.fact span{font-size:11px;line-height:1.4;color:#263f52}.detail-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}.detail-table{min-width:760px}.detail-table th{font-size:8.5px;padding:8px;background:#edf3f7;color:#3a5d73}.detail-table td{font-size:10px;padding:8px;line-height:1.35}.detail-table tr:nth-child(even){background:#f8fafb}.doclinks{display:flex;gap:4px;flex-wrap:wrap}.doclink{display:inline-block;background:#e8f3f9;color:#12618d;border-radius:5px;padding:4px 6px;text-decoration:none;font-size:8.5px;font-weight:800}.table-note{font-size:9px;color:var(--muted);margin:7px 0 0;line-height:1.4}.source-list{padding-left:18px;margin:0}.source-list li{overflow-wrap:anywhere}ul,ol{padding-left:18px}li{font-size:11.5px;line-height:1.45;margin:6px 0}a{color:var(--blue)}.empty{padding:28px;text-align:center;color:var(--muted);font-size:11px}.foot{font-size:9.5px;color:var(--muted);line-height:1.45;margin-top:12px}.anchor{scroll-margin-top:82px}
-@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.analytics-grid,.secondary-grid,.audit-grid{grid-template-columns:1fr}}
-@media(max-width:760px){.shell{grid-template-columns:1fr}.sidebar{display:none}header{padding:0 14px}header h1{display:none}.content{padding:17px}.kpis{grid-template-columns:repeat(2,1fr)}.hero{display:block}.analytics-grid{grid-template-columns:1fr}.area-grid,.facts-grid{grid-template-columns:1fr}.drawer{width:100vw}}
+:root{--navy:#0b2034;--navy2:#123954;--blue:#1875a9;--blue2:#42a4c8;--violet:#6c5bb7;--bg:#f3f6f9;--card:#fff;--text:#142638;--muted:#617386;--line:#dbe4eb;--direct:#b42318;--secondary:#6d4cc7;--green:#21835b;--amber:#a96600}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.side{background:linear-gradient(180deg,var(--navy),#071522);color:#dbe9f1;padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;gap:10px;align-items:center;padding:3px 6px 21px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#fff;color:var(--navy);font-weight:900}.brand b{display:block;font-size:13px}.brand small{color:#91b4ca}.navtitle{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:#7097b0;margin:18px 8px 7px}.nav{width:100%;border:0;background:transparent;color:#cfe0e9;text-align:left;padding:10px;border-radius:8px;cursor:pointer;font-size:12px;display:flex;justify-content:space-between}.nav:hover,.nav.active{background:#173b57;color:#fff}.navcount{background:#2a526e;border-radius:99px;padding:2px 7px;font-size:9px}.side-status{margin-top:24px;padding:12px;background:#0e2a41;border:1px solid #244963;border-radius:10px;font-size:10px;line-height:1.55;color:#a9c4d4}.main{min-width:0}.top{height:66px;background:#fff;border-bottom:1px solid var(--line);padding:0 25px;display:flex;align-items:center;gap:15px;position:sticky;top:0;z-index:6}.top h1{font-size:16px;margin:0;white-space:nowrap}.search{flex:1;max-width:650px}.search input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#f8fafb}.run{margin-left:auto;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:6px}.dot{width:8px;height:8px;border-radius:50%;background:#25a26b}.dot.bad{background:#c8483d}.content{padding:22px 26px 55px;max-width:1600px;margin:auto}.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:14px}.hero h2{font-size:23px;margin:0 0 6px}.hero p{font-size:12px;color:var(--muted);line-height:1.5;margin:0;max-width:850px}.pill{font-size:10px;font-weight:700;padding:6px 9px;border-radius:99px;background:#e5f2f8;color:#226589;white-space:nowrap}.segments{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.segment{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 11px;font-size:10px;font-weight:700;cursor:pointer}.segment.active{background:var(--navy2);color:#fff;border-color:var(--navy2)}.segment.direct.active{background:var(--direct);border-color:var(--direct)}.segment.secondary.active{background:var(--secondary);border-color:var(--secondary)}.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0 14px}.kpi{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px}.kpi span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.45px}.kpi b{display:block;font-size:22px;margin:5px 0 2px}.kpi small{font-size:9px;color:var(--muted)}.section{margin-top:17px}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:9px}.sectionhead h3{margin:0;font-size:15px}.sectionhead p{margin:3px 0 0;color:var(--muted);font-size:10.5px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px 10px 0 0;padding:9px}.toolbar select{border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#fff;font-size:10px}.toolbar .spacer{flex:1}.count{font-size:10px;color:var(--muted)}.tablewrap{background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 11px 11px;overflow:auto}table{width:100%;border-collapse:collapse;min-width:1040px}th{background:#f7f9fb;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.45px;padding:10px;text-align:left;border-bottom:1px solid var(--line)}td{padding:11px 10px;border-bottom:1px solid #edf1f4;vertical-align:top;font-size:10.5px}tr:hover{background:#f9fbfd}.group-row td{background:#eaf2f7;color:#204b67;font-weight:800;text-transform:uppercase;letter-spacing:.6px;font-size:9px;padding:8px 10px}.group-row.secondary td{background:#f0edf9;color:#5c4aa1}.title{font-size:11.5px;font-weight:800;line-height:1.35}.bulletin{font-size:9px;color:var(--blue);font-weight:700;margin-top:4px}.state{line-height:1.45}.subtle{font-size:9px;color:var(--muted);margin-top:4px}.badge{display:inline-block;border-radius:99px;padding:4px 7px;background:#edf2f6;color:#415a6d;font-size:8.5px;font-weight:700;margin:0 3px 3px 0}.badge.direct{background:#fdebea;color:var(--direct)}.badge.secondary{background:#eeeafa;color:var(--secondary)}.badge.high{background:#fff0e0;color:#9a4c00}.badge.critical{background:#fde8e6;color:#a72018}.tags{display:flex;gap:3px;flex-wrap:wrap;max-width:280px}.tag{font-size:8px;background:#eaf3f8;color:#225b7e;padding:3px 5px;border-radius:4px}.details{border:0;background:#e8f2f8;color:#155f8d;border-radius:7px;padding:6px 8px;cursor:pointer;font-size:9px;font-weight:800}.analytics{display:grid;grid-template-columns:1.15fr .7fr .75fr;gap:10px;margin-top:12px}.panel{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px;min-width:0}.panel h4{font-size:11.5px;margin:0}.panel .sub{font-size:9px;color:var(--muted);margin:3px 0 8px}.matter-list{display:flex;flex-direction:column;gap:5px;max-height:155px;overflow:auto}.matter{display:grid;grid-template-columns:minmax(130px,1fr) 2.2fr 42px;align-items:center;gap:7px;font-size:9px;cursor:pointer}.matter:hover b{color:var(--blue)}.track{height:8px;background:#edf1f4;border-radius:99px;overflow:hidden;display:flex}.directbar{background:var(--blue)}.secondarybar{background:var(--violet)}.matter em{font-style:normal;color:var(--muted);text-align:right}.chart{height:118px;display:flex;align-items:flex-end;gap:4px;border-bottom:1px solid var(--line);padding:10px 2px 0}.month{flex:1;min-width:8px;height:100%;display:flex;align-items:flex-end;justify-content:center;gap:1px;position:relative}.col{width:42%;min-width:3px;border-radius:3px 3px 0 0}.col.direct{background:var(--blue)}.col.secondary{background:var(--violet)}.month-label{position:absolute;bottom:-22px;font-size:7px;color:var(--muted);transform:rotate(-40deg);white-space:nowrap}.legend{font-size:8px;color:var(--muted);margin-top:25px;display:flex;gap:8px}.legend i{display:inline-block;width:7px;height:7px;margin-right:3px;border-radius:2px}.alerts{max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:6px}.alert{border-left:3px solid var(--blue);padding:7px 8px;background:#f7fafc;border-radius:5px}.alert b{font-size:9.5px;display:block}.alert span{font-size:8.5px;color:var(--muted);line-height:1.35}.audit{display:grid;grid-template-columns:1.3fr .7fr;gap:10px;margin-top:12px}.source-row{display:grid;grid-template-columns:1.4fr .6fr .5fr 2fr;gap:8px;padding:7px 0;border-bottom:1px solid #edf1f4;font-size:9px}.ok{color:var(--green);font-weight:700}.bad{color:#b42318;font-weight:700}.health-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.health-card{background:#f6f9fb;border-radius:7px;padding:9px}.health-card b{font-size:9px;display:block}.health-card div{font-size:17px;font-weight:800;margin-top:4px}.health-card small{font-size:8px;color:var(--muted)}.foot{font-size:8.5px;color:var(--muted);line-height:1.45;margin-top:9px}.modal{position:fixed;inset:0;background:#071624aa;display:none;justify-content:flex-end;z-index:20}.modal.open{display:flex}.drawer{width:min(780px,94vw);height:100vh;background:#fff;overflow:auto}.drawerhead{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:20px 23px;position:sticky;top:0;z-index:2}.drawerhead small{color:#95cae3;font-weight:800}.drawerhead h3{font-size:19px;margin:6px 45px 6px 0}.drawerhead p{font-size:11px;margin:0;color:#c0d4e2;line-height:1.45}.close{position:absolute;right:15px;top:14px;border:0;background:#ffffff20;color:#fff;border-radius:7px;width:31px;height:31px;cursor:pointer}.drawermeta{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.drawermeta span{font-size:8.5px;background:#ffffff1c;padding:4px 7px;border-radius:99px}.drawerbody{padding:18px 22px 32px}.detail-section{margin-bottom:18px}.detail-section h4{font-size:10px;text-transform:uppercase;letter-spacing:.55px;color:#3e586d;margin:0 0 8px}.callout{background:#f1f7fa;border-left:4px solid var(--blue);border-radius:6px;padding:11px;font-size:11px;line-height:1.55;color:#31495b}.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.fact{border:1px solid var(--line);border-radius:7px;padding:8px}.fact b{font-size:8px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px}.fact span{font-size:10px;line-height:1.35}.people{display:flex;flex-wrap:wrap;gap:5px}.person{background:#eef3f7;border-radius:6px;padding:5px 7px;font-size:9px}.detail-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px}.detail-table{min-width:760px}.detail-table th{font-size:8px}.detail-table td{font-size:9px;padding:8px}.doclink,.press-link{color:var(--blue);text-decoration:none;font-weight:700}.press-list{display:flex;flex-direction:column;gap:7px}.press-item{border:1px solid var(--line);border-radius:7px;padding:9px}.press-item b{font-size:10px;line-height:1.35;display:block}.press-item span{font-size:8.5px;color:var(--muted);display:block;margin:3px 0}.empty{padding:15px;text-align:center;color:var(--muted);font-size:9px}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.analytics{grid-template-columns:1fr 1fr}.analytics .panel:first-child{grid-column:1/-1}.audit{grid-template-columns:1fr}}@media(max-width:800px){.app{grid-template-columns:1fr}.side{display:none}.content{padding:16px}.top{padding:0 14px}.top h1{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.analytics{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.hero{flex-direction:column}}
 </style>
-</head>
-<body>
-<div class="shell">
-<aside class="sidebar">
-  <div class="brand"><div class="logo">UAF</div><div><b>Observatorio Legislativo<br>Estratégico</b><small>Ley N° 19.913</small></div></div>
-  <div class="navtitle">Vigilancia</div>
-  <button class="nav active" data-nav="dashboard" onclick="navigate('dashboard',this)">Panel estratégico</button>
-  <button class="nav" data-nav="new" onclick="navigate('new',this)">Nuevas / ingreso reciente <span class="navcount" id="navNew">0</span></button>
-  <button class="nav" data-nav="upcoming" onclick="navigate('upcoming',this)">Próximos hitos <span class="navcount" id="navUpcoming">0</span></button>
-  <button class="nav" data-nav="active" onclick="navigate('active',this)">En tramitación <span class="navcount" id="navActive">0</span></button>
-  <button class="nav" data-nav="direct" onclick="navigate('direct',this)">Modificaciones directas <span class="navcount" id="navDirect">0</span></button>
-  <button class="nav" data-nav="indirect" onclick="navigate('indirect',this)">Impactos legales indirectos <span class="navcount" id="navIndirect">0</span></button>
-  <div class="navtitle">Decisión</div>
-  <button class="nav" data-nav="impact" onclick="navigate('impact',this)">Matriz de impactos</button>
-  <button class="nav" data-nav="alerts" onclick="navigate('alerts',this)">Alertas y cambios <span class="navcount" id="navAlerts">0</span></button>
-  <button class="nav" data-nav="areas" onclick="navigate('areas',this)">Áreas responsables</button>
-  <div class="navtitle">Control</div>
-  <button class="nav" data-nav="audit" onclick="navigate('audit',this)">Auditoría de fuentes</button>
-  <button class="nav" data-nav="health" onclick="navigate('health',this)">Salud del monitor</button>
-  <div class="health" id="sideHealth"></div>
-</aside>
-<main>
-<header><h1 id="headerTitle">Panel estratégico</h1><div class="search"><input id="q" placeholder="Buscar boletín, iniciativa, impacto o materia…"></div><div class="run"><span class="dot" id="runDot"></span><span id="lastRun"></span></div></header>
-<div class="content">
-<section class="hero anchor" id="dashboardSection"><div><h2>Cartera legislativa vigente con impacto UAF</h2><p>El panel publica únicamente iniciativas nuevas, con próximos hitos o con actividad legislativa reciente. Excluye leyes ya publicadas, proyectos terminados, archivados, retirados y antecedentes sin movimiento vigente, aunque aparezcan en catálogos históricos asociados a la Ley 19.913.</p></div><span class="pill">Solo tramitación vigente</span></section>
-<div class="segmented" id="noveltyButtons">
-  <button class="segment active" data-level="" onclick="setNoveltyFilter('',this)">Todas las novedades</button>
-  <button class="segment direct" data-level="1" onclick="setNoveltyFilter('1',this)">Modifican Ley 19.913</button>
-  <button class="segment indirect" data-level="2" onclick="setNoveltyFilter('2',this)">Otros cambios normativos</button>
-</div>
-<div class="segmented lifecycle" id="lifecycleButtons">
-  <button class="segment active" data-life="" onclick="setLifecycleFilter('',this)">Todas las vigentes</button>
-  <button class="segment new" data-life="new" onclick="setLifecycleFilter('new',this)">Nuevas / ingreso reciente</button>
-  <button class="segment upcoming" data-life="upcoming" onclick="setLifecycleFilter('upcoming',this)">Próximo hito</button>
-  <button class="segment activeflow" data-life="active" onclick="setLifecycleFilter('active',this)">En tramitación</button>
-</div>
-<section class="kpis">
-  <div class="kpi"><div class="label">Iniciativas vigentes</div><div class="value" id="kTotal">0</div><div class="note">Sin antecedentes históricos</div></div>
-  <div class="kpi"><div class="label">Nuevas / ingreso reciente</div><div class="value" id="kNew">0</div><div class="note">Dentro de ventana configurada</div></div>
-  <div class="kpi"><div class="label">Próximo hito</div><div class="value" id="kUpcoming">0</div><div class="note">Urgencia, votación o cambio próximo</div></div>
-  <div class="kpi"><div class="label">Modificación directa</div><div class="value" id="kDirect">0</div><div class="note">Ley 19.913 / UAF</div></div>
-  <div class="kpi"><div class="label">Impacto potencial</div><div class="value" id="kIndirect">0</div><div class="note">Normativa relacionada</div></div>
-</section>
-<section class="analytics-grid anchor" id="impactSection">
-  <div class="panel compact"><div class="panel-head"><div><h3>Exposición por dimensión</h3><div class="sub">Principales impactos del filtro activo</div></div><button class="small-action" onclick="clearImpact()">Limpiar</button></div><div class="impact-bars" id="impactBars"></div></div>
-  <div class="panel anchor" id="temporalSection"><div class="panel-head"><div><h3>Análisis temporal de movimientos</h3><div class="sub">Movimientos detectados por año-mes, diferenciados por vinculación normativa</div></div><span class="pill" id="temporalTotal">0 movimientos</span></div><div class="temporal-wrap"><div class="temporal-chart" id="temporalChart"></div></div><div class="legend"><span class="ld">Modificación directa Ley 19.913</span><span class="li">Otros cambios normativos</span></div></div>
-</section>
-<section class="secondary-grid">
-  <div class="panel anchor" id="alertsSection"><div class="panel-head"><div><h3>Novedades y alertas detectadas</h3><div class="sub">Historial acumulado, ordenado desde el cambio más reciente</div></div><span class="pill" id="alertCount">0</span></div><div class="alerts-list" id="alertList"></div></div>
-  <div class="panel anchor" id="areasSection"><div class="panel-head"><div><h3>Áreas UAF potencialmente responsables</h3><div class="sub">Estimación derivada de las dimensiones de impacto</div></div></div><div class="area-grid" id="areaGrid"></div></div>
-</section>
-<section class="anchor" id="projectsSection">
-  <div class="toolbar">
-    <select id="level"><option value="">Nivel 1 y nivel 2</option><option value="1">Modificación directa Ley 19.913</option><option value="2">Otros cambios normativos</option></select>
-    <select id="lifecycle"><option value="">Todas las vigentes</option><option value="new">Nuevas / ingreso reciente</option><option value="upcoming">Próximo hito</option><option value="active">En tramitación activa</option></select>
-    <select id="priority"><option value="">Todas las prioridades</option><option>Crítica</option><option>Alta</option><option>Media</option><option>Baja</option></select>
-    <select id="impact"><option value="">Todas las dimensiones</option></select>
-    <div class="spacer"></div><span class="count" id="resultCount"></span>
-  </div>
-  <div class="tablewrap"><table><thead><tr><th>Iniciativa</th><th>Vigencia</th><th>Vinculación</th><th>Estado y último movimiento</th><th>Prioridad</th><th>Impactos principales</th><th>Probabilidad</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
-</section>
-<section class="audit-grid">
-  <div class="panel anchor" id="auditSection"><div class="panel-head"><div><h3>Auditoría de fuentes</h3><div class="sub">Trazabilidad de fuentes oficiales consultadas</div></div></div><div id="sourceAudit"></div></div>
-  <div class="panel anchor" id="healthSection"><div class="panel-head"><div><h3>Salud del monitor</h3><div class="sub">Resultado técnico de la última ejecución</div></div></div><div class="health-grid" id="healthGrid"></div><div class="foot" id="healthNote"></div></div>
-</section>
-<div class="foot">El panel excluye proyectos terminados o sin vigencia reciente. La clasificación de impacto es una inferencia automatizada. Debe validarse jurídicamente antes de adoptar decisiones institucionales. Cada ficha conserva antecedentes generales, cronología de tramitación, presentaciones ante comisión y vínculos a sus fuentes oficiales.</div>
-</div>
-</main>
-</div>
-<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><aside class="drawer"><div class="dhead"><button class="close" onclick="closeModal()">✕</button><div class="bulletin" id="dBulletin" style="color:#85cdec"></div><h2 id="dTitle"></h2><p id="dState"></p><div class="dmeta" id="dMeta"></div></div><div class="dbody" id="dBody"></div></aside></div>
+</head><body>
+<div class="app"><aside class="side"><div class="brand"><div class="logo">UAF</div><div><b>Monitor Legislativo</b><small>Ley N.º 19.913 y LA/FT</small></div></div>
+<div class="navtitle">Cartera vigente</div><button class="nav active" onclick="go('projects')">Iniciativas priorizadas <span class="navcount" id="navAll">0</span></button><button class="nav" onclick="setLevel('1')">Modifican Ley 19.913 <span class="navcount" id="navDirect">0</span></button><button class="nav" onclick="setLevel('2')">Otras materias LA/FT <span class="navcount" id="navSecondary">0</span></button>
+<div class="navtitle">Seguimiento</div><button class="nav" onclick="go('analytics')">Materias y movimientos</button><button class="nav" onclick="go('alerts')">Novedades <span class="navcount" id="navAlerts">0</span></button>
+<div class="navtitle">Control</div><button class="nav" onclick="go('audit')">Fuentes y salud</button><div class="side-status" id="sideStatus"></div></aside>
+<main class="main"><header class="top"><h1>Observatorio legislativo estratégico</h1><div class="search"><input id="q" placeholder="Buscar boletín, autor, materia o etapa…"></div><div class="run"><i class="dot" id="runDot"></i><span id="lastRun"></span></div></header>
+<div class="content"><section class="hero"><div><h2>Iniciativas vigentes con impacto en la UAF</h2><p>Los boletines se ordenan primero por vinculación directa con la Ley N.º 19.913 y luego por pertinencia LA/FT, etapa vigente y actividad legislativa reciente. La etapa actual privilegia la ficha oficial de la cámara en que se tramita el proyecto.</p></div><span class="pill">Cartera vigente</span></section>
+<div class="segments"><button class="segment active" data-level="" onclick="setLevel('',this)">Todas</button><button class="segment direct" data-level="1" onclick="setLevel('1',this)">Modifican Ley 19.913</button><button class="segment secondary" data-level="2" onclick="setLevel('2',this)">Otras materias LA/FT</button></div>
+<div class="kpis"><div class="kpi"><span>Iniciativas vigentes</span><b id="kAll">0</b><small>Boletines publicados</small></div><div class="kpi"><span>Impacto directo</span><b id="kDirect">0</b><small>Ley 19.913 / UAF</small></div><div class="kpi"><span>Segundo trámite o superior</span><b id="kAdvanced">0</b><small>Mayor avance legislativo</small></div><div class="kpi"><span>Con cobertura de prensa</span><b id="kPress">0</b><small>Notas asociadas a boletines</small></div><div class="kpi"><span>Novedades acumuladas</span><b id="kAlerts">0</b><small>Cambios materiales</small></div></div>
+<section class="section" id="projects"><div class="sectionhead"><div><h3>Principales boletines encontrados</h3><p>Prioridad de despliegue: modificación directa de Ley 19.913 → otras materias LA/FT → avance y fecha del último movimiento.</p></div></div><div class="toolbar"><select id="life"><option value="">Todas las vigentes</option><option value="new">Nuevas</option><option value="upcoming">Próximo hito</option><option value="active">En tramitación</option></select><select id="matter"><option value="">Todas las materias</option></select><select id="sort"><option value="pertinence">Orden: pertinencia jurídica</option><option value="date">Orden: último movimiento</option><option value="priority">Orden: prioridad analítica</option></select><div class="spacer"></div><span class="count" id="resultCount"></span></div><div class="tablewrap"><table><thead><tr><th>Iniciativa</th><th>Vinculación</th><th>Etapa vigente</th><th>Comisión / informe</th><th>Último movimiento</th><th>Promotores</th><th>Materias afectadas</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section class="section" id="analytics"><div class="sectionhead"><div><h3>Análisis complementario</h3><p>Gráficos compactos para entender la concentración temática y el ritmo de la tramitación sin desplazar la cartera de boletines.</p></div></div><div class="analytics"><div class="panel"><h4>Mapa de materias y avance legislativo</h4><div class="sub">Concentración y avance promedio: azul Ley 19.913/UAF explícita; violeta relación LA/FT. Haz clic para filtrar.</div><div class="matter-list" id="matterMap"></div></div><div class="panel"><h4>Movimientos por año-mes</h4><div class="sub">Hitos fechados de Cámara y Senado</div><div class="chart" id="historyChart"></div><div class="legend"><span><i style="background:var(--blue)"></i>Ley 19.913</span><span><i style="background:var(--violet)"></i>LA/FT</span></div></div><div class="panel" id="alerts"><h4>Novedades legislativas</h4><div class="sub">Cambios materiales del historial</div><div class="alerts" id="alertList"></div></div></div></section>
+<section class="audit" id="audit"><div class="panel"><h4>Auditoría de fuentes</h4><div class="sub">Fuentes oficiales y cobertura complementaria</div><div id="sourceRows"></div></div><div class="panel"><h4>Salud del monitor</h4><div class="sub">Resultado de la última ejecución</div><div class="health-grid" id="healthGrid"></div><div class="foot" id="healthNote"></div></div></section>
+<div class="foot">La prensa es una capa documental complementaria. No determina la etapa, no modifica el fingerprint legislativo y no genera por sí sola alertas normativas. La interpretación jurídica debe validarse institucionalmente.</div></div></main></div>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><aside class="drawer"><div class="drawerhead"><button class="close" onclick="closeModal()">✕</button><small id="dBulletin"></small><h3 id="dTitle"></h3><p id="dState"></p><div class="drawermeta" id="dMeta"></div></div><div class="drawerbody" id="dBody"></div></aside></div>
 <script>
-const projects=__PROJECTS_JSON__;
-const alerts=__ALERTS_JSON__;
-const status=__STATUS_JSON__;
-let current=null;
+const projects=__PROJECTS__, alerts=__ALERTS__, status=__STATUS__;let levelFilter='',matterFilter='';
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-const impactAreas={
- 'Delitos base':['Inteligencia Financiera','Jurídica','Analítica Estratégica'],
- 'Sujetos obligados':['Fiscalización','Registro y Difusión','Tecnología'],
- 'Responsabilidades UAF':['Dirección','Jurídica','Operaciones'],
- 'Acceso a información':['Tecnología y Datos','Jurídica','Auditoría'],
- 'Reportes y operaciones':['Tecnología y Datos','Inteligencia Financiera','Fiscalización'],
- 'Fiscalización y sanciones':['Fiscalización','Jurídica','Dirección'],
- 'Tecnología y datos':['Tecnología y Datos','Ciberseguridad','Gobernanza de Datos'],
- 'Presupuesto y dotación':['Administración y Finanzas','Personas','Dirección'],
- 'Cooperación institucional':['Cooperación Interinstitucional','Dirección','Jurídica']
-};
-function dateValue(value){if(!value)return null;const s=String(value).trim();let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);m=s.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);if(m)return new Date(+m[3],+m[2]-1,+m[1]);const d=new Date(s);return isNaN(d)?null:d}
-function monthKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
-function monthLabel(k){const [y,m]=k.split('-');return `${m}/${String(y).slice(2)}`}
-function filterLevel(){return document.getElementById('level').value}
-function filterLifecycle(){return document.getElementById('lifecycle').value}
-function baseFilteredProjects(){const q=document.getElementById('q').value.toLowerCase().trim(),level=filterLevel(),life=filterLifecycle(),priority=document.getElementById('priority').value,impact=document.getElementById('impact').value;return projects.filter(p=>{const hay=[p.bulletin,p.title,p.state,p.stage,p.commission,p.latest_movement,p.analysis_summary,p.lifecycle_status,...Object.keys(p.impacts||{})].join(' ').toLowerCase();return p.is_current!==false&&(!q||hay.includes(q))&&(!level||String(p.relevance_level)===level)&&(!life||(p.lifecycle_flags||[]).includes(life))&&(!priority||p.priority===priority)&&(!impact||(p.impacts||{})[impact])})}
-function setActiveNav(button){document.querySelectorAll('.nav').forEach(b=>b.classList.remove('active'));if(button)button.classList.add('active')}
-function navigate(action,button){setActiveNav(button);const titles={dashboard:'Panel estratégico',new:'Nuevas iniciativas',upcoming:'Próximos hitos legislativos',active:'Iniciativas en tramitación',direct:'Modificaciones directas',indirect:'Impactos legales indirectos',impact:'Matriz de impactos',alerts:'Alertas y cambios',areas:'Áreas responsables',audit:'Auditoría de fuentes',health:'Salud del monitor'};document.getElementById('headerTitle').textContent=titles[action]||'Panel estratégico';if(action==='dashboard'){setNoveltyFilter('',document.querySelector('#noveltyButtons .segment[data-level=""]'));setLifecycleFilter('',document.querySelector('#lifecycleButtons .segment[data-life=""]'));document.getElementById('dashboardSection').scrollIntoView()}if(['new','upcoming','active'].includes(action)){setLifecycleFilter(action,document.querySelector(`#lifecycleButtons .segment[data-life="${action}"]`));document.getElementById('projectsSection').scrollIntoView()}if(action==='direct'){setNoveltyFilter('1',document.querySelector('#noveltyButtons .segment[data-level="1"]'));document.getElementById('projectsSection').scrollIntoView()}if(action==='indirect'){setNoveltyFilter('2',document.querySelector('#noveltyButtons .segment[data-level="2"]'));document.getElementById('projectsSection').scrollIntoView()}if(action==='impact')document.getElementById('impactSection').scrollIntoView();if(action==='alerts')document.getElementById('alertsSection').scrollIntoView();if(action==='areas')document.getElementById('areasSection').scrollIntoView();if(action==='audit')document.getElementById('auditSection').scrollIntoView();if(action==='health')document.getElementById('healthSection').scrollIntoView()}
-function setNoveltyFilter(level,button){document.getElementById('level').value=level;document.querySelectorAll('#noveltyButtons .segment').forEach(b=>b.classList.remove('active'));if(button)button.classList.add('active');renderAll()}
-function setLifecycleFilter(value,button){document.getElementById('lifecycle').value=value;document.querySelectorAll('#lifecycleButtons .segment').forEach(b=>b.classList.remove('active'));if(button)button.classList.add('active');renderAll()}
-function syncSegments(){const level=filterLevel();document.querySelectorAll('#noveltyButtons .segment').forEach(b=>b.classList.toggle('active',b.dataset.level===level))}
-function syncLifecycleSegments(){const life=filterLifecycle();document.querySelectorAll('#lifecycleButtons .segment').forEach(b=>b.classList.toggle('active',b.dataset.life===life))}
-function clearImpact(){document.getElementById('impact').value='';renderAll()}
-function initFilters(){const names=[...new Set(projects.flatMap(p=>Object.keys(p.impacts||{})))].sort();document.getElementById('impact').innerHTML='<option value="">Todas las dimensiones</option>'+names.map(x=>`<option>${esc(x)}</option>`).join('')}
-function renderKpis(){const current=projects.filter(p=>p.is_current!==false);document.getElementById('kTotal').textContent=current.length;document.getElementById('kNew').textContent=current.filter(p=>(p.lifecycle_flags||[]).includes('new')).length;document.getElementById('kUpcoming').textContent=current.filter(p=>(p.lifecycle_flags||[]).includes('upcoming')).length;document.getElementById('kDirect').textContent=current.filter(p=>p.relevance_level===1).length;document.getElementById('kIndirect').textContent=current.filter(p=>p.relevance_level===2).length;document.getElementById('navNew').textContent=current.filter(p=>(p.lifecycle_flags||[]).includes('new')).length;document.getElementById('navUpcoming').textContent=current.filter(p=>(p.lifecycle_flags||[]).includes('upcoming')).length;document.getElementById('navActive').textContent=current.filter(p=>(p.lifecycle_flags||[]).includes('active')).length;document.getElementById('navDirect').textContent=current.filter(p=>p.relevance_level===1).length;document.getElementById('navIndirect').textContent=current.filter(p=>p.relevance_level===2).length;document.getElementById('navAlerts').textContent=alerts.length}
-function renderImpactBars(){const totals={};baseFilteredProjects().forEach(p=>Object.entries(p.impacts||{}).forEach(([name,v])=>totals[name]=(totals[name]||0)+(v.score||0)));const sorted=Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,6),max=Math.max(1,...sorted.map(x=>x[1]));document.getElementById('impactBars').innerHTML=sorted.length?sorted.map(([name,value])=>`<div class="barrow" title="${esc(name)}: ${value}"><span class="barlabel">${esc(name)}</span><div class="track"><div class="fill" style="width:${value/max*100}%"></div></div><b>${value}</b></div>`).join(''):'<div class="empty">Sin impactos para el filtro activo.</div>'}
-function eventRows(){const out=[],seen=new Set();alerts.forEach(a=>{const d=dateValue(a.detected_at||a.date||a.created_at);if(!d)return;const key=`${a.bulletin}|${monthKey(d)}|${a.id||''}`;if(seen.has(key))return;seen.add(key);out.push({date:d,month:monthKey(d),level:+a.relevance_level||2,bulletin:a.bulletin,source:'alerta'})});projects.forEach(p=>{const d=dateValue(p.latest_movement_date||p.entry_date);if(!d)return;const key=`${p.bulletin}|${monthKey(d)}`;if(seen.has(key))return;seen.add(key);out.push({date:d,month:monthKey(d),level:+p.relevance_level||2,bulletin:p.bulletin,source:'movimiento'})});return out}
-function continuousMonths(keys){if(!keys.length)return[];let [sy,sm]=keys[0].split('-').map(Number),[ey,em]=keys[keys.length-1].split('-').map(Number);let d=new Date(sy,sm-1,1),end=new Date(ey,em-1,1),arr=[];while(d<=end){arr.push(monthKey(d));d=new Date(d.getFullYear(),d.getMonth()+1,1)}return arr.slice(-18)}
-function renderTemporal(){const level=filterLevel(),events=eventRows().filter(e=>!level||String(e.level)===level),bucket={};events.forEach(e=>{bucket[e.month]??={direct:0,indirect:0};bucket[e.month][e.level===1?'direct':'indirect']++});const months=continuousMonths(Object.keys(bucket).sort());const max=Math.max(1,...months.flatMap(m=>[bucket[m]?.direct||0,bucket[m]?.indirect||0]));const ticks=[max,Math.round(max*.75),Math.round(max*.5),Math.round(max*.25),0];document.getElementById('temporalTotal').textContent=`${events.length} movimiento${events.length===1?'':'s'}`;if(!months.length){document.getElementById('temporalChart').innerHTML='<div class="empty" style="grid-column:1/3">Aún no hay fechas de movimientos. El gráfico se completará con las ejecuciones automáticas.</div>';return}document.getElementById('temporalChart').innerHTML=`<div class="y-axis">${ticks.map(x=>`<span>${x}</span>`).join('')}</div><div class="plot"><div class="month-bars">${months.map(m=>{const v=bucket[m]||{direct:0,indirect:0};return `<div class="month-group"><div class="month-bar direct" title="${m} · Directas: ${v.direct}" style="height:${v.direct?Math.max(5,v.direct/max*100):0}%"></div><div class="month-bar indirect" title="${m} · Otros cambios: ${v.indirect}" style="height:${v.indirect?Math.max(5,v.indirect/max*100):0}%"></div></div>`}).join('')}</div></div><div class="x-axis">${months.map(m=>`<span class="month-label">${monthLabel(m)}</span>`).join('')}</div>`}
-function filteredAlerts(){const level=filterLevel(),allowed=new Set(baseFilteredProjects().map(p=>p.bulletin));return alerts.filter(a=>allowed.has(a.bulletin)&&(!level||String(a.relevance_level)===level)).sort((a,b)=>(dateValue(b.detected_at)||0)-(dateValue(a.detected_at)||0))}
-function renderAlerts(){const list=filteredAlerts();document.getElementById('alertCount').textContent=list.length;document.getElementById('alertList').innerHTML=list.length?list.slice(0,30).map(a=>`<div class="alert ${esc(a.severity)} ${a.relevance_level===2?'level2':''}" onclick="openProject('${esc(a.bulletin)}')"><b>${esc(a.severity)} · Boletín ${esc(a.bulletin)}</b><span>${esc(a.title||'Iniciativa legislativa')}</span><span class="alerttime">${esc(a.detected_at||'Fecha no disponible')} · ${a.relevance_level===1?'Ley 19.913':'Otro cambio normativo'}</span></div>`).join(''):'<div class="empty">No existen alertas acumuladas para el filtro seleccionado.</div>'}
-function renderAreas(){const totals={};baseFilteredProjects().forEach(p=>Object.entries(p.impacts||{}).forEach(([impact,payload])=>(impactAreas[impact]||['Área técnica por definir']).forEach(area=>totals[area]=(totals[area]||0)+(payload.level||1))));const sorted=Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,8),max=Math.max(1,...sorted.map(x=>x[1]));document.getElementById('areaGrid').innerHTML=sorted.length?sorted.map(([area,value])=>`<div class="area-card"><strong>${esc(area)}</strong><small>Exposición estimada: ${value} puntos</small><div class="area-meter"><div style="width:${value/max*100}%"></div></div></div>`).join(''):'<div class="empty">Sin áreas para el filtro activo.</div>'}
-function lifeClass(p){return p.lifecycle_code==='new'?'life-new':p.lifecycle_code==='upcoming'?'life-upcoming':'life-active'}
-function renderRows(){const list=baseFilteredProjects().sort((a,b)=>(b.priority_score||0)-(a.priority_score||0));document.getElementById('resultCount').textContent=`${list.length} iniciativa${list.length===1?'':'s'}`;document.getElementById('rows').innerHTML=list.length?list.map(p=>`<tr><td><div class="title">${esc(p.title||'Título pendiente de verificación')}</div><div class="bulletin">Boletín ${esc(p.bulletin)}</div></td><td><span class="badge ${lifeClass(p)}">${esc(p.lifecycle_status||'En tramitación')}</span><div style="font-size:8.5px;color:#718493;margin-top:5px">${esc(p.reference_date||'Fecha por verificar')}</div></td><td><span class="badge ${p.relevance_level===1?'level1':'level2'}">${p.relevance_level===1?'Ley 19.913 directa':'Otro cambio normativo'}</span></td><td><div>${esc(p.stage||p.state||'Sin estado verificado')}</div><div style="font-size:9px;color:#718493;margin-top:4px">${esc(p.latest_movement_date||'')} ${esc(p.latest_movement||'')}</div></td><td><span class="badge ${esc(p.priority)}">${esc(p.priority)}</span><div style="font-size:9px;margin-top:5px">${p.priority_score||0}/100</div></td><td><div class="tags">${(p.top_impacts||[]).slice(0,4).map(x=>`<span class="tag">${esc(x.name)}</span>`).join('')}</div></td><td>${p.probability||0}%</td><td><button class="details-btn" onclick="openProject('${esc(p.bulletin)}')">Ver ficha →</button></td></tr>`).join(''):'<tr><td colspan="8"><div class="empty">No hay iniciativas vigentes para los filtros seleccionados.</div></td></tr>'}
-function renderAudit(){const domains={};projects.forEach(p=>(p.source_urls||[]).forEach(u=>{try{const host=new URL(u).hostname.replace(/^www\./,'');domains[host]=(domains[host]||0)+1}catch(e){}}));const sourceHealth=status.sources||{};const rows=Object.entries(sourceHealth).map(([name,v])=>`<tr><td>${esc(name)}</td><td class="${v.ok?'status-ok':'status-bad'}">${v.ok?'Disponible':'Con error'}</td><td>${esc(v.items??'—')}</td><td>${esc(v.error||'Consulta completada')}</td></tr>`).join('');const domainsHtml=Object.entries(domains).sort((a,b)=>b[1]-a[1]).map(([d,n])=>`<span class="tag">${esc(d)} · ${n}</span>`).join('');document.getElementById('sourceAudit').innerHTML=`<table class="source-table"><thead><tr><th>Fuente</th><th>Estado</th><th>Registros</th><th>Detalle</th></tr></thead><tbody>${rows||'<tr><td colspan="4">Sin información de ejecución.</td></tr>'}</tbody></table><div class="tags" style="margin-top:10px;max-width:none">${domainsHtml}</div>`}
-function renderHealth(){const sources=Object.values(status.sources||{}),ok=sources.filter(x=>x.ok).length,failed=sources.length-ok;document.getElementById('healthGrid').innerHTML=`<div class="health-card"><b>Fuentes disponibles</b><div>${ok}/${sources.length}</div><small>Consultas completadas</small></div><div class="health-card"><b>Iniciativas vigentes</b><div>${status.projects_monitored??projects.length}</div><small>Publicadas en el panel</small></div><div class="health-card"><b>Descartadas</b><div>${status.excluded_count??0}</div><small>Terminadas, antiguas o sin vigencia</small></div>`;document.getElementById('healthNote').textContent=`${status.eligibility_rule||''} Inicio: ${status.started_at||'—'} · Término: ${status.finished_at||'—'} · Correo: ${status.email_message||'Sin información'}${failed?' · Hay fuentes con error; revise la auditoría.':''}`}
-function updateHeader(){const finished=status.finished_at||'Sin primera ejecución';const sources=Object.values(status.sources||{});const allOk=sources.length&&sources.every(x=>x.ok);document.getElementById('lastRun').textContent=`Último barrido: ${finished}`;document.getElementById('runDot').classList.toggle('bad',sources.length>0&&!allOk);document.getElementById('sideHealth').innerHTML=`<b style="color:#fff">Estado del monitor</b><br>Último barrido: ${esc(finished)}<br>Fuentes correctas: ${sources.filter(x=>x.ok).length}/${sources.length}<br>Vigentes: ${status.projects_monitored??projects.length}<br>Descartadas: ${status.excluded_count??0}`}
-function displayDate(value){const text=String(value||'').trim();const m=text.match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[3]}/${m[2]}/${m[1]}`:text||'—'}
-function documentLinks(documents){const list=Array.isArray(documents)?documents:[];return list.length?`<div class="doclinks">${list.map(doc=>`<a class="doclink" href="${esc(doc.url||'#')}" target="_blank" rel="noopener">${esc(doc.label||'Ver documento')} ↗</a>`).join('')}</div>`:'—'}
-function projectFacts(p){const meta=p.metadata||{};const facts=[['Fecha de ingreso',p.entry_date?displayDate(p.entry_date):''],['Cámara de origen',p.origin_chamber],['Iniciativa',p.initiative_type],['Tipo de proyecto',meta.project_type],['Urgencia actual',p.urgency||'Sin urgencia informada'],['Refundido',meta.refunded],['Etapa',p.stage||p.state],['Comisión / informe',meta.committee_report||p.commission]];const visible=facts.filter(x=>x[1]);return visible.length?`<div class="facts-grid">${visible.map(([label,value])=>`<div class="fact"><b>${esc(label)}</b><span>${esc(value)}</span></div>`).join('')}</div>`:'<div class="empty">Los antecedentes generales aún no han sido extraídos desde la ficha oficial.</div>'}
-function proceedingRows(p){const meta=p.metadata||{};if(Array.isArray(meta.senado_proceedings)&&meta.senado_proceedings.length)return meta.senado_proceedings;if(Array.isArray(meta.camara_proceedings)&&meta.camara_proceedings.length)return meta.camara_proceedings;if(Array.isArray(meta.camara_movements)&&meta.camara_movements.length)return meta.camara_movements.map(text=>({session:'',date:'',substage:text,stage:p.stage||p.state||'',documents:[]}));if(p.latest_movement)return [{session:'',date:p.latest_movement_date||'',substage:p.latest_movement,stage:p.stage||p.state||'',documents:[]}];return []}
-function proceedingsTable(p){const rows=proceedingRows(p);if(!rows.length)return '<div class="empty">No se encontraron filas de tramitación en la última consulta oficial.</div>';return `<div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Sesión / legislatura</th><th>Fecha</th><th>Subetapa o movimiento</th><th>Etapa</th><th>Documentos</th></tr></thead><tbody>${rows.slice().sort((a,b)=>(dateValue(a.date)||0)-(dateValue(b.date)||0)).map(row=>`<tr><td>${esc(row.session||'—')}</td><td>${esc(displayDate(row.date))}</td><td>${esc(row.substage||'—')}</td><td>${esc(row.stage||'—')}</td><td>${documentLinks(row.documents)}</td></tr>`).join('')}</tbody></table></div><div class="table-note">Cronología extraída de las fichas oficiales de Cámara o Senado. Los enlaces abren los documentos publicados por el Congreso.</div>`}
-function presentationsTable(p){const meta=p.metadata||{};const rows=Array.isArray(meta.commission_presentations)?meta.commission_presentations:[];if(!rows.length)return '<div class="empty">No se detectaron presentaciones ante comisión publicadas para este boletín.</div>';return `<div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Fecha</th><th>Título</th><th>Organización</th><th>Comisión</th><th>Documento</th></tr></thead><tbody>${rows.slice().sort((a,b)=>(dateValue(a.date)||0)-(dateValue(b.date)||0)).map(row=>`<tr><td>${esc(displayDate(row.date))}</td><td>${esc(row.title||'—')}</td><td>${esc(row.organization||'—')}</td><td>${esc(row.commission||'—')}</td><td>${documentLinks(row.documents)}</td></tr>`).join('')}</tbody></table></div><div class="table-note">La disponibilidad depende de que la comisión publique la presentación y su enlace en la ficha de tramitación.</div>`}
-function openProject(bulletin){
- current=projects.find(p=>p.bulletin===bulletin);if(!current)return;
- const meta=current.metadata||{};
- document.getElementById('dBulletin').textContent=`Boletín ${current.bulletin}`;
- document.getElementById('dTitle').textContent=current.title||'Título pendiente';
- document.getElementById('dState').textContent=[current.stage,current.state,meta.committee_report||current.commission].filter(Boolean).join(' · ')||'Estado pendiente de verificación';
- document.getElementById('dMeta').innerHTML=`<span>${esc(current.lifecycle_status||'En tramitación')}</span><span>${esc(current.relevance_label||'')}</span>${current.entry_date?`<span>Ingreso ${esc(displayDate(current.entry_date))}</span>`:''}${current.urgency?`<span>${esc(current.urgency)}</span>`:''}`;
- document.getElementById('dBody').innerHTML=`
-  <div class="section"><h4>Antecedentes del proyecto</h4>${projectFacts(current)}</div>
-  <div class="section"><h4>Vigencia legislativa</h4><div class="callout"><b>${esc(current.lifecycle_status||'En tramitación')}</b><br>${esc(current.lifecycle_reason||'Vigencia comprobada mediante fuentes oficiales.')}</div></div>
-  <div class="section"><h4>Cronología de tramitación</h4>${proceedingsTable(current)}</div>
-  <div class="section"><h4>Presentaciones ante comisión</h4>${presentationsTable(current)}</div>
-  <div class="section"><h4>Lectura estratégica</h4><div class="callout">${esc(current.analysis_summary||'Análisis pendiente de completar con las fuentes oficiales.')}</div></div>
-  <div class="section"><h4>Último antecedente detectado</h4><div class="callout">${esc(displayDate(current.latest_movement_date||''))} · ${esc(current.latest_movement||current.state||'Sin movimiento verificado')}</div></div>
-  <div class="section"><h4>Fuentes y auditoría</h4><ul class="source-list">${(current.source_urls||[]).map(u=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></li>`).join('')}</ul><div style="font-size:10px;color:#6b7d8d">Detectado mediante: ${esc((current.discovered_from||[]).join(' · '))}</div></div>`;
- document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden'
-}
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const dval=s=>{const v=Date.parse(s||'');return Number.isNaN(v)?0:v};
+const displayDate=s=>{const m=String(s||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:(s||'—')};
+function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
+function setLevel(value,button){levelFilter=String(value||'');document.querySelectorAll('.segment').forEach(x=>x.classList.toggle('active',x.dataset.level===levelFilter));renderAll();go('projects')}
+function projectMatterNames(p){return [...new Set([...(p.affected_legal_areas||[]),...Object.keys(p.impacts||{})])]}
+function filtered(){const q=norm(document.getElementById('q').value),life=document.getElementById('life').value;return projects.filter(p=>(!levelFilter||String(p.relevance_level)===levelFilter)&&(!life||(p.lifecycle_flags||[]).includes(life)||p.lifecycle_code===life)&&(!matterFilter||projectMatterNames(p).includes(matterFilter))&&(!q||norm([p.bulletin,p.title,p.stage,p.commission,(p.promoters||[]).join(' '),projectMatterNames(p).join(' '),p.matter_summary].join(' ')).includes(q)))}
+function ordered(list){const mode=document.getElementById('sort').value;return list.slice().sort((a,b)=>{if(mode==='date')return dval(b.latest_movement_date)-dval(a.latest_movement_date);if(mode==='priority')return (b.priority_score||0)-(a.priority_score||0);return (a.relevance_level||9)-(b.relevance_level||9)||(b.pertinence_score||0)-(a.pertinence_score||0)||dval(b.latest_movement_date)-dval(a.latest_movement_date)})}
+function groupHeader(level){return `<tr class="group-row ${level===2?'secondary':''}"><td colspan="8">${level===1?'Ley N.º 19.913 o impacto explícito en funciones UAF':'Otros proyectos con pertinencia LA/FT o delitos base'}</td></tr>`}
+function renderRows(){const list=ordered(filtered());let last=null,html='';list.forEach(p=>{if(p.relevance_level!==last){last=p.relevance_level;html+=groupHeader(last)}const people=(p.promoters||p.metadata?.promoters||[]).slice(0,3),areas=projectMatterNames(p).slice(0,4);html+=`<tr><td><div class="title">${esc(p.title||p.initiative_name||'Título pendiente')}</div><div class="bulletin">Boletín ${esc(p.bulletin)}</div></td><td><span class="badge ${p.relevance_level===1?'direct':'secondary'}">${p.relevance_level===1?'Ley 19.913 / UAF explícita':'LA/FT relacionado'}</span><div class="subtle">Pertinencia ${p.pertinence_score||0}</div></td><td><div class="state"><b>${esc(p.stage||p.state||'Por verificar')}</b></div><div class="subtle">${esc(p.lifecycle_status||'')}</div></td><td><div class="state">${esc(p.metadata?.committee_report||p.commission||'Sin comisión informada')}</div></td><td><div class="state">${esc(displayDate(p.latest_movement_date))}</div><div class="subtle">${esc((p.latest_movement||'Sin movimiento individualizado').slice(0,180))}</div></td><td>${people.map(x=>`<span class="badge">${esc(x)}</span>`).join('')||'<span class="subtle">Pendiente de extracción</span>'}</td><td><div class="tags">${areas.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></td><td><button class="details" onclick="openProject('${esc(p.bulletin)}')">Ver ficha →</button></td></tr>`});document.getElementById('rows').innerHTML=html||'<tr><td colspan="8"><div class="empty">No hay iniciativas para los filtros seleccionados.</div></td></tr>';document.getElementById('resultCount').textContent=`${list.length} iniciativa${list.length===1?'':'s'}`}
+function renderKpis(){document.getElementById('kAll').textContent=projects.length;document.getElementById('kDirect').textContent=projects.filter(p=>p.relevance_level===1).length;document.getElementById('kAdvanced').textContent=projects.filter(p=>/segundo|tercer|mixta/i.test(p.stage||'')).length;document.getElementById('kPress').textContent=projects.filter(p=>(p.metadata?.press_mentions||[]).length).length;document.getElementById('kAlerts').textContent=alerts.length;document.getElementById('navAll').textContent=projects.length;document.getElementById('navDirect').textContent=projects.filter(p=>p.relevance_level===1).length;document.getElementById('navSecondary').textContent=projects.filter(p=>p.relevance_level===2).length;document.getElementById('navAlerts').textContent=alerts.length}
+function stageWeight(p){const t=norm(p.stage||p.state||'');if(t.includes('mixta')||t.includes('finalizacion')||t.includes('aprobacion presidencial'))return 4;if(t.includes('tercer tramite'))return 3.5;if(t.includes('segundo tramite'))return 3;if(t.includes('primer tramite'))return 1.5;return 1}
+function renderMatterMap(){const map=new Map();filtered().forEach(p=>projectMatterNames(p).forEach(name=>{const row=map.get(name)||{direct:0,secondary:0,weight:0,count:0};p.relevance_level===1?row.direct++:row.secondary++;row.weight+=stageWeight(p);row.count++;map.set(name,row)}));const rows=[...map.entries()].sort((a,b)=>(b[1].direct*3+b[1].secondary*2+b[1].weight)-(a[1].direct*3+a[1].secondary*2+a[1].weight)).slice(0,9),max=Math.max(1,...rows.map(([,v])=>v.direct+v.secondary));document.getElementById('matterMap').innerHTML=rows.map(([name,v])=>{const avg=(v.weight/v.count).toFixed(1);return `<div class="matter" onclick="applyMatter('${esc(name)}')" title="${v.count} iniciativa(s); avance promedio ${avg}/4"><b>${esc(name)}</b><div class="track"><i class="directbar" style="width:${v.direct/max*100}%"></i><i class="secondarybar" style="width:${v.secondary/max*100}%"></i></div><em>${v.count} · ${avg}/4</em></div>`}).join('')||'<div class="empty">Sin materias clasificadas.</div>'}
+function applyMatter(name){matterFilter=name;document.getElementById('matter').value=name;renderAll();go('projects')}
+function historyItems(p){const meta=p.metadata||{};const rows=[...(meta.senado_proceedings||[]),...(meta.camara_proceedings||[])];if(!rows.length&&p.latest_movement_date)rows.push({date:p.latest_movement_date});return rows}
+function renderHistory(){const months=new Map();filtered().forEach(p=>historyItems(p).forEach(h=>{const m=String(h.date||'').match(/^(\d{4})-(\d{2})/);if(!m)return;const key=`${m[1]}-${m[2]}`,row=months.get(key)||{direct:0,secondary:0};p.relevance_level===1?row.direct++:row.secondary++;months.set(key,row)}));const data=[...months.entries()].sort().slice(-18),max=Math.max(1,...data.map(([,v])=>Math.max(v.direct,v.secondary)));document.getElementById('historyChart').innerHTML=data.map(([m,v])=>`<div class="month" title="${m}: ${v.direct} directos, ${v.secondary} relacionados"><i class="col direct" style="height:${Math.max(3,v.direct/max*120)}px"></i><i class="col secondary" style="height:${Math.max(3,v.secondary/max*120)}px"></i><span class="month-label">${m}</span></div>`).join('')||'<div class="empty">El gráfico se completará con hitos fechados.</div>'}
+function renderAlerts(){document.getElementById('alertList').innerHTML=alerts.slice(0,15).map(a=>`<div class="alert"><b>${esc(a.bulletin||'')} · ${esc(a.title||'Novedad legislativa')}</b><span>${esc(displayDate((a.detected_at||'').slice(0,10)))} · ${esc((a.changes||[]).map(c=>c.after).filter(Boolean).join(' · ')||a.kind||'Cambio detectado')}</span></div>`).join('')||'<div class="empty">No hay novedades acumuladas.</div>'}
+function initMatterFilter(){const names=[...new Set(projects.flatMap(projectMatterNames))].sort();document.getElementById('matter').innerHTML='<option value="">Todas las materias</option>'+names.map(x=>`<option>${esc(x)}</option>`).join('')}
+function renderAudit(){const sources=Object.entries(status.sources||{});document.getElementById('sourceRows').innerHTML=sources.map(([name,v])=>`<div class="source-row"><b>${esc(name)}</b><span class="${v.ok?'ok':'bad'}">${v.ok?'Disponible':'Error'}</span><span>${esc(v.items??v.projects_searched??'—')}</span><span>${esc(v.note||v.error||'Consulta completada')}</span></div>`).join('')||'<div class="empty">Sin datos de fuentes.</div>';const ok=sources.filter(([,v])=>v.ok).length;document.getElementById('healthGrid').innerHTML=`<div class="health-card"><b>Fuentes disponibles</b><div>${ok}/${sources.length}</div><small>Última ejecución</small></div><div class="health-card"><b>Proyectos enriquecidos</b><div>${status.projects_enriched??0}</div><small>Ficha oficial consultada</small></div><div class="health-card"><b>Vigentes</b><div>${status.projects_monitored??projects.length}</div><small>Cartera publicada</small></div><div class="health-card"><b>Excluidos</b><div>${status.excluded_count??0}</div><small>Terminados o sin vigencia</small></div>`;document.getElementById('healthNote').textContent=`${status.eligibility_rule||''} Correo: ${status.email_message||'sin información'}.`}
+function updateHeader(){const finished=status.finished_at||'Sin primera ejecución',sources=Object.values(status.sources||{}),ok=sources.filter(x=>x.ok).length;document.getElementById('lastRun').textContent=`Último barrido: ${finished}`;document.getElementById('runDot').classList.toggle('bad',sources.length>0&&ok<sources.length);document.getElementById('sideStatus').innerHTML=`<b style="color:#fff">Estado del monitor</b><br>Fuentes disponibles: ${ok}/${sources.length}<br>Vigentes: ${status.projects_monitored??projects.length}<br>Descartadas: ${status.excluded_count??0}<br>Prensa: ${status.sources?.['Prensa de proyectos']?.items??0} enlace(s)`}
+function docLinks(docs){return (docs||[]).map(d=>`<a class="doclink" href="${esc(d.url||'#')}" target="_blank" rel="noopener">${esc(d.label||'Documento')} ↗</a>`).join('<br>')||'—'}
+function proceedings(p){const meta=p.metadata||{};return meta.senado_proceedings||meta.camara_proceedings||[]}
+function proceedingsTable(p){const rows=proceedings(p).slice().sort((a,b)=>dval(a.date)-dval(b.date));if(!rows.length)return '<div class="empty">No se encontraron filas de tramitación individualizadas.</div>';return `<div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Sesión</th><th>Fecha</th><th>Subetapa / movimiento</th><th>Etapa</th><th>Documentos</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.session||'—')}</td><td>${esc(displayDate(r.date))}</td><td>${esc(r.substage||'—')}</td><td>${esc(r.stage||'—')}</td><td>${docLinks(r.documents)}</td></tr>`).join('')}</tbody></table></div>`}
+function presentationsTable(p){const rows=p.metadata?.commission_presentations||[];if(!rows.length)return '<div class="empty">No se detectaron presentaciones ante comisión publicadas.</div>';return `<div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Fecha</th><th>Presentación</th><th>Organización</th><th>Comisión</th><th>Documento</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(displayDate(r.date))}</td><td>${esc(r.title||'—')}</td><td>${esc(r.organization||'—')}</td><td>${esc(r.commission||'—')}</td><td>${docLinks(r.documents)}</td></tr>`).join('')}</tbody></table></div>`}
+function pressSection(p){const rows=p.metadata?.press_mentions||[];return rows.length?`<div class="press-list">${rows.map(r=>`<div class="press-item"><b><a class="press-link" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)} ↗</a></b><span>${esc(r.outlet||'Medio')} · ${esc(displayDate(r.date))}</span></div>`).join('')}</div>`:'<div class="empty">No se encontraron publicaciones periodísticas recientes asociadas al boletín o su título.</div>'}
+function openProject(bulletin){const p=projects.find(x=>x.bulletin===bulletin);if(!p)return;const people=p.promoters||p.metadata?.promoters||[],areas=projectMatterNames(p),facts=[['Fecha de ingreso',displayDate(p.entry_date)],['Cámara de origen',p.origin_chamber],['Tipo de iniciativa',p.initiative_type],['Etapa vigente',p.stage||p.state],['Comisión / informe',p.metadata?.committee_report||p.commission],['Urgencia',p.urgency||'Sin urgencia informada']];document.getElementById('dBulletin').textContent=`Boletín ${p.bulletin}`;document.getElementById('dTitle').textContent=p.title||'Título pendiente';document.getElementById('dState').textContent=[p.stage,p.metadata?.committee_report||p.commission].filter(Boolean).join(' · ')||'Estado por verificar';document.getElementById('dMeta').innerHTML=`<span>${esc(p.relevance_label||'')}</span><span>${esc(p.lifecycle_status||'')}</span><span>Pertinencia ${p.pertinence_score||0}</span>`;document.getElementById('dBody').innerHTML=`<div class="detail-section"><h4>Antecedentes generales</h4><div class="facts">${facts.filter(([,v])=>v&&v!=='—').map(([k,v])=>`<div class="fact"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')}</div></div><div class="detail-section"><h4>Materia y lectura estratégica</h4><div class="callout">${esc(p.analysis_summary||p.matter_summary||p.title)}</div></div><div class="detail-section"><h4>Parlamentarios promotores</h4><div class="people">${people.map(x=>`<span class="person">${esc(x)}</span>`).join('')||'<span class="subtle">La fuente oficial aún no entregó autores estructurados.</span>'}</div></div><div class="detail-section"><h4>Ámbitos legales afectados</h4><div class="tags">${areas.map(x=>`<span class="tag">${esc(x)}</span>`).join('')||'<span class="tag">Pendiente</span>'}</div></div><div class="detail-section"><h4>Último antecedente legislativo</h4><div class="callout"><b>${esc(displayDate(p.latest_movement_date))}</b><br>${esc(p.latest_movement||'Sin movimiento individualizado')}</div></div><div class="detail-section"><h4>Cronología de tramitación</h4>${proceedingsTable(p)}</div><div class="detail-section"><h4>Presentaciones ante comisión</h4>${presentationsTable(p)}</div><div class="detail-section"><h4>Cobertura de prensa vinculada</h4>${pressSection(p)}</div><div class="detail-section"><h4>Fuentes oficiales</h4><div>${(p.source_urls||[]).map(u=>`<p><a class="doclink" href="${esc(u)}" target="_blank" rel="noopener">${esc(u)} ↗</a></p>`).join('')||'<div class="empty">Sin enlace oficial guardado.</div>'}</div></div>`;document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden'}
 function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
-function renderAll(){syncSegments();syncLifecycleSegments();renderImpactBars();renderTemporal();renderAlerts();renderAreas();renderRows()}
-function init(){initFilters();renderKpis();updateHeader();renderAudit();renderHealth();renderAll()}
-['q','priority','impact'].forEach(id=>document.getElementById(id).addEventListener(id==='q'?'input':'change',renderAll));document.getElementById('level').addEventListener('change',()=>{syncSegments();renderAll()});document.getElementById('lifecycle').addEventListener('change',()=>{syncLifecycleSegments();renderAll()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});init();
-</script>
-</body>
-</html>'''
-
-def _extract_dashboard_records(value: Any, preferred_keys: tuple[str, ...]) -> list[dict[str, Any]]:
-    """Normaliza listas o contenedores JSON usados por los scripts de mantenimiento."""
-    if value is None:
-        return []
-    if isinstance(value, dict):
-        for key in preferred_keys:
-            candidate = value.get(key)
-            if isinstance(candidate, list):
-                value = candidate
-                break
-        else:
-            # state.json puede ser un diccionario indexado por boletín.
-            if value and all(isinstance(item, dict) for item in value.values()):
-                value = list(value.values())
-            else:
-                value = [value]
-    if not isinstance(value, (list, tuple, set)):
-        return []
-    return [dict(item) for item in value if isinstance(item, dict)]
-
-
-def _compact_dashboard_value(value: Any, *, depth: int = 0, max_string: int = 12_000) -> Any:
-    """Elimina contenido bruto innecesario sin perder antecedentes legislativos."""
-    if depth > 12:
-        return None
-    if value is None or isinstance(value, (bool, int, float)):
-        return value
-    if isinstance(value, str):
-        return value[:max_string]
-    if isinstance(value, dict):
-        excluded = {
-            "raw_html", "html_raw", "page_html", "source_html",
-            "raw_xml", "xml_raw", "response_body", "response_text",
-            "downloaded_content", "full_document_text", "document_full_text",
-            "binary_content", "base64", "screenshot_data",
-        }
-        return {
-            str(key): _compact_dashboard_value(child, depth=depth + 1, max_string=max_string)
-            for key, child in value.items()
-            if str(key).lower() not in excluded
-        }
-    if isinstance(value, (list, tuple, set)):
-        return [
-            _compact_dashboard_value(item, depth=depth + 1, max_string=max_string)
-            for item in list(value)[:500]
-        ]
-    return str(value)[:max_string]
-
-
-def prepare_dashboard_projects(
-    projects: Any,
-    *args: Any,
-    **kwargs: Any,
-) -> list[dict[str, Any]]:
-    """Prepara fichas para JSON/HTML y mantiene compatibilidad con maintenance_compact.py.
-
-    Acepta listas, ``state.json`` indexado por boletín o contenedores con una
-    clave ``projects``. Los argumentos adicionales se ignoran deliberadamente
-    para tolerar versiones distintas del script de mantenimiento.
-    """
-    records = _extract_dashboard_records(
-        projects,
-        ("projects", "items", "records", "results", "data"),
-    )
-
-    try:
-        from .analysis import sanitize_project_record
-    except (ImportError, AttributeError):
-        sanitize_project_record = None
-
-    deduplicated: dict[str, dict[str, Any]] = {}
-    anonymous: list[dict[str, Any]] = []
-    for record in records:
-        if sanitize_project_record is not None:
-            try:
-                cleaned = sanitize_project_record(record)
-            except Exception:
-                cleaned = _compact_dashboard_value(record)
-        else:
-            cleaned = _compact_dashboard_value(record)
-        if not isinstance(cleaned, dict):
-            continue
-        bulletin = str(
-            cleaned.get("bulletin")
-            or cleaned.get("boletin")
-            or cleaned.get("id")
-            or ""
-        ).strip()
-        if bulletin:
-            previous = deduplicated.get(bulletin)
-            # Conserva preferentemente la ficha más completa.
-            if previous is None or len(json.dumps(cleaned, ensure_ascii=False)) >= len(
-                json.dumps(previous, ensure_ascii=False)
-            ):
-                deduplicated[bulletin] = cleaned
-        else:
-            anonymous.append(cleaned)
-
-    output = list(deduplicated.values()) + anonymous
-    output.sort(
-        key=lambda item: (
-            int(item.get("priority_score") or item.get("score") or 0),
-            str(item.get("latest_movement_date") or item.get("updated_at") or ""),
-            str(item.get("bulletin") or item.get("boletin") or ""),
-        ),
-        reverse=True,
-    )
-    limit = kwargs.get("limit") or kwargs.get("max_projects")
-    if limit:
-        try:
-            output = output[: max(0, int(limit))]
-        except (TypeError, ValueError):
-            pass
-    return output
-
-
-def prepare_dashboard_alerts(
-    alerts: Any,
-    *args: Any,
-    **kwargs: Any,
-) -> list[dict[str, Any]]:
-    """Compacta y ordena alertas acumuladas para su publicación en el dashboard."""
-    records = _extract_dashboard_records(
-        alerts,
-        ("alerts", "items", "records", "results", "data"),
-    )
-    seen: set[str] = set()
-    output: list[dict[str, Any]] = []
-    for record in records:
-        cleaned = _compact_dashboard_value(record)
-        if not isinstance(cleaned, dict):
-            continue
-        identity = str(
-            cleaned.get("id")
-            or cleaned.get("fingerprint")
-            or cleaned.get("alert_id")
-            or "|".join(
-                str(cleaned.get(key) or "")
-                for key in ("bulletin", "type", "detected_at", "change", "message")
-            )
-        )
-        if identity in seen:
-            continue
-        seen.add(identity)
-        output.append(cleaned)
-
-    output.sort(
-        key=lambda item: str(
-            item.get("detected_at")
-            or item.get("created_at")
-            or item.get("date")
-            or ""
-        ),
-        reverse=True,
-    )
-    limit = kwargs.get("limit") or kwargs.get("max_alerts") or 500
-    try:
-        output = output[: max(0, int(limit))]
-    except (TypeError, ValueError):
-        output = output[:500]
-    return output
+function renderAll(){renderRows();renderMatterMap();renderHistory()}
+function init(){initMatterFilter();renderKpis();renderAlerts();renderAudit();updateHeader();renderAll()}
+document.getElementById('q').addEventListener('input',renderAll);document.getElementById('life').addEventListener('change',renderAll);document.getElementById('sort').addEventListener('change',renderAll);document.getElementById('matter').addEventListener('change',e=>{matterFilter=e.target.value;renderAll()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});init();
+</script></body></html>'''
