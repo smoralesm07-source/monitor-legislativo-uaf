@@ -8,6 +8,19 @@ Motor en Python para vigilar diariamente proyectos de ley de Chile que:
 El sistema descubre iniciativas nuevas, actualiza los proyectos vigilados, compara cada ejecución con el estado anterior, genera un dashboard y envía un correo solo cuando detecta alertas nuevas.
 
 
+
+## Cambios de la versión 1.1.1
+
+- corrige la etapa vigente tomando la fila oficial más reciente y el informe de comisión correspondiente a esa misma etapa;
+- amplía la lectura estratégica con materia, promotores y ámbitos legales afectados, sin repetir el último movimiento;
+- elimina definitivamente el cuadro de áreas UAF responsables;
+- ordena los boletines por modificación directa a la Ley N.º 19.913, pertinencia LA/FT, etapa y fecha;
+- reemplaza el gráfico de exposición por un mapa compacto de materias y avance legislativo, utilizable como filtro;
+- reduce el tamaño de los gráficos y ubica el listado de boletines antes de la analítica;
+- incorpora cobertura de prensa por boletín mediante Google News Chile y lista blanca de medios;
+- añade una revisión de indicaciones, informes y oficios oficiales para detectar impacto UAF surgido durante la tramitación;
+- incorpora el boletín 18.216-05 como caso de control obligatorio.
+
 ## Cambios de la versión 1.0.4
 
 - elimina de la ficha individual los cuadros **Impacto institucional estimado** y **Decisiones sugeridas**;
