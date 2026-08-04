@@ -1,5 +1,5 @@
 {
-  "version": "1.0.4",
+  "version": "1.1.1",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -17,7 +17,8 @@
     "16928-07",
     "18080-03",
     "17881-25",
-    "18407-25"
+    "18407-25",
+    "18216-05"
   ],
   "direct_terms": [
     "ley 19.913",
@@ -313,5 +314,40 @@
     "oficio de ley",
     "informe de comisión",
     "informe de comision"
-  ]
+  ],
+  "press_enabled": true,
+  "press_window_days": 365,
+  "press_max_projects_per_run": 20,
+  "press_max_mentions_per_project": 8,
+  "press_allowed_domains": [
+    "df.cl",
+    "latercera.com",
+    "emol.com",
+    "biobiochile.cl",
+    "cooperativa.cl",
+    "elmostrador.cl",
+    "ciperchile.cl",
+    "ciper.cl",
+    "interferencia.cl",
+    "ex-ante.cl",
+    "t13.cl",
+    "24horas.cl",
+    "cnnchile.com",
+    "adnradio.cl",
+    "pauta.cl",
+    "meganoticias.cl",
+    "chvnoticias.cl",
+    "diarioconstitucional.cl",
+    "radioagricultura.cl",
+    "senado.cl",
+    "camara.cl",
+    "hacienda.cl",
+    "uaf.cl",
+    "gob.cl"
+  ],
+  "official_document_scan_enabled": true,
+  "official_document_scan_days": 420,
+  "official_document_scan_max_candidates_per_run": 35,
+  "official_document_scan_max_documents_per_project": 6,
+  "official_document_scan_max_chars_per_project": 45000
 }
