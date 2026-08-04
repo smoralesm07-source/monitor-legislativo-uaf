@@ -351,3 +351,91 @@ def build_alert(kind: str, old: dict[str, Any] | None, new: dict[str, Any], conf
 
 def severity_rank(value: str) -> int:
     return {"Crítica": 3, "Alta": 2, "Media": 1, "Baja": 0}.get(value, 0)
+
+
+def sanitize_project_record(record: dict[str, Any], *args: Any, **kwargs: Any) -> dict[str, Any]:
+    """Devuelve una copia compacta y serializable de una ficha legislativa.
+
+    Esta función mantiene compatibilidad con ``maintenance_compact.py``.
+    Acepta argumentos adicionales para tolerar distintas versiones del script
+    de mantenimiento y elimina únicamente contenido bruto o duplicado que no
+    es necesario para comparar proyectos ni construir el dashboard.
+    """
+    if not isinstance(record, dict):
+        return {}
+
+    # Límites conservadores: mantienen la cronología legislativa y las
+    # presentaciones ante comisión, pero evitan que una página HTML/XML completa
+    # termine guardada dentro de state.json o projects.json.
+    max_default_string = int(kwargs.get("max_string", 12_000) or 12_000)
+    max_default_list = int(kwargs.get("max_list", 250) or 250)
+
+    drop_keys = {
+        "raw_html", "html_raw", "page_html", "source_html",
+        "raw_xml", "xml_raw", "response_body", "response_text",
+        "downloaded_content", "full_document_text", "document_full_text",
+        "binary_content", "base64", "screenshot_data",
+    }
+    string_limits = {
+        "title": 2_000,
+        "state": 2_000,
+        "stage": 2_000,
+        "commission": 2_000,
+        "urgency": 1_000,
+        "latest_movement": 5_000,
+        "evidence_text": 12_000,
+        "analysis_summary": 8_000,
+        "document_summary": 8_000,
+        "linkage_summary": 8_000,
+        "lifecycle_reason": 4_000,
+        "description": 6_000,
+        "substage": 4_000,
+        "organization": 2_000,
+        "url": 4_000,
+    }
+    list_limits = {
+        "senado_proceedings": 300,
+        "commission_presentations": 300,
+        "legislative_history": 400,
+        "proceedings": 300,
+        "presentations": 300,
+        "documents": 300,
+        "source_urls": 60,
+        "discovered_from": 60,
+        "related_bulletins": 60,
+        "group_bulletins": 60,
+        "laft_topics": 80,
+        "direct_hits": 80,
+        "relevance_basis": 100,
+        "top_impacts": 30,
+        "decisions": 30,
+        "changes": 100,
+    }
+
+    def compact(value: Any, key: str = "", depth: int = 0) -> Any:
+        if depth > 12:
+            return None
+        if value is None or isinstance(value, (bool, int, float)):
+            return value
+        if isinstance(value, str):
+            limit = string_limits.get(key, max_default_string)
+            return value[:limit]
+        if isinstance(value, dict):
+            cleaned: dict[str, Any] = {}
+            for raw_key, raw_value in value.items():
+                child_key = str(raw_key)
+                if child_key.lower() in drop_keys:
+                    continue
+                cleaned[child_key] = compact(raw_value, child_key, depth + 1)
+            return cleaned
+        if isinstance(value, (list, tuple, set)):
+            limit = list_limits.get(key, max_default_list)
+            items = list(value)[-limit:] if key in {
+                "senado_proceedings", "commission_presentations",
+                "legislative_history", "proceedings", "presentations",
+            } else list(value)[:limit]
+            return [compact(item, key, depth + 1) for item in items]
+        return str(value)[:max_default_string]
+
+    cleaned = compact(record)
+    return cleaned if isinstance(cleaned, dict) else {}
