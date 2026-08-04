@@ -138,3 +138,46 @@ def test_recent_project_is_current_and_new():
     assert result["is_current"] is True
     assert "new" in result["lifecycle_flags"]
     assert "active" in result["lifecycle_flags"]
+
+
+def test_classification_does_not_persist_raw_evidence():
+    evidence = "ley 19.913 " * 100_000
+    project = CandidateProject(
+        bulletin="19998-25",
+        title="Modifica la ley 19.913",
+        evidence_text=evidence,
+        metadata={"camara_movements": [evidence], "bcn_associated": True},
+    )
+    result = classify(project, CONFIG)
+    assert "evidence_text" not in result
+    assert "camara_movements" not in result["metadata"]
+    assert result["metadata"]["bcn_associated"] is True
+
+
+def test_candidate_merge_limits_evidence_growth():
+    first = CandidateProject(bulletin="19997-25", evidence_text="A" * 100_000)
+    second = CandidateProject(bulletin="19997-25", evidence_text="B" * 100_000)
+    first.merge(second)
+    assert len(first.evidence_text) <= 120_000
+    before = first.evidence_text
+    first.merge(second)
+    assert first.evidence_text == before
+
+
+def test_dashboard_does_not_embed_large_raw_evidence(tmp_path):
+    from monitor_uaf.render import render_dashboard
+
+    project = classify(
+        CandidateProject(
+            bulletin="19996-25",
+            title="Modifica la ley N° 19.913",
+            evidence_text="Texto legislativo extenso " * 200_000,
+            latest_movement="Ingreso de proyecto",
+            latest_movement_date="2026-08-03",
+        ),
+        CONFIG,
+    )
+    output = tmp_path / "index.html"
+    render_dashboard([project], [], {"sources": {}}, output)
+    assert output.stat().st_size < 500_000
+    assert "Texto legislativo extenso" not in output.read_text(encoding="utf-8")
