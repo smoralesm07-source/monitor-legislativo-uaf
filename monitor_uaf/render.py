@@ -4,7 +4,65 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .analysis import sanitize_project_record
 from .config import DOCS_DIR
+
+
+def compact_dashboard_project(project: dict[str, Any]) -> dict[str, Any]:
+    clean = sanitize_project_record(project)
+    for key in ("raw_hash", "fingerprint", "metadata"):
+        clean.pop(key, None)
+    clean.pop("direct_hits", None)
+    impacts: dict[str, dict[str, Any]] = {}
+    for name, payload in (clean.get("impacts") or {}).items():
+        impacts[name] = {
+            "score": payload.get("score", 0),
+            "level": payload.get("level", 0),
+            "recommendation": payload.get("recommendation", ""),
+        }
+    clean["impacts"] = impacts
+    clean["top_impacts"] = [
+        {
+            "name": item.get("name", ""),
+            "score": item.get("score", 0),
+            "level": item.get("level", 0),
+            "recommendation": item.get("recommendation", ""),
+        }
+        for item in (clean.get("top_impacts") or [])[:9]
+    ]
+    return clean
+
+
+def compact_alert(alert: dict[str, Any]) -> dict[str, Any]:
+    clean = dict(alert)
+    clean["changes"] = [
+        {
+            "field": str(item.get("field", ""))[:80],
+            "before": str(item.get("before", ""))[:600],
+            "after": str(item.get("after", ""))[:600],
+        }
+        for item in (clean.get("changes") or [])[:12]
+    ]
+    clean["source_urls"] = list(dict.fromkeys(clean.get("source_urls") or []))[:20]
+    clean["decisions"] = [str(value)[:800] for value in (clean.get("decisions") or [])[:5]]
+    clean["top_impacts"] = [
+        {
+            "name": item.get("name", ""),
+            "score": item.get("score", 0),
+            "level": item.get("level", 0),
+            "recommendation": item.get("recommendation", ""),
+        }
+        for item in (clean.get("top_impacts") or [])[:5]
+    ]
+    return clean
+
+
+def prepare_dashboard_projects(projects: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [compact_dashboard_project(project) for project in projects]
+
+
+def prepare_dashboard_alerts(alerts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [compact_alert(alert) for alert in alerts[:250]]
 
 
 def render_dashboard(
@@ -15,9 +73,11 @@ def render_dashboard(
 ) -> Path:
     output_path = output or DOCS_DIR / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    public_projects = prepare_dashboard_projects(projects)
+    public_alerts = prepare_dashboard_alerts(alerts)
     replacements = {
-        "__PROJECTS_JSON__": json.dumps(projects, ensure_ascii=False).replace("</", "<\\/"),
-        "__ALERTS_JSON__": json.dumps(alerts, ensure_ascii=False).replace("</", "<\\/"),
+        "__PROJECTS_JSON__": json.dumps(public_projects, ensure_ascii=False).replace("</", "<\\/"),
+        "__ALERTS_JSON__": json.dumps(public_alerts, ensure_ascii=False).replace("</", "<\\/"),
         "__STATUS_JSON__": json.dumps(status, ensure_ascii=False).replace("</", "<\\/"),
     }
     document = _template()

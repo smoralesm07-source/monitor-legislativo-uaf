@@ -3,6 +3,11 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from .utils import compact_text
+
+
+MAX_EVIDENCE_CHARS = 120_000
+
 
 @dataclass
 class CandidateProject:
@@ -35,13 +40,26 @@ class CandidateProject:
             if field_name == "title":
                 current_rank = int(self.metadata.get("title_rank", 0))
                 incoming_rank = int(other.metadata.get("title_rank", 0))
-                if incoming and (not current or incoming_rank > current_rank or (incoming_rank == current_rank and len(incoming) > len(current))):
+                if incoming and (
+                    not current
+                    or incoming_rank > current_rank
+                    or (incoming_rank == current_rank and len(incoming) > len(current))
+                ):
                     setattr(self, field_name, incoming)
             elif incoming and (not current or len(incoming) > len(current)):
                 setattr(self, field_name, incoming)
-        self.source_urls = sorted(set(self.source_urls + other.source_urls))
-        self.discovered_from = sorted(set(self.discovered_from + other.discovered_from))
-        self.evidence_text = " ".join(x for x in [self.evidence_text, other.evidence_text] if x).strip()
+        self.source_urls = sorted(set(self.source_urls + other.source_urls))[:20]
+        self.discovered_from = sorted(set(self.discovered_from + other.discovered_from))[:20]
+
+        # La evidencia se utiliza únicamente durante la ejecución actual. Se deduplica y
+        # limita para impedir crecimiento acumulativo si una fuente repite el mismo texto.
+        evidence_parts: list[str] = []
+        for value in (self.evidence_text, other.evidence_text):
+            clean = compact_text(value, MAX_EVIDENCE_CHARS)
+            if clean and clean not in evidence_parts:
+                evidence_parts.append(clean)
+        self.evidence_text = compact_text(" ".join(evidence_parts), MAX_EVIDENCE_CHARS)
+
         self.raw_hash = other.raw_hash or self.raw_hash
         self.metadata.update(other.metadata)
         return self

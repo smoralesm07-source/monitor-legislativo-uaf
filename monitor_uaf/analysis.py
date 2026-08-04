@@ -21,6 +21,24 @@ IMPACT_RECOMMENDATIONS = {
 }
 
 
+PERSISTED_METADATA_KEYS = {"bcn_associated", "newly_discovered", "recent_feed", "title_rank"}
+
+
+def sanitize_project_record(project: dict[str, Any]) -> dict[str, Any]:
+    """Elimina evidencia cruda y estructuras voluminosas antes de persistir o publicar."""
+    clean = dict(project)
+    clean.pop("evidence_text", None)
+    metadata = clean.get("metadata") or {}
+    clean["metadata"] = {
+        key: metadata[key]
+        for key in PERSISTED_METADATA_KEYS
+        if key in metadata and isinstance(metadata[key], (str, int, float, bool, type(None)))
+    }
+    clean["source_urls"] = unique(clean.get("source_urls", []))[:20]
+    clean["discovered_from"] = unique(clean.get("discovered_from", []))[:20]
+    return clean
+
+
 def _has_any(text: str, terms: list[str]) -> list[str]:
     return [term for term in terms if normalize_text(term) in text]
 
@@ -203,8 +221,9 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "reference_date": lifecycle["reference_date"],
     }
 
+    persisted_project = sanitize_project_record(asdict(project))
     return {
-        **asdict(project),
+        **persisted_project,
         **lifecycle,
         "relevance_level": relevance_level,
         "relevance_label": relevance_label,

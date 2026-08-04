@@ -6,12 +6,12 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .analysis import classify, compare_projects
+from .analysis import classify, compare_projects, sanitize_project_record
 from .config import DATA_DIR, DOCS_DIR, load_config
 from .http_client import HttpClient
 from .models import CandidateProject
 from .notifier import send_alert_email
-from .render import render_dashboard
+from .render import prepare_dashboard_alerts, prepare_dashboard_projects, render_dashboard
 from .sources import BCNAssociatedProjectsSource, CamaraOpenDataSource, SenadoSource
 from .utils import iso_now, local_now, read_json, write_json
 
@@ -106,9 +106,15 @@ class MonitorPipeline:
                 latest_movement_date=old.get("latest_movement_date", ""),
                 source_urls=old.get("source_urls", []),
                 discovered_from=old.get("discovered_from", []),
-                evidence_text=old.get("evidence_text", ""),
+                # La evidencia cruda de ejecuciones anteriores nunca se reinyecta: fue la
+                # causa del crecimiento acumulativo de state.json en versiones previas.
+                evidence_text="",
                 raw_hash=old.get("raw_hash", ""),
-                metadata=old.get("metadata", {}),
+                metadata={
+                    key: value
+                    for key, value in (old.get("metadata", {}) or {}).items()
+                    if key in {"bcn_associated", "newly_discovered", "recent_feed", "title_rank"}
+                },
             )
             candidates.setdefault(bulletin, previous_candidate).merge(previous_candidate)
 
@@ -159,6 +165,16 @@ class MonitorPipeline:
             current_projects = previous_projects
             excluded_projects = {}
 
+        # Compacta incluso estados heredados de v1.0.3: nunca persistir evidencia cruda.
+        current_projects = {
+            bulletin: sanitize_project_record(project)
+            for bulletin, project in current_projects.items()
+        }
+        excluded_projects = {
+            bulletin: sanitize_project_record(project)
+            for bulletin, project in excluded_projects.items()
+        }
+
         alerts = compare_projects(previous_state, current_projects, self.config, excluded_projects)
         finished_at = iso_now(self.timezone)
         alerts_with_time = [{"detected_at": finished_at, **alert} for alert in alerts]
@@ -200,7 +216,9 @@ class MonitorPipeline:
             record["title"] = candidate.title or record.get("title", "")
         write_json(DATA_DIR / "discovery_index.json", {"bulletins": new_discovery_map})
         write_json(DATA_DIR / "state.json", {"last_run_at": finished_at, "projects": current_projects})
-        project_list = sorted(current_projects.values(), key=lambda item: item.get("priority_score", 0), reverse=True)
+        state_project_list = sorted(current_projects.values(), key=lambda item: item.get("priority_score", 0), reverse=True)
+        project_list = prepare_dashboard_projects(state_project_list)
+        merged_alerts = prepare_dashboard_alerts(merged_alerts)
         write_json(DATA_DIR / "projects.json", project_list)
         write_json(DATA_DIR / "alerts.json", merged_alerts)
         write_json(DATA_DIR / "status.json", status)
