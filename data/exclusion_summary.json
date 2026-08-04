@@ -1,6 +1,8 @@
 {
-  "generated_at": "2026-08-04T11:25:06-04:00",
-  "total": 0,
-  "by_reason": {},
-  "rule": "Solo iniciativas vigentes con impacto directo en Ley 19.913 o pertinencia LA/FT comprobable; la etapa vigente prioriza la ficha oficial de la cámara en que se tramita actualmente."
+  "generated_at": "2026-08-04T12:47:56-04:00",
+  "total": 88,
+  "by_reason": {
+    "unverified": 88
+  },
+  "rule": "Solo iniciativas recientes o con movimiento legislativo verificado, de relevancia directa para la Ley 19.913 o pertinencia LA/FT comprobable. La etapa e informe provienen de la ficha individual oficial; las fechas solo se publican cuando pertenecen a una fila de tramitación del mismo boletín."
 }
