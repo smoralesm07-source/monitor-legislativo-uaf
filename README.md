@@ -9,7 +9,20 @@ El sistema descubre iniciativas nuevas, actualiza los proyectos vigilados, compa
 
 
 
-## Cambios de la versión 1.1.1
+## Cambios de la versión 1.2.0
+
+- excluye de manera explícita el boletín histórico **2975-07** en configuración, estado heredado, alertas y renderizado;
+- exige vigencia oficial comprobada y actividad legislativa dentro de una ventana de 540 días;
+- separa estrictamente las tablas globales del Senado de la ficha individual de cada boletín, evitando atribuir fechas de otros proyectos;
+- obtiene la **etapa actual** desde la ficha individual oficial y la protege frente a etapas históricas con menor autoridad;
+- calcula el **último antecedente legislativo** exclusivamente desde filas fechadas de la cronología del mismo boletín; las presentaciones ante comisión quedan en una sección separada;
+- descarta fechas futuras, agendas o citaciones todavía no realizadas como si fueran movimientos concluidos;
+- cuando existen varias filas el mismo día, conserva la última actuación publicada;
+- amplía la fuente de los enlaces y aumenta levemente la tipografía de **Ámbitos legales afectados**;
+- reduce la ventana de descubrimiento del Senado a 540 días y mantiene a la BCN solo como fuente histórica de candidatos;
+- añade pruebas específicas de exclusión histórica, etapa vigente, contexto exacto de fechas y compatibilidad del dashboard.
+
+## Cambios de la versión 1.1.2
 
 - corrige la etapa vigente tomando la fila oficial más reciente y el informe de comisión correspondiente a esa misma etapa;
 - amplía la lectura estratégica con materia, promotores y ámbitos legales afectados, sin repetir el último movimiento;
@@ -55,7 +68,7 @@ Un proyecto aparece en el dashboard solo si, además de ser relevante para la UA
 - urgencia vigente;
 - votación, citación, Comisión Mixta, informe u otro próximo hito comprobable.
 
-Por defecto, la ventana para iniciativas nuevas es de 180 días y la ventana máxima de actividad es de 730 días. Ambas se configuran en `config/monitor_config.json`.
+Por defecto, la ventana para iniciativas nuevas es de 180 días y la ventana máxima de actividad es de 540 días. Ambas se configuran en `config/monitor_config.json`.
 
 ## Fuentes utilizadas
 
