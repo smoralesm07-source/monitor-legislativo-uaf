@@ -1,5 +1,5 @@
 {
-  "last_run_at": "2026-08-03T22:34:38-04:00",
+  "last_run_at": "2026-08-04T08:34:39-04:00",
   "projects": {
     "15975-25": {
       "bulletin": "15975-25",
@@ -25,12 +25,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -259,12 +259,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -508,15 +508,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2024,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2024
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -754,15 +754,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2024,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2024
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1003,15 +1003,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2024,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2024
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1256,15 +1256,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2025,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2025
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1506,15 +1506,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2025,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2025
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1749,15 +1749,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2025,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2025
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2013,15 +2013,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2026,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2026
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2250,15 +2250,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2026,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2026
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2518,15 +2518,15 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "discovery_year": 2026,
-        "newly_discovered": false,
-        "title_rank": 4,
-        "official_catalog": true,
-        "recent_feed": true,
-        "official_date_verified": false,
-        "official_detail_verified": true,
         "movement_source": "Senado ficha oficial",
-        "movement_rank": 6
+        "official_catalog": true,
+        "movement_rank": 6,
+        "official_date_verified": false,
+        "title_rank": 4,
+        "official_detail_verified": true,
+        "newly_discovered": false,
+        "recent_feed": true,
+        "discovery_year": 2026
       },
       "related_bulletins": [],
       "group_bulletins": [
