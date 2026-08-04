@@ -822,3 +822,203 @@ class BCNAssociatedProjectsSource:
             )
             projects[bulletin] = project
         return list(projects.values())
+
+class CamaraWebDetailSource:
+    """Respaldo HTML oficial de la Cámara para validar cada boletín.
+
+    Se utiliza cuando los servicios XML o la ficha del Senado no responden. La
+    página de la Cámara conserva el estado actual y el historial completo incluso
+    cuando el proyecto se encuentra en trámite en el Senado.
+    """
+
+    BASE_URL = "https://www.camara.cl/legislacion/ProyectosDeLey/tramitacion.aspx"
+
+    def __init__(self, client: HttpClient, project_ids: dict[str, str] | None = None) -> None:
+        self.client = client
+        self.project_ids = project_ids or {}
+
+    @staticmethod
+    def _lines(soup: BeautifulSoup) -> list[str]:
+        return [compact_text(item, 5000) for item in soup.get_text("\n", strip=True).splitlines() if compact_text(item, 5000)]
+
+    @staticmethod
+    def _field(lines: list[str], *labels: str) -> str:
+        wanted = {normalize_text(label).rstrip(":") for label in labels}
+        for index, line in enumerate(lines):
+            norm = normalize_text(line).rstrip(":")
+            if norm in wanted:
+                for candidate in lines[index + 1:index + 5]:
+                    c_norm = normalize_text(candidate)
+                    if c_norm and c_norm not in wanted and c_norm not in {
+                        "tramitacion", "informes", "oficios", "indicaciones", "urgencias",
+                        "votaciones", "autores", "veto", "volver proyecto de ley",
+                    }:
+                        return candidate
+            for label in wanted:
+                if norm.startswith(label + ":"):
+                    return compact_text(line.split(":", 1)[1], 3000)
+        return ""
+
+    @staticmethod
+    def _headers(row) -> list[str]:
+        cells = row.find_all(["th", "td"], recursive=False) or row.find_all(["th", "td"])
+        return [normalize_text(compact_text(cell.get_text(" ", strip=True), 300)) for cell in cells]
+
+    @staticmethod
+    def _column(headers: list[str], *needles: str) -> int | None:
+        wanted = [normalize_text(item) for item in needles]
+        for idx, header in enumerate(headers):
+            if any(header == item for item in wanted):
+                return idx
+        for idx, header in enumerate(headers):
+            if any(item in header for item in wanted):
+                return idx
+        return None
+
+    def _url_candidates(self, bulletin: str) -> list[str]:
+        project_id = str(self.project_ids.get(bulletin, "") or "").strip()
+        urls = []
+        if project_id:
+            urls.append(f"{self.BASE_URL}?prmBOLETIN={bulletin}&prmID={project_id}")
+        urls.append(f"{self.BASE_URL}?prmBOLETIN={bulletin}")
+        return unique(urls)
+
+    def detail(self, bulletin: str) -> CandidateProject:
+        errors: list[str] = []
+        result = None
+        soup = None
+        for url in self._url_candidates(bulletin):
+            try:
+                candidate_result = self.client.get(url)
+                candidate_soup = BeautifulSoup(candidate_result.text, "html.parser")
+                page_text = compact_text(candidate_soup.get_text(" ", strip=True), 160000)
+                if bulletin not in page_text:
+                    errors.append(f"{url}: la página no contiene el boletín")
+                    continue
+                result, soup = candidate_result, candidate_soup
+                break
+            except Exception as exc:  # noqa: BLE001
+                errors.append(f"{url}: {exc}")
+        if result is None or soup is None:
+            raise RuntimeError(" | ".join(errors) or f"No fue posible obtener {bulletin} en Cámara web")
+
+        for tag in soup(["script", "style", "noscript"]):
+            tag.decompose()
+        lines = self._lines(soup)
+        full_text = compact_text(" ".join(lines), 160000)
+
+        headings = [compact_text(h.get_text(" ", strip=True), 3000) for h in soup.find_all(["h1", "h2", "h3"])]
+        title = next((h for h in headings if h and bulletin not in h and normalize_text(h) not in {
+            "camara de diputadas y diputados", "proyecto de ley", "tramitacion", "historial completo", "resumen"
+        }), "")
+        entry_raw = self._field(lines, "Fecha de ingreso")
+        parsed_entry = parse_legislative_date(entry_raw)
+        state = self._field(lines, "Estado")
+        initiative_type = self._field(lines, "Iniciativa")
+        origin_chamber = self._field(lines, "Cámara de origen", "Camara de origen")
+        authors_raw = self._field(lines, "Autor", "Autores")
+
+        proceedings: list[dict[str, object]] = []
+        for table in soup.find_all("table"):
+            rows = table.find_all("tr")
+            header_index = None
+            headers: list[str] = []
+            for idx, row in enumerate(rows[:8]):
+                candidate_headers = self._headers(row)
+                joined = " | ".join(candidate_headers)
+                if "fecha" in joined and "etapa" in joined and ("sub-etapa" in joined or "subetapa" in joined):
+                    header_index, headers = idx, candidate_headers
+                    break
+            if header_index is None:
+                continue
+            didx = self._column(headers, "fecha")
+            sidx = self._column(headers, "sesion", "sesión")
+            eidx = self._column(headers, "etapa")
+            uidx = self._column(headers, "sub-etapa", "subetapa")
+            docidx = self._column(headers, "documento")
+            for row in rows[header_index + 1:]:
+                cells = row.find_all(["th", "td"], recursive=False) or row.find_all(["th", "td"])
+                values = [compact_text(cell.get_text(" ", strip=True), 7000) for cell in cells]
+                if didx is None or didx >= len(values):
+                    continue
+                parsed = parse_legislative_date(values[didx])
+                if not parsed:
+                    continue
+                documents: list[dict[str, str]] = []
+                target_cell = cells[docidx] if docidx is not None and docidx < len(cells) else row
+                for link in target_cell.find_all("a", href=True):
+                    href = link.get("href", "").strip()
+                    if href and not href.lower().startswith("javascript:"):
+                        documents.append({
+                            "label": compact_text(link.get_text(" ", strip=True), 300) or "Ver documento",
+                            "url": urljoin(result.url, href),
+                        })
+                proceedings.append({
+                    "session": values[sidx] if sidx is not None and sidx < len(values) else "",
+                    "date": parsed.isoformat(),
+                    "stage": values[eidx] if eidx is not None and eidx < len(values) else "",
+                    "substage": values[uidx] if uidx is not None and uidx < len(values) else "",
+                    "documents": documents,
+                })
+            if proceedings:
+                break
+
+        proceedings.sort(key=lambda item: parse_legislative_date(str(item.get("date", ""))) or datetime.min.date())
+        latest = proceedings[-1] if proceedings else {}
+        latest_date = str(latest.get("date", "") or "")
+        latest_movement = compact_text(" | ".join(filter(None, [str(latest.get("substage", "")), str(latest.get("stage", ""))])), 6000)
+
+        latest_stage = compact_text(str(latest.get("stage", "")), 2000)
+        stage = latest_stage or state
+        # El estado resumen suele omitir la cámara; la última fila de tramitación
+        # contiene la denominación completa y tiene preferencia.
+        commission = ""
+        for item in reversed(proceedings):
+            substage = compact_text(str(item.get("substage", "")), 2000)
+            if "informe" in normalize_text(substage) and "comision" in normalize_text(substage):
+                commission = substage
+                break
+
+        promoters = [compact_text(item, 300) for item in re.split(r"\s*\|\s*|\s*;\s*", authors_raw) if compact_text(item, 300)]
+        source_url = result.url
+        return CandidateProject(
+            bulletin=bulletin,
+            title=title,
+            entry_date=parsed_entry.isoformat() if parsed_entry else entry_raw,
+            initiative_type=initiative_type,
+            origin_chamber=origin_chamber,
+            state=state or ("En tramitación" if stage else ""),
+            stage=stage,
+            commission=commission,
+            latest_movement=latest_movement,
+            latest_movement_date=latest_date,
+            source_urls=[source_url],
+            discovered_from=["Cámara web ficha individual"],
+            evidence_text=full_text,
+            raw_hash=stable_hash(full_text),
+            metadata={
+                "camara_web_proceedings": proceedings[-250:],
+                "promoters": promoters,
+                "matters": unique([title]),
+                "official_stage_source": "Cámara web ficha individual",
+                "official_detail_verified": True,
+                "entry_date_verified": bool(parsed_entry),
+                "official_status_verified": bool(state or stage),
+                "movement_verified": bool(latest_date),
+                "movement_authoritative": bool(proceedings),
+                "movement_source": "Cámara web historial del mismo boletín" if latest_date else "",
+                "movement_context_exact": True,
+                "field_ranks": {
+                    "title": 100,
+                    "entry_date": 110,
+                    "initiative_type": 110,
+                    "origin_chamber": 110,
+                    "state": 116,
+                    "stage": 118,
+                    "commission": 112,
+                    "latest_movement": 118 if latest_date else 0,
+                    "latest_movement_date": 118 if latest_date else 0,
+                },
+            },
+        )
+

@@ -14,7 +14,7 @@ from .notifier import send_alert_email
 from .documents import OfficialProjectDocumentSource
 from .press import ProjectPressSource
 from .render import render_dashboard
-from .sources import BCNAssociatedProjectsSource, CamaraOpenDataSource, SenadoSource
+from .sources import BCNAssociatedProjectsSource, CamaraOpenDataSource, CamaraWebDetailSource, SenadoSource
 from .utils import iso_now, local_now, parse_legislative_date, read_json, write_json
 
 LOGGER = logging.getLogger(__name__)
@@ -43,6 +43,29 @@ def _project_order(item: dict[str, Any]) -> tuple[str, int, int, int]:
     )
 
 
+
+def _continuity_needed(
+    current_count: int,
+    continuity_count: int,
+    verified_details: int,
+    config: dict[str, Any],
+) -> bool:
+    """Evita que una falla de extracción publique un tablero vacío.
+
+    La reducción solo activa respaldo si no hubo validaciones individuales
+    suficientes. Un cierre legislativo real sí puede reducir la cartera porque
+    vendrá acompañado de fichas oficiales verificadas.
+    """
+    if not config.get("continuity_fallback_enabled", True) or continuity_count <= 0:
+        return False
+    if current_count == 0 and verified_details == 0:
+        return True
+    ratio = current_count / max(continuity_count, 1)
+    minimum_ratio = float(config.get("continuity_min_ratio", 0.35))
+    minimum_verified = int(config.get("continuity_min_verified_details", 1))
+    return ratio < minimum_ratio and verified_details < minimum_verified
+
+
 class MonitorPipeline:
     def __init__(self, config: dict[str, Any] | None = None) -> None:
         self.config = config or load_config()
@@ -51,6 +74,7 @@ class MonitorPipeline:
             retries=int(self.config.get("request_retries", 3)),
         )
         self.camara = CamaraOpenDataSource(self.client)
+        self.camara_web = CamaraWebDetailSource(self.client, self.config.get("camara_project_ids", {}))
         self.senado = SenadoSource(self.client)
         self.bcn = BCNAssociatedProjectsSource(self.client)
         self.documents = OfficialProjectDocumentSource(self.client, self.config)
@@ -62,6 +86,12 @@ class MonitorPipeline:
         previous_state = read_json(DATA_DIR / "state.json", {"projects": {}})
         discovery = read_json(DATA_DIR / "discovery_index.json", {"bulletins": {}})
         previous_projects: dict[str, Any] = previous_state.get("projects", {})
+        bootstrap_rows = read_json(DATA_DIR / "bootstrap_projects.json", [])
+        bootstrap_projects = {
+            item.get("bulletin"): item
+            for item in bootstrap_rows
+            if isinstance(item, dict) and item.get("bulletin")
+        }
         excluded_cfg = self.config.get("excluded_bulletins", {}) or {}
         excluded_bulletins = set(excluded_cfg if isinstance(excluded_cfg, dict) else excluded_cfg)
         # La depuración es previa a cualquier respaldo: un boletín excluido no puede
@@ -70,6 +100,11 @@ class MonitorPipeline:
             bulletin: value for bulletin, value in previous_projects.items()
             if bulletin not in excluded_bulletins
         }
+        bootstrap_projects = {
+            bulletin: value for bulletin, value in bootstrap_projects.items()
+            if bulletin not in excluded_bulletins
+        }
+        continuity_projects = previous_projects or bootstrap_projects
         if isinstance(previous_state, dict):
             previous_state["projects"] = previous_projects
         if isinstance(discovery, dict) and isinstance(discovery.get("bulletins"), dict):
@@ -96,7 +131,7 @@ class MonitorPipeline:
             for year in years:
                 camara_items.extend(self.camara.list_by_year(year))
             merge_many(camara_items)
-            source_health["Cámara XML"] = {"ok": True, "items": len(camara_items), "years": years}
+            source_health["Cámara XML"] = {"ok": bool(camara_items), "items": len(camara_items), "years": years, "degraded": not bool(camara_items), "note": "Sin filas: posible cambio de esquema o indisponibilidad." if not camara_items else "Descubrimiento estructurado operativo."}
         except Exception as exc:  # noqa: BLE001
             LOGGER.exception("Falló descubrimiento Cámara")
             source_health["Cámara XML"] = {"ok": False, "error": str(exc)}
@@ -107,8 +142,9 @@ class MonitorPipeline:
             )
             merge_many(senate_current)
             source_health["Senado proyectos recientes"] = {
-                "ok": True,
+                "ok": bool(senate_current),
                 "items": len(senate_current),
+                "degraded": not bool(senate_current),
                 "note": "Portada oficial: solo filas En tramitación con fecha reciente.",
             }
         except Exception as exc:  # noqa: BLE001
@@ -156,7 +192,7 @@ class MonitorPipeline:
 
         # La ficha anterior es respaldo de continuidad, con autoridad menor que
         # cualquier nueva extracción oficial.
-        for bulletin, old in previous_projects.items():
+        for bulletin, old in continuity_projects.items():
             previous_meta = dict(old.get("metadata", {}) or {})
             previous_meta["field_ranks"] = {field: 5 for field in CandidateProject._SCALAR_FIELDS}
             # La ficha heredada sirve como respaldo descriptivo, pero no puede
@@ -185,7 +221,7 @@ class MonitorPipeline:
         newly_discovered = set(candidates) - seen_before
         direct_bcn = {b for b, c in candidates.items() if c.metadata.get("bcn_associated")}
         seed = set(self.config.get("seed_bulletins", []))
-        tracked = set(previous_projects)
+        tracked = set(continuity_projects)
 
         # Revisión documental de proyectos recientes: permite detectar referencias
         # incorporadas en indicaciones, informes u oficios aunque el título no sea LA/FT.
@@ -224,6 +260,7 @@ class MonitorPipeline:
         enriched_count = 0
         verified_stage_count = 0
         verified_movement_count = 0
+        verified_detail_bulletins: set[str] = set()
         current_projects: dict[str, Any] = {}
         excluded_projects: dict[str, Any] = {}
         for bulletin, candidate in sorted(candidates.items()):
@@ -245,6 +282,16 @@ class MonitorPipeline:
                 except Exception as exc:  # noqa: BLE001
                     LOGGER.warning("No se obtuvo detalle Cámara para %s: %s", bulletin, exc)
                 try:
+                    camara_web_detail = self.camara_web.detail(bulletin)
+                    candidate.merge(camara_web_detail)
+                    detail_success = True
+                    source_health.setdefault("Cámara web fichas", {"ok": True, "items": 0})
+                    source_health["Cámara web fichas"]["items"] += 1
+                except Exception as exc:  # noqa: BLE001
+                    LOGGER.warning("No se obtuvo ficha web Cámara para %s: %s", bulletin, exc)
+                    source_health.setdefault("Cámara web fichas", {"ok": False, "items": 0, "errors": 0})
+                    source_health["Cámara web fichas"]["errors"] = source_health["Cámara web fichas"].get("errors", 0) + 1
+                try:
                     # La ficha individual del Senado se consulta después. Sus
                     # campos de etapa e informe tienen la mayor autoridad, pero
                     # el movimiento se fusiona por fecha entre fuentes oficiales.
@@ -257,8 +304,10 @@ class MonitorPipeline:
                     enriched_count += 1
                 if candidate.metadata.get("official_status_verified") and candidate.stage:
                     verified_stage_count += 1
+                    verified_detail_bulletins.add(bulletin)
                 if candidate.metadata.get("movement_verified") and candidate.latest_movement_date:
                     verified_movement_count += 1
+                    verified_detail_bulletins.add(bulletin)
 
                 # Con la ficha legislativa ya enriquecida se revisan también los
                 # documentos enlazados en la columna Documentos del Senado y las
@@ -293,15 +342,20 @@ class MonitorPipeline:
                 ),
             }
 
-        # Si fallaron las fuentes legislativas principales, conservar la cartera
-        # anterior para no generar cierres falsos.
-        official_checks = [
-            source_health.get("Cámara XML", {}),
-            source_health.get("Senado proyectos recientes", {}),
-            source_health.get("Senado actividad reciente", {}),
-        ]
-        if official_checks and not any(item.get("ok") for item in official_checks):
-            current_projects = previous_projects
+        # Continuidad operacional: una caída, bloqueo 403 o cambio de HTML no
+        # puede reemplazar el último conjunto válido por un tablero vacío.
+        fallback_used = _continuity_needed(
+            len(current_projects),
+            len(continuity_projects),
+            len(verified_detail_bulletins),
+            self.config,
+        )
+        if fallback_used:
+            current_projects = {
+                bulletin: {**project, "data_continuity_fallback": True}
+                for bulletin, project in continuity_projects.items()
+                if bulletin not in excluded_bulletins
+            }
             excluded_projects = {}
 
         annotate_initiative_groups(current_projects)
@@ -346,6 +400,9 @@ class MonitorPipeline:
             "projects_enriched": enriched_count,
             "stages_verified": verified_stage_count,
             "movements_verified": verified_movement_count,
+            "verified_detail_bulletins": len(verified_detail_bulletins),
+            "continuity_fallback_used": fallback_used,
+            "data_freshness": "último estado válido conservado" if fallback_used else "actualizado desde fuentes oficiales",
             "alerts_generated": len(alerts),
             "baseline": not bool(previous_projects),
             "lifecycle_counts": dict(lifecycle_counts),
