@@ -1,5 +1,5 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -506,5 +506,22 @@
       ]
     }
   ],
-  "email_log_max_ids": 2000
+  "email_log_max_ids": 2000,
+  "legislative_history_years": 3,
+  "legislative_history_max_items": 18,
+  "source_policy": {
+    "allowed_domains": [
+      "camara.cl",
+      "opendata.camara.cl",
+      "opendata.congreso.cl",
+      "senado.cl",
+      "tramitacion.senado.cl",
+      "portallegislativo.senado.cl"
+    ],
+    "excluded_sources": [
+      "BCN",
+      "LeyChile"
+    ],
+    "description": "Solo Cámara de Diputadas y Diputados y Senado de la República."
+  }
 }
