@@ -181,3 +181,124 @@ def test_dashboard_does_not_embed_large_raw_evidence(tmp_path):
     render_dashboard([project], [], {"sources": {}}, output)
     assert output.stat().st_size < 500_000
     assert "Texto legislativo extenso" not in output.read_text(encoding="utf-8")
+
+
+def test_acronym_ros_does_not_match_profesores_or_otros():
+    project = CandidateProject(
+        bulletin="19990-04",
+        title="Mejora la formación de profesores y asigna otros recursos a educación",
+        evidence_text="Establece sanciones administrativas y una plataforma de datos para establecimientos educacionales.",
+    )
+    result = classify(project, CONFIG)
+    assert result["relevance_level"] == 0
+    assert "Reportes y operaciones" not in result["impacts"]
+
+
+def test_education_project_with_generic_financial_words_is_excluded():
+    project = CandidateProject(
+        bulletin="19991-04",
+        title="Fortalece el financiamiento de la educación pública",
+        evidence_text="Regula presupuesto, bancos de datos, sanciones y fiscalización de universidades.",
+    )
+    result = classify(project, CONFIG)
+    assert result["relevance_level"] == 0
+    assert "educación" in " ".join(CONFIG["noise_domain_terms"])
+
+
+def test_secondary_laft_requires_precise_anchor_and_builds_useful_summary():
+    project = CandidateProject(
+        bulletin="19992-07",
+        title="Crea un registro nacional de beneficiarios finales",
+        evidence_text="El registro permitirá identificar al titular real y prevenir el lavado de activos mediante intercambio de información financiera.",
+    )
+    result = classify(project, CONFIG)
+    assert result["relevance_level"] == 2
+    assert result["laft_confidence"] >= CONFIG["minimum_secondary_confidence"]
+    assert "beneficiario final" in result["linkage_summary"]
+    assert result["laft_topics"]
+
+
+def test_known_initiative_has_short_reference_name():
+    project = CandidateProject(
+        bulletin="15975-25",
+        title="Crea el Subsistema de Inteligencia Económica y establece otras medidas para la prevención y alerta de actividades que digan relación con el crimen organizado",
+        evidence_text="Modifica la ley 19.913 y fortalece a la Unidad de Análisis Financiero.",
+    )
+    result = classify(project, CONFIG)
+    assert result["initiative_name"] == "Sistema de Inteligencia Económica"
+    assert "Modifica o afecta expresamente" in result["linkage_summary"]
+
+
+def test_candidate_merge_keeps_description_and_newest_date_together():
+    first = CandidateProject(
+        bulletin="19993-25",
+        latest_movement="10/10/2025 | Ingreso de proyecto",
+        latest_movement_date="2025-10-10",
+        metadata={"movement_rank": 3, "movement_source": "Fuente A"},
+    )
+    second = CandidateProject(
+        bulletin="19993-25",
+        latest_movement="18/07/2026 | Informe de Comisión",
+        latest_movement_date="2026-07-18",
+        metadata={"movement_rank": 5, "movement_source": "Cámara XML oficial"},
+    )
+    first.merge(second)
+    assert first.latest_movement_date == "2026-07-18"
+    assert "Informe de Comisión" in first.latest_movement
+    assert first.metadata["movement_source"] == "Cámara XML oficial"
+
+
+def test_senado_detail_uses_project_timeline_not_unrelated_recent_list(monkeypatch):
+    from types import SimpleNamespace
+    from monitor_uaf.sources import SenadoSource
+
+    source = SenadoSource(HttpClient())
+    html = (FIXTURES / "senado_detail.html").read_text(encoding="utf-8")
+    monkeypatch.setattr(source.client, "get", lambda url: SimpleNamespace(text=html))
+    project = source.detail("19992-07")
+    assert project.latest_movement_date == "2026-07-18"
+    assert "Informe de Comisión" in project.latest_movement
+    assert "25/10/2025" not in project.latest_movement
+    assert project.metadata["movement_source"] == "Senado ficha oficial"
+
+
+def test_initiative_groups_refunded_bulletins():
+    from monitor_uaf.analysis import annotate_initiative_groups
+
+    p1 = classify(CandidateProject(bulletin="16764-03", title="Limita transacciones en efectivo", evidence_text="Modifica la ley 19.913"), CONFIG)
+    p2 = classify(CandidateProject(bulletin="15462-03", title="Regula pagos en efectivo", evidence_text="Modifica la ley 19.913"), CONFIG)
+    grouped = annotate_initiative_groups({"16764-03": p1, "15462-03": p2}, CONFIG)
+    assert grouped["16764-03"]["initiative_group_id"] == grouped["15462-03"]["initiative_group_id"]
+    assert grouped["16764-03"]["group_size"] == 2
+
+
+def test_parse_senate_textual_date_with_de_and_comma():
+    from monitor_uaf.utils import parse_legislative_date
+    assert parse_legislative_date("Miércoles 15 de Enero, 2026") .isoformat() == "2026-01-15"
+
+
+def test_alert_uses_official_movement_date_not_detection_date():
+    old = classify(CandidateProject(
+        bulletin="19994-25", title="Modifica la ley 19.913", state="Primer trámite",
+        latest_movement="01/05/2026 | Ingreso", latest_movement_date="2026-05-01"
+    ), CONFIG)
+    new = classify(CandidateProject(
+        bulletin="19994-25", title="Modifica la ley 19.913", state="Segundo trámite",
+        latest_movement="22/07/2026 | Pasa a segundo trámite", latest_movement_date="2026-07-22",
+        metadata={"movement_source": "Cámara XML oficial"}
+    ), CONFIG)
+    alerts = compare_projects({"projects": {"19994-25": old}}, {"19994-25": new}, CONFIG)
+    assert alerts[0]["official_movement_date"] == "2026-07-22"
+    assert alerts[0]["movement_source"] == "Cámara XML oficial"
+
+
+def test_analysis_only_migration_does_not_generate_alert():
+    old = classify(CandidateProject(
+        bulletin="19995-25", title="Modifica la ley 19.913", state="Primer trámite",
+        latest_movement="01/06/2026 | Ingreso", latest_movement_date="2026-06-01"
+    ), CONFIG)
+    new = dict(old)
+    new["initiative_name"] = "Nuevo nombre analítico más claro"
+    new["laft_topics"] = ["secreto bancario"]
+    new["fingerprint"] = "huella-analitica-distinta"
+    assert compare_projects({"projects": {"19995-25": old}}, {"19995-25": new}, CONFIG) == []
