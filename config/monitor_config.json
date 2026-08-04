@@ -1,5 +1,5 @@
 {
-  "version": "1.0.5",
+  "version": "1.0.6",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -505,5 +505,6 @@
         "15462-03"
       ]
     }
-  ]
+  ],
+  "email_log_max_ids": 2000
 }
