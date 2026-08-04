@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.2.0",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -246,7 +246,7 @@
     "suma urgencia"
   ],
   "new_project_days": 180,
-  "active_movement_days": 730,
+  "active_movement_days": 540,
   "terminal_state_terms": [
     "tramitación terminada",
     "tramitacion terminada",
@@ -348,6 +348,15 @@
   "official_document_scan_enabled": true,
   "official_document_scan_days": 420,
   "official_document_scan_max_candidates_per_run": 35,
-  "official_document_scan_max_documents_per_project": 6,
-  "official_document_scan_max_chars_per_project": 45000
+  "official_document_scan_max_documents_per_project": 8,
+  "official_document_scan_max_chars_per_project": 45000,
+  "senate_discovery_days": 540,
+  "excluded_bulletins": {
+    "2975-07": "Boletín histórico que dio origen a la Ley N.º 19.913; su tramitación terminó y no debe incorporarse a la cartera vigente."
+  },
+  "official_validation_required": true,
+  "historical_entry_cutoff_year": 2018,
+  "official_document_summary_max_chars": 850,
+  "top_direct_projects_limit": 5,
+  "default_project_sort": "latest_movement"
 }
