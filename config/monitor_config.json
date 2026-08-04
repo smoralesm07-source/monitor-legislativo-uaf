@@ -1,5 +1,5 @@
 {
-  "version": "1.0.7",
+  "version": "1.0.8",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -523,5 +523,8 @@
       "LeyChile"
     ],
     "description": "Solo Cámara de Diputadas y Diputados y Senado de la República."
-  }
+  },
+  "allow_curated_watchlist_without_date": true,
+  "allow_recent_catalog_without_date": true,
+  "senate_recent_movements_enabled": false
 }
