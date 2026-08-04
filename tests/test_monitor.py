@@ -88,9 +88,9 @@ def test_dashboard_includes_active_navigation_and_temporal_chart(tmp_path):
     output = tmp_path / "index.html"
     render_dashboard([project], [alert], {"alerts_generated": 1, "sources": {}}, output)
     page = output.read_text(encoding="utf-8")
-    assert "Análisis temporal de movimientos" in page
-    assert "Modifican Ley 19.913" in page
-    assert "navigate('direct'" in page
+    assert "Historia legislativa reciente" in page
+    assert "Modificaciones directas a la Ley N.º 19.913" in page
+    assert "go('directos'" in page
     assert "demo-alert" in page
 
 
@@ -146,12 +146,13 @@ def test_classification_does_not_persist_raw_evidence():
         bulletin="19998-25",
         title="Modifica la ley 19.913",
         evidence_text=evidence,
-        metadata={"camara_movements": [evidence], "bcn_associated": True},
+        metadata={"camara_movements": [evidence], "recent_feed": True},
     )
     result = classify(project, CONFIG)
     assert "evidence_text" not in result
     assert "camara_movements" not in result["metadata"]
-    assert result["metadata"]["bcn_associated"] is True
+    assert result["metadata"]["recent_feed"] is True
+    assert "bcn_associated" not in result["metadata"]
 
 
 def test_candidate_merge_limits_evidence_growth():
@@ -369,3 +370,85 @@ def test_email_log_blocks_duplicate_alerts():
     assert filter_unsent_alerts([alert], {"sent_alert_ids": []}) == [alert]
     log = updated_email_log({"sent_alert_ids": []}, [alert], "2026-08-03T10:00:00-04:00")
     assert filter_unsent_alerts([alert], log) == []
+
+
+def test_recent_history_keeps_only_last_three_years_and_summarizes():
+    from datetime import timedelta
+    from monitor_uaf.utils import local_now
+
+    today = local_now(CONFIG["timezone"]).date()
+    recent = (today - timedelta(days=20)).isoformat()
+    old = (today - timedelta(days=1500)).isoformat()
+    project = CandidateProject(
+        bulletin="19970-25",
+        title="Modifica la ley 19.913 sobre sujetos obligados",
+        state="Primer trámite constitucional",
+        latest_movement_date=recent,
+        latest_movement=f"{recent} | Informe de Comisión de Hacienda",
+        legislative_history=[
+            {"date": recent, "description": "Informe de Comisión de Hacienda sobre sujetos obligados", "source": "Cámara XML oficial", "url": "https://www.camara.cl/"},
+            {"date": old, "description": "Ingreso histórico", "source": "Senado ficha oficial", "url": "https://www.senado.cl/"},
+        ],
+    )
+    result = classify(project, CONFIG)
+    assert len(result["legislative_history"]) == 1
+    assert result["legislative_history"][0]["date"] == recent
+    assert "comisión" in result["legislative_history"][0]["summary"].lower()
+
+
+def test_same_day_same_event_from_both_chambers_is_deduplicated():
+    from datetime import timedelta
+    from monitor_uaf.utils import local_now
+
+    recent = (local_now(CONFIG["timezone"]).date() - timedelta(days=10)).isoformat()
+    project = CandidateProject(
+        bulletin="19971-25",
+        title="Modifica la ley 19.913",
+        state="Primer trámite constitucional",
+        latest_movement_date=recent,
+        latest_movement="Informe de Comisión",
+        legislative_history=[
+            {"date": recent, "description": "Informe de Comisión de Hacienda", "source": "Cámara XML oficial"},
+            {"date": recent, "description": "Primer informe de la Comisión de Hacienda sobre el proyecto", "source": "Senado ficha oficial"},
+        ],
+    )
+    result = classify(project, CONFIG)
+    assert len(result["legislative_history"]) == 1
+
+
+def test_pipeline_has_no_bcn_source_import():
+    pipeline = (Path(__file__).parents[1] / "monitor_uaf" / "pipeline.py").read_text(encoding="utf-8")
+    sources = (Path(__file__).parents[1] / "monitor_uaf" / "sources.py").read_text(encoding="utf-8")
+    assert "BCNAssociatedProjectsSource" not in pipeline
+    assert "BCNAssociatedProjectsSource" not in sources
+    assert "leychile.cl" not in sources.lower()
+
+
+def test_dashboard_prioritizes_direct_section_and_history(tmp_path):
+    from datetime import timedelta
+    from monitor_uaf.render import render_dashboard
+    from monitor_uaf.utils import local_now
+
+    recent = (local_now(CONFIG["timezone"]).date() - timedelta(days=5)).isoformat()
+    direct = classify(CandidateProject(
+        bulletin="19972-25",
+        title="Modifica la ley N° 19.913",
+        state="Primer trámite constitucional",
+        latest_movement_date=recent,
+        latest_movement="Informe de Comisión",
+        legislative_history=[{"date": recent, "description": "Informe de Comisión sobre sujetos obligados", "source": "Cámara XML oficial"}],
+    ), CONFIG)
+    secondary = classify(CandidateProject(
+        bulletin="19973-07",
+        title="Incorpora fraude tributario como delito precedente del lavado de activos",
+        state="Primer trámite constitucional",
+        latest_movement_date=recent,
+        latest_movement="Ingreso de proyecto",
+        legislative_history=[{"date": recent, "description": "Ingreso de proyecto", "source": "Senado XML oficial"}],
+    ), CONFIG)
+    output = tmp_path / "index.html"
+    render_dashboard([direct, secondary], [], {"sources": {"Cámara XML": {"ok": True}, "Senado XML movimientos": {"ok": True}}}, output)
+    page = output.read_text(encoding="utf-8")
+    assert page.index("Modificaciones directas a la Ley N.º 19.913") < page.index("Proyectos relacionados con LA/FT o delitos base")
+    assert "Historia legislativa — últimos 3 años" in page
+    assert "BCN y LeyChile excluidos" in page
