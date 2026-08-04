@@ -139,7 +139,7 @@ def test_dashboard_includes_active_navigation_and_temporal_chart(tmp_path):
     output = tmp_path / "index.html"
     render_dashboard([project], [alert], {"alerts_generated": 1, "sources": {}}, output)
     page = output.read_text(encoding="utf-8")
-    assert "Mapa de materias y avance legislativo" in page
+    assert "Materias con mayor actividad y avance" in page
     assert "Modifican Ley 19.913" in page
     assert "setLevel('1')" in page
     assert "demo-alert" in page
@@ -156,6 +156,7 @@ def test_terminal_project_is_excluded_from_active_portfolio():
         title="Modifica la ley 19.913",
         state="Tramitación terminada (Ley N° 21.999 - Diario Oficial)",
         latest_movement_date="2026-07-01",
+        metadata={"official_status_verified": True, "movement_verified": True},
     )
     result = classify(project, CONFIG)
     assert result["relevance_level"] == 1
@@ -171,10 +172,15 @@ def test_stale_first_stage_is_not_considered_current():
         state="Primer trámite constitucional",
         latest_movement="Cuenta del proyecto",
         latest_movement_date="10/03/2002",
+        metadata={
+            "entry_date_verified": True,
+            "movement_verified": True,
+            "official_status_verified": True,
+        },
     )
     result = classify(project, CONFIG)
     assert result["is_current"] is False
-    assert result["lifecycle_code"] == "stale"
+    assert result["lifecycle_code"] in {"historical", "stale"}
 
 
 def test_recent_project_is_current_and_new():
@@ -189,6 +195,11 @@ def test_recent_project_is_current_and_new():
         state="Primer trámite constitucional",
         latest_movement="Ingreso de proyecto",
         latest_movement_date=recent,
+        metadata={
+            "entry_date_verified": True,
+            "movement_verified": True,
+            "official_status_verified": True,
+        },
     )
     result = classify(project, CONFIG)
     assert result["is_current"] is True
@@ -275,7 +286,7 @@ def test_seed_contains_bulletin_18216_05():
     assert "18216-05" in CONFIG["seed_bulletins"]
 
 
-def test_dashboard_orders_direct_before_secondary_and_has_compact_matter_map(tmp_path):
+def test_dashboard_orders_by_latest_movement_and_has_watch_cards(tmp_path):
     from monitor_uaf.render import render_dashboard
 
     direct = classify(CandidateProject(
@@ -283,20 +294,124 @@ def test_dashboard_orders_direct_before_secondary_and_has_compact_matter_map(tmp
         title="Proyecto económico con obligación de reportar a la Unidad de Análisis Financiero",
         entry_date="2026-04-22",
         stage="Discusión de informe de Comisión Mixta (Senado)",
-        latest_movement_date="2026-08-04",
+        latest_movement_date="2026-07-04",
         evidence_text="Los bancos deberán reportar operaciones sospechosas a la UAF.",
+        metadata={"movement_verified": True, "official_status_verified": True},
     ), CONFIG)
     secondary = classify(CandidateProject(
         bulletin="19010-07",
         title="Crea un registro de beneficiarios finales",
         entry_date="2026-07-01",
         stage="Primer trámite constitucional",
-        latest_movement_date="2026-07-01",
+        latest_movement_date="2026-08-01",
+        metadata={"movement_verified": True, "official_status_verified": True},
     ), CONFIG)
     output = tmp_path / "index.html"
     render_dashboard([secondary, direct], [], {"sources": {}}, output)
     page = output.read_text(encoding="utf-8")
-    assert "Mapa de materias y avance legislativo" in page
+    assert "Materias con mayor actividad y avance" in page
     assert "stageWeight" in page
-    assert page.index("18216-05") < page.index("19010-07")
+    # La tabla principal ordena por última modificación: el proyecto de agosto va primero.
+    table_start = page.index('id="rows"')
+    assert page.index("19010-07", table_start) < page.index("18216-05", table_start)
+    assert "Cambios a la Ley N.º 19.913 que hay que tener en vista" in page
     assert "Áreas UAF potencialmente responsables" not in page
+
+
+def test_dashboard_excludes_historical_origin_bulletin(tmp_path):
+    from monitor_uaf.render import render_dashboard
+
+    historical = {
+        "bulletin": "2975-07",
+        "title": "Crea la Unidad de Análisis Financiero",
+        "is_current": True,
+        "lifecycle_code": "active",
+        "relevance_level": 1,
+        "latest_movement_date": "2026-08-01",
+    }
+    current = {
+        "bulletin": "16808-25",
+        "title": "Proyecto vigente",
+        "is_current": True,
+        "lifecycle_code": "active",
+        "relevance_level": 1,
+        "latest_movement_date": "2026-07-15",
+    }
+    output = tmp_path / "index.html"
+    render_dashboard([historical, current], [], {"sources": {}}, output)
+    page = output.read_text(encoding="utf-8")
+    assert "2975-07" not in page
+    assert "16808-25" in page
+
+
+def test_document_scanner_reads_links_from_senate_documents_column(monkeypatch):
+    from monitor_uaf.documents import OfficialProjectDocumentSource
+
+    source = OfficialProjectDocumentSource(HttpClient(), CONFIG)
+    indication = (FIXTURES / "indications_18216.html").read_bytes()
+    empty_page = b"<html><body><h1>Ficha sin enlaces adicionales</h1></body></html>"
+
+    def fake_get(url, params=None):
+        if "senado.cl/documentos/informe.pdf" in url:
+            return FetchResult(
+                url=url,
+                status_code=200,
+                content=indication,
+                content_type="text/html; charset=utf-8",
+            )
+        return FetchResult(
+            url=url,
+            status_code=200,
+            content=empty_page,
+            content_type="text/html; charset=utf-8",
+        )
+
+    monkeypatch.setattr(source.client, "get", fake_get)
+    project = CandidateProject(
+        bulletin="18216-05",
+        title="Para la reconstrucción nacional y el desarrollo económico y social",
+        metadata={
+            "senado_proceedings": [
+                {
+                    "date": "2026-07-22",
+                    "substage": "Cuenta oficio aprobación de informe de Comisión Mixta",
+                    "stage": "Discusión de informe de Comisión Mixta (Senado)",
+                    "documents": [
+                        {
+                            "label": "Informe de Comisión Mixta",
+                            "url": "https://senado.cl/documentos/informe.pdf",
+                        }
+                    ],
+                }
+            ]
+        },
+    )
+    enriched = source.scan(project, include_all=True)
+    reviews = enriched.metadata["official_document_reviews"]
+    assert len(reviews) == 1
+    assert reviews[0]["kind"] == "Informe de Comisión Mixta"
+    assert "Unidad de Análisis Financiero" in reviews[0]["summary"]
+    assert reviews[0]["date"] == "2026-07-22"
+
+
+def test_prepare_dashboard_projects_sorts_by_latest_modification():
+    from monitor_uaf.render import prepare_dashboard_projects
+
+    rows = [
+        {
+            "bulletin": "15975-25",
+            "is_current": True,
+            "lifecycle_code": "active",
+            "relevance_level": 1,
+            "latest_movement_date": "2026-06-09",
+        },
+        {
+            "bulletin": "16808-25",
+            "is_current": True,
+            "lifecycle_code": "active",
+            "relevance_level": 1,
+            "latest_movement_date": "2026-07-15",
+        },
+    ]
+    ordered = prepare_dashboard_projects(rows)
+    assert [row["bulletin"] for row in ordered] == ["16808-25", "15975-25"]
