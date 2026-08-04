@@ -452,3 +452,42 @@ def test_dashboard_prioritizes_direct_section_and_history(tmp_path):
     assert page.index("Modificaciones directas a la Ley N.º 19.913") < page.index("Proyectos relacionados con LA/FT o delitos base")
     assert "Historia legislativa — últimos 3 años" in page
     assert "BCN y LeyChile excluidos" in page
+
+
+def test_curated_watchlist_confirmed_by_official_detail_is_visible_without_date():
+    project = CandidateProject(
+        bulletin="15975-25",
+        title="Crea el Subsistema de Inteligencia Económica y modifica la ley 19.913",
+        evidence_text="Fortalece a la Unidad de Análisis Financiero.",
+        metadata={"curated_watchlist": True, "official_detail_verified": True},
+    )
+    result = classify(project, CONFIG)
+    assert result["relevance_level"] == 1
+    assert result["is_current"] is True
+    assert result["lifecycle_code"] == "active"
+
+
+def test_recent_official_catalog_project_is_visible_without_parsed_movement_date():
+    from monitor_uaf.utils import local_now
+    project = CandidateProject(
+        bulletin="19970-25",
+        title="Modifica la ley 19.913 para ampliar sujetos obligados",
+        evidence_text="Unidad de Análisis Financiero y prevención del lavado de activos.",
+        metadata={
+            "official_catalog": True,
+            "recent_feed": True,
+            "discovery_year": local_now(CONFIG["timezone"]).year,
+            "official_detail_verified": True,
+        },
+    )
+    result = classify(project, CONFIG)
+    assert result["is_current"] is True
+
+
+def test_dashboard_does_not_show_redundant_intro_boxes(tmp_path):
+    from monitor_uaf.render import render_dashboard
+    output = tmp_path / "index.html"
+    render_dashboard([], [], {"sources": {}}, output)
+    page = output.read_text(encoding="utf-8")
+    assert "Proyectos vigentes con impacto en la UAF" not in page
+    assert "Criterio de fuente" not in page
