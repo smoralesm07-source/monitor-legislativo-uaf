@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import io
 import logging
 import re
 import xml.etree.ElementTree as ET
@@ -8,13 +7,11 @@ from datetime import date, timedelta
 from typing import Iterable
 
 from bs4 import BeautifulSoup
-from pypdf import PdfReader
 
 from .http_client import HttpClient
 from .models import CandidateProject
 from .utils import (
     BULLETIN_RE,
-    DATE_RE,
     compact_text,
     contains_term,
     latest_dated_text,
@@ -33,7 +30,31 @@ MOVEMENT_TERMS = [
     "aprobado", "rechazado", "pasa a", "trámite constitucional", "tramite constitucional",
     "comisión mixta", "comision mixta", "urgencia", "discusión", "discusion",
     "sesión", "sesion", "promulgado", "publicado", "archivado", "retirado",
+    "certificado", "texto aprobado", "mensaje", "moción", "mocion",
 ]
+
+
+def _history_from_blocks(blocks: Iterable[str], source: str, url: str) -> list[dict[str, str]]:
+    history: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    today = date.today() + timedelta(days=2)
+    for block in blocks:
+        parsed = parse_legislative_date(block)
+        description = compact_text(block, 1500)
+        if not parsed or parsed > today or not description:
+            continue
+        key = (parsed.isoformat(), normalize_text(description))
+        if key in seen:
+            continue
+        seen.add(key)
+        history.append({
+            "date": parsed.isoformat(),
+            "description": description,
+            "source": source,
+            "url": url,
+        })
+    history.sort(key=lambda item: item["date"], reverse=True)
+    return history[:120]
 
 
 class CamaraOpenDataSource:
@@ -56,9 +77,9 @@ class CamaraOpenDataSource:
 
     @staticmethod
     def _first_text(node: ET.Element, names: Iterable[str]) -> str:
-        wanted = set(names)
+        wanted = {normalize_text(name) for name in names}
         for elem in node.iter():
-            if local_tag(elem.tag) in wanted and elem.text and elem.text.strip():
+            if normalize_text(local_tag(elem.tag)) in wanted and elem.text and elem.text.strip():
                 return compact_text(elem.text, 2000)
         return ""
 
@@ -68,9 +89,10 @@ class CamaraOpenDataSource:
 
     @staticmethod
     def _collect_named_blocks(node: ET.Element, names: set[str], limit: int = 12) -> list[str]:
+        wanted = {normalize_text(name) for name in names}
         out: list[str] = []
         for elem in node.iter():
-            if local_tag(elem.tag) in names:
+            if normalize_text(local_tag(elem.tag)) in wanted:
                 block = compact_text(" ".join(t.strip() for t in elem.itertext() if t and t.strip()), 2000)
                 if block:
                     out.append(block)
@@ -79,35 +101,44 @@ class CamaraOpenDataSource:
     @classmethod
     def _movement_blocks(cls, root: ET.Element) -> list[str]:
         out: list[str] = []
-        movement_tags = {"Tramite", "Movimiento", "Oficio"}
+        movement_tags = {
+            "tramite", "movimiento", "oficio", "documento", "informe", "sesion",
+            "tramiteconstitucional", "tramiteparlamentario", "votacion",
+        }
         for elem in root.iter():
-            if local_tag(elem.tag) not in movement_tags:
+            tag = normalize_text(local_tag(elem.tag)).replace(" ", "")
+            if tag not in movement_tags and not any(token in tag for token in ("tramite", "movimiento", "oficio", "informe", "votacion")):
                 continue
             block = compact_text(" ".join(t.strip() for t in elem.itertext() if t and t.strip()), 3000)
             if block and parse_legislative_date(block):
                 out.append(block)
-        return unique(out)[:150]
+        return unique(out)[:180]
 
     def list_by_year(self, year: int) -> list[CandidateProject]:
         projects: dict[str, CandidateProject] = {}
-        for method, label in [("retornarMensajesXAnno", "Cámara XML mensajes"), ("retornarMocionesXAnno", "Cámara XML mociones")]:
+        methods = [
+            ("retornarMensajesXAnno", "Cámara XML mensajes"),
+            ("retornarMocionesXAnno", "Cámara XML mociones"),
+        ]
+        for method, label in methods:
             xml_bytes = self._call(method, {"prmAnno": str(year)})
             root = ET.fromstring(xml_bytes)
             for node in root.iter():
-                if local_tag(node.tag) != "ProyectoLey":
+                if normalize_text(local_tag(node.tag)) != "proyectoley":
                     continue
-                bulletin = self._first_text(node, ["NumeroBoletin"])
-                match = BULLETIN_RE.search(bulletin)
+                bulletin_value = self._first_text(node, ["NumeroBoletin", "Boletin"])
+                match = BULLETIN_RE.search(bulletin_value)
                 if not match:
                     continue
                 bulletin = match.group(1)
+                url = f"https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN={bulletin}"
                 project = CandidateProject(
                     bulletin=bulletin,
-                    title=self._first_text(node, ["Nombre"]),
+                    title=self._first_text(node, ["Nombre", "Titulo"]),
                     entry_date=self._first_text(node, ["FechaIngreso"]),
-                    initiative_type=self._first_text(node, ["TipoIniciativa"]),
+                    initiative_type=self._first_text(node, ["TipoIniciativa", "Iniciativa"]),
                     origin_chamber=self._first_text(node, ["CamaraOrigen"]),
-                    source_urls=[f"https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN={bulletin}"],
+                    source_urls=[url],
                     discovered_from=[label],
                     evidence_text=self._all_text(node),
                     metadata={"title_rank": 2},
@@ -131,11 +162,12 @@ class CamaraOpenDataSource:
             not_before=(entry - timedelta(days=5)) if entry else None,
             bulletin=bulletin,
         )
+        url = f"https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN={bulletin}"
         return CandidateProject(
             bulletin=bulletin,
-            title=self._first_text(root, ["Nombre"]),
+            title=self._first_text(root, ["Nombre", "Titulo"]),
             entry_date=entry_date,
-            initiative_type=self._first_text(root, ["TipoIniciativa"]),
+            initiative_type=self._first_text(root, ["TipoIniciativa", "Iniciativa"]),
             origin_chamber=self._first_text(root, ["CamaraOrigen"]),
             state=" | ".join(states[:3]),
             stage=" | ".join(stages[:4]),
@@ -143,14 +175,14 @@ class CamaraOpenDataSource:
             urgency=" | ".join(urgencies[:3]),
             latest_movement=latest_movement,
             latest_movement_date=latest_movement_date,
-            source_urls=[f"https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN={bulletin}"],
+            legislative_history=_history_from_blocks(movements, "Cámara XML oficial", url),
+            source_urls=[url],
             discovered_from=["Cámara XML detalle"],
             evidence_text=raw_text,
             raw_hash=stable_hash(raw_text),
             metadata={
-                "camara_movements": movements[-20:],
                 "title_rank": 5,
-                "movement_rank": 5,
+                "movement_rank": 6,
                 "movement_source": "Cámara XML oficial",
                 "official_date_verified": bool(latest_movement_date),
             },
@@ -158,17 +190,84 @@ class CamaraOpenDataSource:
 
 
 class SenadoSource:
-    # Esta URL se conserva como referencia, pero NO se utiliza para fechar movimientos:
-    # corresponde a elementos vistos recientemente, no a la cronología oficial de cada boletín.
-    RECENT_URL = "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion"
     DETAIL_URL = "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini={bulletin}"
+    OPEN_PROJECT_URL = "https://tramitacion.senado.cl/wspublico/tramitacion.php"
+    OPEN_MOVEMENTS_URL = "https://tramitacion.senado.cl/wspublico/proyectos.php"
 
     def __init__(self, client: HttpClient) -> None:
         self.client = client
 
-    def recent_movements(self) -> list[CandidateProject]:
-        """Deshabilitado como fuente de fechas para evitar confundir 'últimos vistos' con trámites."""
-        return []
+    @staticmethod
+    def _xml_first(node: ET.Element, names: Iterable[str]) -> str:
+        wanted = {normalize_text(name).replace(" ", "") for name in names}
+        for elem in node.iter():
+            tag = normalize_text(local_tag(elem.tag)).replace(" ", "")
+            if tag in wanted and elem.text and elem.text.strip():
+                return compact_text(elem.text, 2000)
+        return ""
+
+    @staticmethod
+    def _xml_blocks(root: ET.Element) -> list[str]:
+        blocks: list[str] = []
+        for elem in root.iter():
+            tag = normalize_text(local_tag(elem.tag)).replace(" ", "")
+            if not any(token in tag for token in ("tramite", "movimiento", "sesion", "documento", "informe", "indicacion", "votacion")):
+                continue
+            text = compact_text(" ".join(t.strip() for t in elem.itertext() if t and t.strip()), 3000)
+            if text and parse_legislative_date(text):
+                blocks.append(text)
+        return unique(blocks)[:180]
+
+    def recent_movements(self, since: date) -> list[CandidateProject]:
+        """Descubre boletines con movimientos mediante el servicio XML oficial del Senado."""
+        errors: list[str] = []
+        root: ET.Element | None = None
+        for params in (
+            {"fecha": since.strftime("%d/%m/%Y")},
+            {"fecha": since.isoformat()},
+            {"fecha_inicio": since.isoformat()},
+        ):
+            try:
+                result = self.client.get(self.OPEN_MOVEMENTS_URL, params=params)
+                root = ET.fromstring(result.content)
+                break
+            except Exception as exc:  # noqa: BLE001
+                errors.append(f"{params}: {exc}")
+        if root is None:
+            raise RuntimeError(" | ".join(errors))
+        projects: dict[str, CandidateProject] = {}
+        for node in root.iter():
+            text = compact_text(" ".join(t.strip() for t in node.itertext() if t and t.strip()), 7000)
+            bulletins = BULLETIN_RE.findall(text)
+            if not bulletins:
+                continue
+            # Evita crear el mismo proyecto desde cada nodo hijo: solo usa bloques con contenido suficiente.
+            if len(list(node)) == 0 and len(text) < 40:
+                continue
+            for bulletin in bulletins:
+                url = self.DETAIL_URL.format(bulletin=bulletin)
+                title = self._xml_first(node, ["Titulo", "Nombre", "Descripcion", "Materia"])
+                date_value = self._xml_first(node, ["Fecha", "FechaMovimiento", "FechaIngreso"])
+                parsed = parse_legislative_date(date_value or text)
+                project = CandidateProject(
+                    bulletin=bulletin,
+                    title=title,
+                    latest_movement=text if parsed else "",
+                    latest_movement_date=parsed.isoformat() if parsed else "",
+                    legislative_history=_history_from_blocks([text], "Senado XML movimientos", url),
+                    source_urls=[url],
+                    discovered_from=["Senado XML movimientos desde fecha"],
+                    evidence_text=text,
+                    metadata={
+                        "recent_feed": True,
+                        "title_rank": 3,
+                        "movement_rank": 5,
+                        "movement_source": "Senado XML movimientos",
+                        "official_date_verified": bool(parsed),
+                    },
+                )
+                projects.setdefault(bulletin, project).merge(project)
+        return list(projects.values())
 
     @staticmethod
     def _key_value_pairs(soup: BeautifulSoup, bulletin: str) -> dict[str, str]:
@@ -222,8 +321,6 @@ class SenadoSource:
                     continue
                 normalized = normalize_text(text)
                 action = any(contains_term(normalized, term) for term in MOVEMENT_TERMS)
-                # Las tablas cronológicas oficiales normalmente tienen la fecha en la primera
-                # o segunda celda. Este requisito excluye listados laterales y contenido general.
                 leading_date = any(parse_legislative_date(cell) for cell in cells[:2])
                 if action and leading_date:
                     candidate_rows.append(text)
@@ -236,9 +333,47 @@ class SenadoSource:
             if score > best_score:
                 best_score = score
                 best_rows = candidate_rows
-        return unique(best_rows)[:150]
+        return unique(best_rows)[:180]
 
-    def detail(self, bulletin: str) -> CandidateProject:
+    def _detail_xml(self, bulletin: str) -> CandidateProject:
+        url = self.DETAIL_URL.format(bulletin=bulletin)
+        result = self.client.get(self.OPEN_PROJECT_URL, params={"boletin": bulletin})
+        root = ET.fromstring(result.content)
+        raw_text = compact_text(" ".join(t.strip() for t in root.itertext() if t and t.strip()), 60000)
+        movements = self._xml_blocks(root)
+        entry_date = self._xml_first(root, ["FechaIngreso", "FechaDeIngreso"])
+        entry = parse_legislative_date(entry_date)
+        latest, latest_date = latest_dated_text(
+            movements,
+            not_before=(entry - timedelta(days=10)) if entry else None,
+            bulletin=bulletin,
+        )
+        return CandidateProject(
+            bulletin=bulletin,
+            title=self._xml_first(root, ["Titulo", "Nombre"]),
+            entry_date=entry_date,
+            initiative_type=self._xml_first(root, ["Iniciativa", "TipoIniciativa"]),
+            origin_chamber=self._xml_first(root, ["CamaraOrigen", "CámaraOrigen"]),
+            state=self._xml_first(root, ["Estado"]),
+            stage=self._xml_first(root, ["Etapa", "TramiteConstitucional"]),
+            commission=self._xml_first(root, ["Comision", "Comisión"]),
+            urgency=self._xml_first(root, ["Urgencia", "UrgenciaActual"]),
+            latest_movement=latest,
+            latest_movement_date=latest_date,
+            legislative_history=_history_from_blocks(movements, "Senado XML oficial", url),
+            source_urls=[url],
+            discovered_from=["Senado XML detalle"],
+            evidence_text=raw_text,
+            raw_hash=stable_hash(raw_text),
+            metadata={
+                "title_rank": 5,
+                "movement_rank": 7,
+                "movement_source": "Senado XML oficial",
+                "official_date_verified": bool(latest_date),
+            },
+        )
+
+    def _detail_html(self, bulletin: str) -> CandidateProject:
         url = self.DETAIL_URL.format(bulletin=bulletin)
         result = self.client.get(url)
         soup = BeautifulSoup(result.text, "html.parser")
@@ -270,50 +405,30 @@ class SenadoSource:
             urgency=self._pick(pairs, "urgencia actual", "urgencia"),
             latest_movement=latest,
             latest_movement_date=latest_date,
+            legislative_history=_history_from_blocks(movement_rows, "Senado ficha oficial", url),
             source_urls=[url],
             discovered_from=["Senado ficha oficial de tramitación"],
             evidence_text=body_text,
             raw_hash=stable_hash(body_text),
             metadata={
-                "senado_rows": movement_rows[-30:],
                 "title_rank": 4,
-                "movement_rank": 4,
+                "movement_rank": 6,
                 "movement_source": "Senado ficha oficial",
                 "official_date_verified": bool(latest_date),
             },
         )
 
-
-class BCNAssociatedProjectsSource:
-    URL = (
-        "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos"
-        "?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30"
-    )
-
-    def __init__(self, client: HttpClient) -> None:
-        self.client = client
-
-    def list_associated(self) -> list[CandidateProject]:
-        result = self.client.get(self.URL)
-        reader = PdfReader(io.BytesIO(result.content))
-        text = "\n".join(page.extract_text() or "" for page in reader.pages)
-        normalized = re.sub(r"\s+", " ", text)
-        chunks = re.split(r"\s+\d+\.-\s+", normalized)
-        projects: dict[str, CandidateProject] = {}
-        for chunk in chunks:
-            match = BULLETIN_RE.search(chunk)
-            if not match:
-                continue
-            bulletin = match.group(1)
-            title = compact_text(chunk[: match.start()].strip(" .-"), 1200)
-            project = CandidateProject(
-                bulletin=bulletin,
-                title=title,
-                source_urls=[self.URL, SenadoSource.DETAIL_URL.format(bulletin=bulletin)],
-                discovered_from=["BCN proyectos asociados a Ley 19.913"],
-                evidence_text=compact_text(chunk, 5000),
-                raw_hash=stable_hash(chunk),
-                metadata={"bcn_associated": True, "title_rank": 2},
-            )
-            projects[bulletin] = project
-        return list(projects.values())
+    def detail(self, bulletin: str) -> CandidateProject:
+        combined = CandidateProject(bulletin=bulletin)
+        errors: list[str] = []
+        try:
+            combined.merge(self._detail_xml(bulletin))
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"XML: {exc}")
+        try:
+            combined.merge(self._detail_html(bulletin))
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"HTML: {exc}")
+        if not combined.source_urls:
+            raise RuntimeError(" | ".join(errors) or "Sin respuesta Senado")
+        return combined

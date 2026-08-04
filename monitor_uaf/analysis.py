@@ -30,7 +30,7 @@ IMPACT_RECOMMENDATIONS = {
 }
 
 PERSISTED_METADATA_KEYS = {
-    "bcn_associated", "newly_discovered", "recent_feed", "title_rank",
+    "newly_discovered", "recent_feed", "title_rank",
     "movement_rank", "movement_source", "official_date_verified",
 }
 
@@ -44,11 +44,31 @@ def sanitize_project_record(project: dict[str, Any]) -> dict[str, Any]:
         for key in PERSISTED_METADATA_KEYS
         if key in metadata and isinstance(metadata[key], (str, int, float, bool, type(None)))
     }
-    clean["source_urls"] = unique(clean.get("source_urls", []))[:20]
-    clean["discovered_from"] = unique(clean.get("discovered_from", []))[:20]
+    allowed_hosts = ("camara.cl", "senado.cl", "opendata.congreso.cl")
+    clean["source_urls"] = [
+        url for url in unique(clean.get("source_urls", []))
+        if any(host in str(url).lower() for host in allowed_hosts)
+    ][:20]
+    clean["discovered_from"] = [
+        value for value in unique(clean.get("discovered_from", []))
+        if "bcn" not in normalize_text(value) and "leychile" not in normalize_text(value)
+    ][:20]
     clean["related_bulletins"] = unique(clean.get("related_bulletins", []))[:20]
     clean["group_bulletins"] = unique(clean.get("group_bulletins", []))[:20]
     clean["laft_topics"] = unique(clean.get("laft_topics", []))[:12]
+    history = []
+    for item in (clean.get("legislative_history") or [])[:40]:
+        if not isinstance(item, dict):
+            continue
+        history.append({
+            "date": str(item.get("date", ""))[:10],
+            "description": str(item.get("description", ""))[:1200],
+            "summary": str(item.get("summary", ""))[:600],
+            "source": str(item.get("source", ""))[:120],
+            "url": str(item.get("url", ""))[:1000],
+            "event_type": str(item.get("event_type", ""))[:40],
+        })
+    clean["legislative_history"] = history
     return clean
 
 
@@ -213,6 +233,100 @@ def _specific_topics(impacts: dict[str, dict[str, Any]], basis_hits: list[str]) 
     return out[:8]
 
 
+
+def _movement_summary(description: str, topics: list[str]) -> str:
+    """Resume el sentido del hito sin inventar contenido no presente en la fuente."""
+    normalized = normalize_text(description)
+    topic_text = ", ".join(topics[:3]) if topics else "las materias centrales de la iniciativa"
+    rules = [
+        (["ingreso", "cuenta del proyecto", "mocion", "mensaje"], f"Ingreso formal de la iniciativa y comienzo de su tramitación, centrada en {topic_text}."),
+        (["informe de comision", "primer informe", "segundo informe"], f"La comisión emitió un informe y sistematizó la discusión sobre {topic_text}."),
+        (["indicacion", "indicaciones"], f"Se presentaron o discutieron indicaciones que pueden modificar el alcance de {topic_text}."),
+        (["votacion", "aprobado", "aprobada"], f"Se registró una votación o aprobación relevante respecto de {topic_text}."),
+        (["pasa a segundo tramite", "segundo tramite"], "La iniciativa avanzó a segundo trámite constitucional."),
+        (["pasa a tercer tramite", "tercer tramite"], "La iniciativa avanzó a tercer trámite constitucional para revisar diferencias entre ambas cámaras."),
+        (["comision mixta"], "La iniciativa pasó o fue propuesta para Comisión Mixta por diferencias entre ambas cámaras."),
+        (["urgencia inmediata", "suma urgencia", "simple urgencia"], "El Ejecutivo asignó o modificó la urgencia legislativa, acelerando su discusión."),
+        (["oficio"], "Se emitió un oficio legislativo asociado al avance o comunicación formal del proyecto."),
+        (["discusion general", "discusion particular", "sesion"], f"La iniciativa fue discutida en comisión o Sala, con foco en {topic_text}."),
+        (["rechazado", "rechazada"], "Se registró un rechazo relevante que puede alterar o detener la tramitación."),
+        (["archivado", "retirado", "tramitacion terminada", "promulgado", "publicado"], "Se registró un hito terminal o de cierre de la tramitación."),
+    ]
+    for terms, summary in rules:
+        if any(contains_term(normalized, term) for term in terms):
+            return summary
+    clean = re.sub(r"\b\d{1,2}[/-]\d{1,2}[/-]\d{4}\b", "", description)
+    clean = re.sub(r"\b\d{4}-\d{2}-\d{2}\b", "", clean)
+    clean = re.sub(r"\s*\|\s*", " · ", clean)
+    clean = re.sub(r"\s+", " ", clean).strip(" ·-:")
+    return (clean[:280] + "…") if len(clean) > 280 else clean
+
+
+def _history_event_type(description: str) -> str:
+    normalized = normalize_text(description)
+    rules = [
+        ("terminal", ["archivado", "retirado", "tramitacion terminada", "promulgado", "publicado", "rechazado"]),
+        ("mixed", ["comision mixta"]),
+        ("stage3", ["tercer tramite", "pasa a tercer tramite"]),
+        ("stage2", ["segundo tramite", "pasa a segundo tramite"]),
+        ("vote", ["votacion", "aprobado", "aprobada", "rechazado", "rechazada"]),
+        ("report", ["informe de comision", "primer informe", "segundo informe"]),
+        ("amendment", ["indicacion", "indicaciones"]),
+        ("urgency", ["urgencia inmediata", "suma urgencia", "simple urgencia"]),
+        ("discussion", ["discusion general", "discusion particular", "sesion"]),
+        ("office", ["oficio"]),
+        ("entry", ["ingreso", "cuenta del proyecto", "mocion", "mensaje"]),
+    ]
+    for event_type, terms in rules:
+        if any(contains_term(normalized, term) for term in terms):
+            return event_type
+    return "other"
+
+
+def _recent_legislative_history(
+    project: CandidateProject,
+    config: dict[str, Any],
+    topics: list[str],
+) -> list[dict[str, Any]]:
+    years = int(config.get("legislative_history_years", 3))
+    today = local_now(config.get("timezone", "America/Santiago")).date()
+    from datetime import timedelta
+    cutoff = today - timedelta(days=366 * years)
+    raw_items = list(project.legislative_history)
+    if not raw_items and project.latest_movement_date and project.latest_movement:
+        raw_items.append({
+            "date": project.latest_movement_date,
+            "description": project.latest_movement,
+            "source": project.metadata.get("movement_source", "Fuente oficial Cámara/Senado"),
+            "url": project.source_urls[0] if project.source_urls else "",
+        })
+    # Deduplica el mismo hito publicado en ambas cámaras por fecha y tipo de actuación.
+    by_key: dict[tuple[str, str], dict[str, Any]] = {}
+    for item in raw_items:
+        if not isinstance(item, dict):
+            continue
+        parsed = parse_legislative_date(str(item.get("date", "")))
+        description = str(item.get("description", "")).strip()
+        if not parsed or parsed < cutoff or parsed > today or not description:
+            continue
+        event_type = _history_event_type(description)
+        key = (parsed.isoformat(), event_type)
+        clean = {
+            "date": parsed.isoformat(),
+            "description": description[:1200],
+            "summary": _movement_summary(description, topics),
+            "source": str(item.get("source", "Fuente oficial Cámara/Senado"))[:120],
+            "url": str(item.get("url", ""))[:1000],
+            "event_type": event_type,
+        }
+        current = by_key.get(key)
+        if not current or len(clean["description"]) > len(current["description"]):
+            by_key[key] = clean
+        elif current and clean["source"] not in current["source"]:
+            current["source"] = f"{current['source']} / {clean['source']}"[:120]
+    items = sorted(by_key.values(), key=lambda item: item["date"], reverse=True)
+    return items[: int(config.get("legislative_history_max_items", 18))]
+
 def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any]:
     title_text = normalize_text(project.title)
     evidence = " ".join([
@@ -221,10 +335,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
     ])
     normalized = normalize_text(evidence)
 
-    direct_hits = _hits(normalized, config.get("direct_terms", []))
-    if project.metadata.get("bcn_associated"):
-        direct_hits.append("BCN: proyecto asociado a Ley 19.913")
-    direct_hits = unique(direct_hits)
+    direct_hits = unique(_hits(normalized, config.get("direct_terms", [])))
 
     explicit_laft_hits = _hits(normalized, config.get("laft_anchor_terms", []))
     high_precision_hits = _hits(normalized, config.get("high_precision_secondary_terms", []))
@@ -329,6 +440,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
     initiative_name = _initiative_name(project, config)
     related_bulletins = _extract_related_bulletins(project)
     laft_topics = _specific_topics(impacts, basis_hits)
+    legislative_history = _recent_legislative_history(project, config, laft_topics)
     topic_phrase = ", ".join(laft_topics[:5]) or "materias LA/FT por precisar en el texto oficial"
     if relevance_level == 1:
         linkage_summary = f"Modifica o afecta expresamente la Ley 19.913/UAF. Los tópicos relevantes detectados son: {topic_phrase}."
@@ -366,6 +478,7 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "impact_names": [item["name"] for item in top_impacts],
         "lifecycle_code": lifecycle["lifecycle_code"],
         "reference_date": lifecycle["reference_date"],
+        "latest_history_date": legislative_history[0]["date"] if legislative_history else "",
     }
 
     persisted_project = sanitize_project_record(asdict(project))
@@ -385,6 +498,8 @@ def classify(project: CandidateProject, config: dict[str, Any]) -> dict[str, Any
         "direct_hits": direct_hits,
         "relevance_basis": basis_hits[:20],
         "laft_topics": laft_topics,
+        "legislative_history": legislative_history,
+        "history_window_years": int(config.get("legislative_history_years", 3)),
         "impacts": impacts,
         "top_impacts": top_impacts,
         "decisions": decisions,

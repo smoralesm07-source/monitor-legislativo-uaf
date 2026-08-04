@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 from collections import Counter
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
@@ -12,8 +13,8 @@ from .http_client import HttpClient
 from .models import CandidateProject
 from .notifier import filter_unsent_alerts, send_alert_email, updated_email_log
 from .render import prepare_dashboard_alerts, prepare_dashboard_projects, render_dashboard
-from .sources import BCNAssociatedProjectsSource, CamaraOpenDataSource, SenadoSource
-from .utils import iso_now, local_now, read_json, write_json
+from .sources import CamaraOpenDataSource, SenadoSource
+from .utils import iso_now, local_now, parse_legislative_date, read_json, write_json
 
 LOGGER = logging.getLogger(__name__)
 
@@ -27,7 +28,6 @@ class MonitorPipeline:
         )
         self.camara = CamaraOpenDataSource(self.client)
         self.senado = SenadoSource(self.client)
-        self.bcn = BCNAssociatedProjectsSource(self.client)
         self.timezone = self.config["timezone"]
 
     def run(self, *, no_email: bool = False) -> dict[str, Any]:
@@ -60,16 +60,18 @@ class MonitorPipeline:
             source_health["Cámara XML"] = {"ok": False, "error": str(exc)}
 
         try:
-            bcn_items = self.bcn.list_associated()
-            merge_many(bcn_items)
-            source_health["BCN Ley 19.913"] = {
+            since = now.date().replace(year=now.year - int(self.config.get("discovery_years", 3)))
+            senate_items = self.senado.recent_movements(since)
+            merge_many(senate_items)
+            source_health["Senado XML movimientos"] = {
                 "ok": True,
-                "items": len(bcn_items),
-                "note": "Fuente histórica utilizada solo para descubrir candidatos; no acredita vigencia.",
+                "items": len(senate_items),
+                "since": since.isoformat(),
+                "note": "Descubrimiento de boletines con movimientos oficiales desde la fecha indicada.",
             }
         except Exception as exc:  # noqa: BLE001
-            LOGGER.exception("Falló lista BCN")
-            source_health["BCN Ley 19.913"] = {"ok": False, "error": str(exc)}
+            LOGGER.exception("Falló descubrimiento Senado")
+            source_health["Senado XML movimientos"] = {"ok": False, "error": str(exc)}
 
         for bulletin in self.config.get("seed_bulletins", []):
             candidates.setdefault(
@@ -96,7 +98,8 @@ class MonitorPipeline:
                 urgency=old.get("urgency", ""),
                 latest_movement=old.get("latest_movement", ""),
                 latest_movement_date=old.get("latest_movement_date", ""),
-                source_urls=old.get("source_urls", []),
+                legislative_history=old.get("legislative_history", []),
+                source_urls=[u for u in old.get("source_urls", []) if "bcn.cl" not in u and "leychile.cl" not in u],
                 discovered_from=old.get("discovered_from", []),
                 # La evidencia cruda de ejecuciones anteriores nunca se reinyecta: fue la
                 # causa del crecimiento acumulativo de state.json en versiones previas.
@@ -105,14 +108,13 @@ class MonitorPipeline:
                 metadata={
                     key: value
                     for key, value in (old.get("metadata", {}) or {}).items()
-                    if key in {"bcn_associated", "newly_discovered", "recent_feed", "title_rank", "movement_rank", "movement_source", "official_date_verified"}
+                    if key in {"newly_discovered", "recent_feed", "title_rank", "movement_rank", "movement_source", "official_date_verified"}
                 },
             )
             candidates.setdefault(bulletin, previous_candidate).merge(previous_candidate)
 
         seen_before = set(discovery.get("bulletins", {}))
         newly_discovered = set(candidates) - seen_before
-        direct_bcn = {b for b, c in candidates.items() if c.metadata.get("bcn_associated")}
         seed = set(self.config.get("seed_bulletins", []))
         tracked = set(previous_projects)
 
@@ -130,7 +132,6 @@ class MonitorPipeline:
             should_enrich = (
                 bulletin in seed
                 or bulletin in tracked
-                or bulletin in direct_bcn
                 or initial["relevance_level"] > 0
                 or (bulletin in newly_discovered and not is_first_discovery)
             )
@@ -179,9 +180,24 @@ class MonitorPipeline:
 
         current_projects = annotate_initiative_groups(current_projects, self.config)
 
-        # Si fallaron todas las fuentes, conservar la cartera vigente anterior para no generar bajas falsas.
+        # Si fallaron todas las fuentes, conserva solo la cartera previa que todavía
+        # tenga una fecha oficial reciente. Esto evita resucitar proyectos históricos.
         if source_health and not any(item.get("ok") for item in source_health.values()):
-            current_projects = previous_projects
+            cutoff = local_now(self.timezone).date() - timedelta(days=int(self.config.get("active_movement_days", 730)))
+            current_projects = {}
+            for bulletin, project in previous_projects.items():
+                reference = parse_legislative_date(
+                    project.get("reference_date")
+                    or project.get("latest_movement_date")
+                    or project.get("entry_date")
+                )
+                if (
+                    project.get("relevance_level") in {1, 2}
+                    and project.get("is_current")
+                    and reference
+                    and reference >= cutoff
+                ):
+                    current_projects[bulletin] = sanitize_project_record(project)
             excluded_projects = {}
 
         # Compacta incluso estados heredados de v1.0.3: nunca persistir evidencia cruda.
@@ -218,10 +234,13 @@ class MonitorPipeline:
             "excluded_count": len(excluded_projects),
             "irrelevant_discarded": irrelevant_count,
             "initiative_groups": len({item.get("initiative_group_id", item.get("bulletin")) for item in current_projects.values()}),
+            "direct_projects": sum(1 for item in current_projects.values() if item.get("relevance_level") == 1),
+            "laft_related_projects": sum(1 for item in current_projects.values() if item.get("relevance_level") == 2),
+            "legislative_history_years": int(self.config.get("legislative_history_years", 3)),
             "exclusion_counts": dict(exclusion_counts),
             "eligibility_rule": (
-                "Solo se publican iniciativas vigentes que modifican la Ley 19.913 o presentan una conexión "
-                "explícita y verificable con prevención de lavado de activos o financiamiento del terrorismo."
+                "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 "
+                "o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base."
             ),
         }
 

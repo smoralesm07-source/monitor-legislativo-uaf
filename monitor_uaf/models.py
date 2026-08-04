@@ -3,10 +3,18 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-from .utils import compact_text, parse_legislative_date
-
+from .utils import compact_text, parse_legislative_date, unique
 
 MAX_EVIDENCE_CHARS = 120_000
+MAX_HISTORY_ITEMS = 120
+
+
+def _history_key(item: dict[str, Any]) -> tuple[str, str, str]:
+    return (
+        str(item.get("date", "")),
+        compact_text(str(item.get("description", "")), 1200),
+        str(item.get("source", "")),
+    )
 
 
 @dataclass
@@ -22,6 +30,7 @@ class CandidateProject:
     urgency: str = ""
     latest_movement: str = ""
     latest_movement_date: str = ""
+    legislative_history: list[dict[str, Any]] = field(default_factory=list)
     source_urls: list[str] = field(default_factory=list)
     discovered_from: list[str] = field(default_factory=list)
     evidence_text: str = ""
@@ -50,8 +59,6 @@ class CandidateProject:
             elif incoming and (not current or len(incoming) > len(current)):
                 setattr(self, field_name, incoming)
 
-        # El movimiento y su fecha se fusionan como una unidad para impedir fechas
-        # pertenecientes a otra fila o fuente combinadas con una descripción distinta.
         current_date = parse_legislative_date(self.latest_movement_date or self.latest_movement)
         incoming_date = parse_legislative_date(other.latest_movement_date or other.latest_movement)
         current_rank = int(self.metadata.get("movement_rank", 0))
@@ -71,6 +78,27 @@ class CandidateProject:
             if other.metadata.get("movement_source"):
                 self.metadata["movement_source"] = other.metadata["movement_source"]
             self.metadata["movement_rank"] = incoming_rank
+
+        history_by_key: dict[tuple[str, str, str], dict[str, Any]] = {}
+        for item in [*self.legislative_history, *other.legislative_history]:
+            if not isinstance(item, dict):
+                continue
+            date_value = str(item.get("date", ""))
+            description = compact_text(str(item.get("description", "")), 1600)
+            if not date_value or not description:
+                continue
+            clean = {
+                "date": date_value,
+                "description": description,
+                "source": compact_text(str(item.get("source", "")), 120),
+                "url": compact_text(str(item.get("url", "")), 1000),
+            }
+            history_by_key[_history_key(clean)] = clean
+        self.legislative_history = sorted(
+            history_by_key.values(),
+            key=lambda item: parse_legislative_date(str(item.get("date", ""))) or parse_legislative_date("1900-01-01"),
+            reverse=True,
+        )[:MAX_HISTORY_ITEMS]
 
         self.source_urls = sorted(set(self.source_urls + other.source_urls))[:20]
         self.discovered_from = sorted(set(self.discovered_from + other.discovered_from))[:20]
