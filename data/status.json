@@ -1,7 +1,7 @@
 {
   "version": "1.0.7",
-  "started_at": "2026-08-03T22:15:55-04:00",
-  "finished_at": "2026-08-03T22:17:03-04:00",
+  "started_at": "2026-08-03T22:19:42-04:00",
+  "finished_at": "2026-08-03T22:20:50-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
@@ -32,7 +32,7 @@
     }
   },
   "candidates_discovered": 1982,
-  "newly_discovered": 1982,
+  "newly_discovered": 0,
   "projects_monitored": 0,
   "projects_enriched": 11,
   "alerts_generated": 0,
