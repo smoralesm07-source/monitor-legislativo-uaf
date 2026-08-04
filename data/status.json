@@ -1,11 +1,11 @@
 {
   "version": "1.0.4",
-  "started_at": "2026-08-04T09:41:54-04:00",
-  "finished_at": "2026-08-04T09:43:23-04:00",
+  "started_at": "2026-08-04T10:44:09-04:00",
+  "finished_at": "2026-08-04T10:46:11-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
-      "items": 1980,
+      "items": 1989,
       "years": [
         2026,
         2025,
@@ -19,39 +19,39 @@
     },
     "Cámara detalle oficial": {
       "ok": true,
-      "items": 45,
+      "items": 54,
       "errors": 0,
-      "attempts": 45,
+      "attempts": 54,
       "note": "Fechas y movimientos obtenidos del XML oficial por boletín."
     },
     "Senado fichas oficiales": {
       "ok": true,
-      "items": 45,
+      "items": 54,
       "errors": 0,
-      "attempts": 45,
+      "attempts": 54,
       "note": "Se consultan las fichas oficiales; no se usa la lista de 'últimos vistos' para fechar trámites."
     }
   },
-  "candidates_discovered": 1982,
-  "newly_discovered": 0,
-  "projects_monitored": 45,
-  "projects_enriched": 45,
-  "alerts_generated": 45,
+  "candidates_discovered": 1991,
+  "newly_discovered": 9,
+  "projects_monitored": 54,
+  "projects_enriched": 54,
+  "alerts_generated": 9,
   "baseline": false,
   "lifecycle_counts": {
-    "active": 45
+    "active": 54
   },
   "excluded_count": 0,
   "irrelevant_discarded": 1937,
   "initiative_groups": 1,
   "direct_projects": 7,
-  "laft_related_projects": 38,
+  "laft_related_projects": 47,
   "legislative_history_years": 3,
   "exclusion_counts": {},
   "eligibility_rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base.",
   "email_sent": true,
   "email_message": "Correo enviado a 2 destinatario(s)",
-  "email_alerts_detected": 45,
-  "email_alerts_pending": 45,
+  "email_alerts_detected": 9,
+  "email_alerts_pending": 9,
   "email_alerts_previously_sent": 0
 }
