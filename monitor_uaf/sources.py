@@ -141,7 +141,7 @@ class CamaraOpenDataSource:
                     source_urls=[url],
                     discovered_from=[label],
                     evidence_text=self._all_text(node),
-                    metadata={"title_rank": 2},
+                    metadata={"title_rank": 2, "recent_feed": True, "discovery_year": year, "official_catalog": True},
                 )
                 projects.setdefault(bulletin, project).merge(project)
         return list(projects.values())

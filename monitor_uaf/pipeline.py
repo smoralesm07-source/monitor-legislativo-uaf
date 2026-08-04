@@ -59,19 +59,14 @@ class MonitorPipeline:
             LOGGER.exception("Falló descubrimiento Cámara")
             source_health["Cámara XML"] = {"ok": False, "error": str(exc)}
 
-        try:
-            since = now.date().replace(year=now.year - int(self.config.get("discovery_years", 3)))
-            senate_items = self.senado.recent_movements(since)
-            merge_many(senate_items)
-            source_health["Senado XML movimientos"] = {
-                "ok": True,
-                "items": len(senate_items),
-                "since": since.isoformat(),
-                "note": "Descubrimiento de boletines con movimientos oficiales desde la fecha indicada.",
-            }
-        except Exception as exc:  # noqa: BLE001
-            LOGGER.exception("Falló descubrimiento Senado")
-            source_health["Senado XML movimientos"] = {"ok": False, "error": str(exc)}
+        # El antiguo endpoint público de movimientos del Senado responde 404.
+        # La detección de iniciativas se realiza con el catálogo oficial de Cámara,
+        # y cada boletín relevante se contrasta con su ficha oficial del Senado.
+        source_health["Senado descubrimiento"] = {
+            "ok": True,
+            "items": 0,
+            "note": "Descubrimiento complementado mediante fichas oficiales por boletín; no se consulta el endpoint retirado que respondía 404.",
+        }
 
         for bulletin in self.config.get("seed_bulletins", []):
             candidates.setdefault(
@@ -80,7 +75,8 @@ class MonitorPipeline:
                     bulletin=bulletin,
                     title="",
                     source_urls=[self.senado.DETAIL_URL.format(bulletin=bulletin)],
-                    discovered_from=["Configuración inicial vigente"],
+                    discovered_from=["Cartera priorizada de seguimiento"],
+                    metadata={"curated_watchlist": True},
                 ),
             )
 
@@ -108,7 +104,7 @@ class MonitorPipeline:
                 metadata={
                     key: value
                     for key, value in (old.get("metadata", {}) or {}).items()
-                    if key in {"newly_discovered", "recent_feed", "title_rank", "movement_rank", "movement_source", "official_date_verified"}
+                    if key in {"newly_discovered", "recent_feed", "title_rank", "movement_rank", "movement_source", "official_date_verified", "official_detail_verified", "official_catalog", "discovery_year"}
                 },
             )
             candidates.setdefault(bulletin, previous_candidate).merge(previous_candidate)
@@ -138,20 +134,29 @@ class MonitorPipeline:
             if should_enrich:
                 detail_success = False
                 try:
-                    candidate.merge(self.camara.detail(bulletin))
+                    detail = self.camara.detail(bulletin)
+                    candidate.merge(detail)
                     camara_detail_ok += 1
-                    detail_success = True
+                    detail_success = detail_success or bool(
+                        detail.title or detail.entry_date or detail.state or detail.stage
+                        or detail.latest_movement_date or len(detail.evidence_text) > 100
+                    )
                 except Exception as exc:  # noqa: BLE001
                     camara_detail_fail += 1
                     LOGGER.warning("No se obtuvo detalle Cámara para %s: %s", bulletin, exc)
                 try:
-                    candidate.merge(self.senado.detail(bulletin))
+                    detail = self.senado.detail(bulletin)
+                    candidate.merge(detail)
                     senado_detail_ok += 1
-                    detail_success = True
+                    detail_success = detail_success or bool(
+                        detail.title or detail.entry_date or detail.state or detail.stage
+                        or detail.latest_movement_date or len(detail.evidence_text) > 100
+                    )
                 except Exception as exc:  # noqa: BLE001
                     senado_detail_fail += 1
                     LOGGER.warning("No se obtuvo detalle Senado para %s: %s", bulletin, exc)
                 if detail_success:
+                    candidate.metadata["official_detail_verified"] = True
                     enriched_count += 1
 
             analyzed = classify(candidate, self.config)
@@ -271,6 +276,17 @@ class MonitorPipeline:
                 "total": len(excluded_projects),
                 "by_reason": {**dict(exclusion_counts), "irrelevant_no_laft": irrelevant_count},
                 "rule": status["eligibility_rule"],
+                "samples": [
+                    {
+                        "bulletin": item.get("bulletin", ""),
+                        "title": item.get("initiative_name") or item.get("title", ""),
+                        "reason": item.get("lifecycle_reason", ""),
+                        "state": item.get("state", ""),
+                        "stage": item.get("stage", ""),
+                        "reference_date": item.get("reference_date", ""),
+                    }
+                    for item in list(excluded_projects.values())[:25]
+                ],
             },
         )
 

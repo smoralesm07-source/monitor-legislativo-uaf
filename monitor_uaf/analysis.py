@@ -32,6 +32,7 @@ IMPACT_RECOMMENDATIONS = {
 PERSISTED_METADATA_KEYS = {
     "newly_discovered", "recent_feed", "title_rank",
     "movement_rank", "movement_source", "official_date_verified",
+    "official_detail_verified", "official_catalog", "discovery_year",
 }
 
 
@@ -97,6 +98,17 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
     recent_movement = recency_days is not None and -31 <= recency_days <= active_days
     recent_feed = bool(project.metadata.get("recent_feed"))
     explicit_urgency = bool(project.urgency.strip())
+    official_detail_verified = bool(project.metadata.get("official_detail_verified"))
+    curated_watchlist = bool(project.metadata.get("curated_watchlist"))
+    discovery_year = project.metadata.get("discovery_year")
+    try:
+        recent_catalog = bool(project.metadata.get("official_catalog")) and int(discovery_year) >= today.year - 2
+    except (TypeError, ValueError):
+        recent_catalog = False
+    verified_without_date = official_detail_verified and (
+        (curated_watchlist and bool(config.get("allow_curated_watchlist_without_date", True)))
+        or (recent_catalog and bool(config.get("allow_recent_catalog_without_date", True)))
+    )
 
     if terminal_hits:
         return {
@@ -114,7 +126,7 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
         flags.append("new")
     if upcoming_hits and (recent_movement or recent_entry or recent_feed or explicit_urgency):
         flags.append("upcoming")
-    if recent_movement or recent_feed or (active_hits and recent_entry) or (active_hits and explicit_urgency):
+    if recent_movement or recent_feed or (active_hits and recent_entry) or (active_hits and explicit_urgency) or verified_without_date:
         flags.append("active")
 
     if "upcoming" in flags:
@@ -125,7 +137,14 @@ def assess_lifecycle(project: CandidateProject, config: dict[str, Any]) -> dict[
         reason = f"La iniciativa ingresó dentro de los últimos {new_days} días."
     elif "active" in flags:
         status, code = "En tramitación activa", "active"
-        reason = f"Registra actividad oficial dentro de los últimos {active_days} días."
+        if recent_movement:
+            reason = f"Registra actividad oficial dentro de los últimos {active_days} días."
+        elif recent_feed or recent_catalog:
+            reason = "Fue localizado en un catálogo oficial reciente de Cámara y confirmado mediante una ficha oficial."
+        elif curated_watchlist and official_detail_verified:
+            reason = "Integra la cartera priorizada y fue confirmado en una ficha oficial; permanecerá visible hasta detectar un estado terminal."
+        else:
+            reason = "La fuente oficial mantiene una etapa o señal de tramitación activa."
     else:
         if active_hits and reference and recency_days is not None and recency_days > active_days:
             code, status = "stale", "Sin actividad reciente"

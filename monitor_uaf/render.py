@@ -136,10 +136,6 @@ main{min-width:0}.top{height:68px;background:#fff;border-bottom:1px solid var(--
 <main>
 <header class="top"><h1>Monitor Legislativo UAF</h1><div class="search"><input id="search" placeholder="Buscar iniciativa, boletín, tópico o hito…"></div><div class="last"><span class="dot" id="runDot"></span><span id="lastRun">Sin primera ejecución</span></div></header>
 <div class="content" id="inicio">
-  <section class="hero">
-    <div><h2>Proyectos vigentes con impacto en la UAF</h2><p>La primera prioridad son las iniciativas que modifican expresamente la Ley N.º 19.913. En un segundo bloque se muestran proyectos vinculados con prevención de lavado de activos, financiamiento del terrorismo o delitos base. Cada iniciativa incluye sus hitos oficiales de los últimos tres años.</p></div>
-    <div class="hero-note"><b>Criterio de fuente</b>Solo información publicada por Cámara y Senado. Se excluyen referencias históricas de BCN/LeyChile y proyectos sin actividad legislativa reciente.</div>
-  </section>
   <section class="kpis">
     <div class="kpi"><label>Iniciativas vigentes</label><strong id="kTotal">0</strong><span>Agrupadas por iniciativa</span></div>
     <div class="kpi"><label>Modifican Ley 19.913</label><strong id="kDirect">0</strong><span>Prioridad institucional</span></div>
