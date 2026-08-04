@@ -1,0 +1,1303 @@
+[
+  {
+    "bulletin": "18216-05",
+    "title": "Para la reconstrucción nacional y el desarrollo económico y social",
+    "entry_date": "2026-04-22",
+    "initiative_type": "Mensaje",
+    "origin_chamber": "Cámara de Diputados",
+    "state": "En tramitación",
+    "stage": "Discusión de informe de Comisión Mixta (Senado)",
+    "commission": "Informe de Comisión Mixta",
+    "urgency": "Sin urgencia",
+    "latest_movement": "Queda pendiente la discusión del informe de Comisión Mixta; la Sala del Senado acordó aplazar la votación.",
+    "latest_movement_date": "2026-07-22",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18216-05",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18216-05&prmID=18872",
+      "https://www.camara.cl/verDoc.aspx?prmID=36160&prmTIPO=OFICIOPLEY",
+      "https://www.senado.cl/actividad-legislativa/sala-de-sesiones/tabla-semanal",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18216-05"
+    ],
+    "discovered_from": [
+      "Configuración inicial vigente",
+      "Documentos oficiales de tramitación"
+    ],
+    "evidence_text": "Para la reconstrucción nacional y el desarrollo económico y social. Los bancos deberán reportar a la Unidad de Análisis Financiero cualquier operación sospechosa que detecten en el análisis de la información. Se contemplan mecanismos de colaboración e intercambio de información entre la UAF, el Servicio de Impuestos Internos y otras instituciones públicas.",
+    "raw_hash": "",
+    "metadata": {
+      "committee_report": "Informe de Comisión Mixta",
+      "promoters": [
+        "Presidente de la República",
+        "Ministerio de Hacienda"
+      ],
+      "matters": [
+        "Obligación bancaria de reportar operaciones sospechosas a la UAF",
+        "Colaboración e intercambio de información con la UAF",
+        "Medidas de reconstrucción y desarrollo económico y social"
+      ],
+      "official_documents_schema": "1",
+      "official_documents_scanned": 1,
+      "official_documents_matched": [
+        {
+          "label": "Indicaciones del Ejecutivo de 11 de mayo de 2026",
+          "url": "https://www.camara.cl/verDoc.aspx?prmID=36160&prmTIPO=OFICIOPLEY",
+          "resolved_url": "https://www.camara.cl/verDoc.aspx?prmID=36160&prmTIPO=OFICIOPLEY",
+          "content_type": "text/html",
+          "hits": [
+            "unidad de análisis financiero",
+            "operación sospechosa",
+            "reporte de operaciones sospechosas"
+          ]
+        }
+      ],
+      "official_document_hits": [
+        "unidad de análisis financiero",
+        "operación sospechosa",
+        "reporte de operaciones sospechosas"
+      ],
+      "senado_detail_schema": "3",
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-07-22",
+          "substage": "Queda pendiente la discusión del informe de Comisión Mixta; la Sala del Senado acordó aplazar la votación.",
+          "stage": "Discusión de informe de Comisión Mixta (Senado)",
+          "documents": []
+        }
+      ],
+      "press_mentions": [],
+      "field_ranks": {
+        "title": 100,
+        "entry_date": 100,
+        "initiative_type": 100,
+        "origin_chamber": 100,
+        "state": 100,
+        "stage": 100,
+        "commission": 100,
+        "latest_movement": 100,
+        "latest_movement_date": 100
+      },
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "18216-05"
+      ],
+      "initiative_group_primary": "18216-05",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: tabla de proyectos tratados recientemente",
+      "movement_source": "Senado: tabla de proyectos tratados recientemente",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "senado_proceedings_table_found": true
+    },
+    "is_current": true,
+    "lifecycle_code": "upcoming",
+    "lifecycle_status": "Próximo hito legislativo",
+    "lifecycle_reason": "Se detectó una votación, urgencia, citación, paso de etapa u otro hito próximo.",
+    "lifecycle_flags": [
+      "active",
+      "upcoming"
+    ],
+    "reference_date": "2026-07-22",
+    "recency_days": 0,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "relevance_score": 100,
+    "pertinence_score": 318,
+    "priority_score": 93,
+    "priority": "Crítica",
+    "probability": 76,
+    "direct_hits": [
+      "unidad de análisis financiero",
+      "unidad de analisis financiero",
+      "uaf"
+    ],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "bancos"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Responsabilidades UAF": {
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "análisis financiero",
+          "analisis financiero"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      "Acceso a información": {
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "intercambio de información",
+          "intercambio de informacion"
+        ],
+        "recommendation": "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+      },
+      "Reportes y operaciones": {
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "operación sospechosa",
+          "operacion sospechosa",
+          "operaciones sospechosas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      "Cooperación institucional": {
+        "score": 7,
+        "level": 2,
+        "hits": [
+          "servicio de impuestos internos"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Reportes y operaciones",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "operación sospechosa",
+          "operacion sospechosa",
+          "operaciones sospechosas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "análisis financiero",
+          "analisis financiero"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Acceso a información",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "intercambio de información",
+          "intercambio de informacion"
+        ],
+        "recommendation": "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "bancos"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 7,
+        "level": 2,
+        "hits": [
+          "servicio de impuestos internos"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "promoters": [
+      "Presidente de la República",
+      "Ministerio de Hacienda"
+    ],
+    "affected_legal_areas": [
+      "Ley N.º 19.913 y estatuto orgánico de la UAF",
+      "Intercambio de información y coordinación interinstitucional",
+      "Sujetos obligados",
+      "Responsabilidades UAF",
+      "Acceso a información",
+      "Reportes y operaciones",
+      "Cooperación institucional"
+    ],
+    "matter_summary": "La iniciativa contiene un paquete amplio de reconstrucción y desarrollo económico. Dentro de su tramitación se incorporaron disposiciones que exigen a bancos analizar determinadas operaciones y reportar a la Unidad de Análisis Financiero aquellas que resulten sospechosas, además de mecanismos de colaboración e intercambio de información con organismos públicos. Su impacto UAF no surge del título, sino de indicaciones y textos posteriores. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones.",
+    "analysis_summary": "La iniciativa contiene un paquete amplio de reconstrucción y desarrollo económico. Dentro de su tramitación se incorporaron disposiciones que exigen a bancos analizar determinadas operaciones y reportar a la Unidad de Análisis Financiero aquellas que resulten sospechosas, además de mecanismos de colaboración e intercambio de información con organismos públicos. Su impacto UAF no surge del título, sino de indicaciones y textos posteriores. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones. Iniciativa del Ejecutivo promovida por Presidente de la República, Ministerio de Hacienda. Ámbitos jurídicos afectados: Ley N.º 19.913 y estatuto orgánico de la UAF; Intercambio de información y coordinación interinstitucional; Sujetos obligados; Responsabilidades UAF; Acceso a información; Reportes y operaciones.",
+    "fingerprint": "e22a26627eea4705af5697940297fb616161b18e07aaaf959dfbc885fe71a0ad",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "18216-05"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "18216-05",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "18216-05"
+    ],
+    "group_primary": "18216-05"
+  },
+  {
+    "bulletin": "17912-25",
+    "title": "Modifica la ley N° 19.913 para incorporar delitos contra la propiedad industrial al catálogo de precedentes de lavado de activos.",
+    "entry_date": "2025-10-10",
+    "initiative_type": "Moción",
+    "origin_chamber": "Cámara de Diputados",
+    "state": "En tramitación",
+    "stage": "Primer trámite constitucional (C.Diputados)",
+    "commission": "Primer informe de comisión de Seguridad Ciudadana",
+    "urgency": "Simple",
+    "latest_movement": "Se dio cuenta del informe de la Comisión de Seguridad Ciudadana y la iniciativa quedó en tabla.",
+    "latest_movement_date": "2026-07-20",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17912-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17912-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para incorporar delitos contra la propiedad industrial al catálogo de precedentes de lavado de activos.",
+    "raw_hash": "",
+    "metadata": {
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "17912-25"
+      ],
+      "initiative_group_primary": "17912-25",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Cámara de Diputados: Cuenta e informe de comisión",
+      "movement_source": "Cámara de Diputados: Cuenta e informe de comisión",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "committee_report": "Primer informe de comisión de Seguridad Ciudadana",
+      "senado_proceedings_table_found": true,
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-07-20",
+          "substage": "Se dio cuenta del informe de la Comisión de Seguridad Ciudadana y la iniciativa quedó en tabla.",
+          "stage": "Primer trámite constitucional (C.Diputados)",
+          "documents": []
+        }
+      ]
+    },
+    "is_current": true,
+    "lifecycle_code": "upcoming",
+    "lifecycle_status": "Próximo hito legislativo",
+    "lifecycle_reason": "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa.",
+    "lifecycle_flags": [
+      "active",
+      "upcoming"
+    ],
+    "reference_date": "2026-07-20",
+    "recency_days": null,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "relevance_score": 69,
+    "pertinence_score": 269,
+    "priority_score": 59,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Delitos base": {
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "propiedad industrial"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "propiedad industrial"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+    ],
+    "promoters": [],
+    "affected_legal_areas": [
+      "Comercio ilícito, contrabando y falsificación",
+      "Delitos base"
+    ],
+    "matter_summary": "La iniciativa propone incorporar delitos contra la propiedad industrial al catálogo de delitos precedentes del lavado de activos, conectando la falsificación y comercialización fraudulenta con el análisis patrimonial. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones.",
+    "analysis_summary": "La iniciativa propone incorporar delitos contra la propiedad industrial al catálogo de delitos precedentes del lavado de activos, conectando la falsificación y comercialización fraudulenta con el análisis patrimonial. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones. Ámbitos jurídicos afectados: Comercio ilícito, contrabando y falsificación; Delitos base.",
+    "fingerprint": "8fd23f9c5d14c07a14c65f82221281ad22a0e910b03399b5cc0a5eb8d7b78657",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "17912-25"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "17912-25",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "17912-25"
+    ],
+    "group_primary": "17912-25"
+  },
+  {
+    "bulletin": "18407-25",
+    "title": "Aumenta las sanciones aplicables al delito de lavado de activos.",
+    "entry_date": "2026-06-24",
+    "initiative_type": "Moción",
+    "origin_chamber": "Senado",
+    "state": "En tramitación",
+    "stage": "Primer trámite constitucional (Senado)",
+    "commission": "Primer informe de comisión de Seguridad Pública",
+    "urgency": "Sin urgencia",
+    "latest_movement": "Ingreso del proyecto y envío a la Comisión de Seguridad Pública para primer informe.",
+    "latest_movement_date": "2026-06-24",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18407-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Aumenta las sanciones aplicables al delito de lavado de activos.",
+    "raw_hash": "",
+    "metadata": {
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "18407-25"
+      ],
+      "initiative_group_primary": "18407-25",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: ficha individual del boletín",
+      "movement_source": "Senado: ficha individual del boletín",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "committee_report": "Primer informe de comisión de Seguridad Pública",
+      "senado_proceedings_table_found": true,
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-06-24",
+          "substage": "Ingreso del proyecto y envío a la Comisión de Seguridad Pública para primer informe.",
+          "stage": "Primer trámite constitucional (Senado)",
+          "documents": []
+        }
+      ]
+    },
+    "is_current": true,
+    "lifecycle_code": "new",
+    "lifecycle_status": "Nueva / ingreso reciente",
+    "lifecycle_reason": "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa.",
+    "lifecycle_flags": [
+      "new",
+      "active"
+    ],
+    "reference_date": "2026-06-24",
+    "recency_days": null,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "relevance_score": 21,
+    "pertinence_score": 121,
+    "priority_score": 25,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Delitos base": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Fiscalización y sanciones": {
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "promoters": [],
+    "affected_legal_areas": [
+      "Fiscalización y régimen sancionatorio",
+      "Delitos base",
+      "Fiscalización y sanciones"
+    ],
+    "matter_summary": "La iniciativa aborda la siguiente materia: Aumenta las sanciones aplicables al delito de lavado de activos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
+    "analysis_summary": "La iniciativa aborda la siguiente materia: Aumenta las sanciones aplicables al delito de lavado de activos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Ámbitos jurídicos afectados: Fiscalización y régimen sancionatorio; Delitos base; Fiscalización y sanciones.",
+    "fingerprint": "cc72ae3694ee1be4d190966944f1558d7330d2ce686221dbb2de31c08cdf51fb",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "18407-25"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "18407-25",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "18407-25"
+    ],
+    "group_primary": "18407-25"
+  },
+  {
+    "bulletin": "18373-07",
+    "title": "Modifica la ley N° 19.913 para agilizar el acceso a información amparada por secreto o reserva bancaria, manteniendo control judicial previo.",
+    "entry_date": "2026-06-15",
+    "initiative_type": "Moción",
+    "origin_chamber": "Cámara de Diputados",
+    "state": "En tramitación",
+    "stage": "Primer trámite constitucional (C.Diputados)",
+    "commission": "Primer informe de comisión de Constitución, Legislación, Justicia y Reglamento",
+    "urgency": "Sin urgencia",
+    "latest_movement": "Ingreso del proyecto y envío a la Comisión de Constitución, Legislación, Justicia y Reglamento.",
+    "latest_movement_date": "2026-06-15",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18373-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18373-07"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para agilizar el acceso a información amparada por secreto o reserva bancaria, manteniendo control judicial previo.",
+    "raw_hash": "",
+    "metadata": {
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "18373-07"
+      ],
+      "initiative_group_primary": "18373-07",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: ficha individual del boletín",
+      "movement_source": "Senado: ficha individual del boletín",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "committee_report": "Primer informe de comisión de Constitución, Legislación, Justicia y Reglamento",
+      "senado_proceedings_table_found": true,
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-06-15",
+          "substage": "Ingreso del proyecto y envío a la Comisión de Constitución, Legislación, Justicia y Reglamento.",
+          "stage": "Primer trámite constitucional (C.Diputados)",
+          "documents": []
+        }
+      ]
+    },
+    "is_current": true,
+    "lifecycle_code": "new",
+    "lifecycle_status": "Nueva / ingreso reciente",
+    "lifecycle_reason": "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa.",
+    "lifecycle_flags": [
+      "new",
+      "active"
+    ],
+    "reference_date": "2026-06-15",
+    "recency_days": null,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "relevance_score": 70,
+    "pertinence_score": 270,
+    "priority_score": 60,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Acceso a información": {
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "reserva bancaria",
+          "acceso a información",
+          "acceso a informacion"
+        ],
+        "recommendation": "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Acceso a información",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "reserva bancaria",
+          "acceso a información",
+          "acceso a informacion"
+        ],
+        "recommendation": "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Diseñar reglas de acceso, trazabilidad, auditoría, seguridad y coordinación con custodios de datos."
+    ],
+    "promoters": [],
+    "affected_legal_areas": [
+      "Acceso y reserva de información financiera",
+      "Acceso a información"
+    ],
+    "matter_summary": "La iniciativa modifica el procedimiento o las condiciones de acceso a información bancaria, materia relevante para la oportunidad, trazabilidad y control jurídico del análisis financiero. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones.",
+    "analysis_summary": "La iniciativa modifica el procedimiento o las condiciones de acceso a información bancaria, materia relevante para la oportunidad, trazabilidad y control jurídico del análisis financiero. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones. Ámbitos jurídicos afectados: Acceso y reserva de información financiera; Acceso a información.",
+    "fingerprint": "9911794f8c297c4d605a3483f3110763d3650b9aa0d996c9d0209455f6cf97d7",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "18373-07"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "18373-07",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "18373-07"
+    ],
+    "group_primary": "18373-07"
+  },
+  {
+    "bulletin": "15975-25",
+    "title": "Crea el Subsistema de Inteligencia Económica y establece medidas para prevenir y alertar actividades relacionadas con el crimen organizado.",
+    "entry_date": "2023-05-31",
+    "initiative_type": "Mensaje",
+    "origin_chamber": "Senado",
+    "state": "En tramitación",
+    "stage": "Comisión Mixta por rechazo de modificaciones (Senado)",
+    "commission": "Comisión Mixta",
+    "urgency": "Discusión inmediata",
+    "latest_movement": "El Senado rechazó modificaciones de la Cámara y el proyecto pasó a Comisión Mixta.",
+    "latest_movement_date": "2026-06-09",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15975-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=15975-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Crea el Subsistema de Inteligencia Económica y establece medidas para prevenir y alertar actividades relacionadas con el crimen organizado.",
+    "raw_hash": "",
+    "metadata": {
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "15975-25"
+      ],
+      "initiative_group_primary": "15975-25",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: ficha individual y comunicaciones oficiales",
+      "movement_source": "Senado: ficha individual y comunicaciones oficiales",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "committee_report": "Comisión Mixta",
+      "senado_proceedings_table_found": true,
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-06-09",
+          "substage": "El Senado rechazó modificaciones de la Cámara y el proyecto pasó a Comisión Mixta.",
+          "stage": "Comisión Mixta por rechazo de modificaciones (Senado)",
+          "documents": []
+        }
+      ]
+    },
+    "is_current": true,
+    "lifecycle_code": "upcoming",
+    "lifecycle_status": "Próximo hito legislativo",
+    "lifecycle_reason": "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa.",
+    "lifecycle_flags": [
+      "active",
+      "upcoming"
+    ],
+    "reference_date": "2026-06-09",
+    "recency_days": null,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "relevance_score": 29,
+    "pertinence_score": 129,
+    "priority_score": 31,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Delitos base": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "crimen organizado"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Responsabilidades UAF": {
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "crimen organizado"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      }
+    ],
+    "decisions": [
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+    ],
+    "promoters": [],
+    "affected_legal_areas": [
+      "Intercambio de información y coordinación interinstitucional",
+      "Delitos base",
+      "Responsabilidades UAF"
+    ],
+    "matter_summary": "La iniciativa crea o fortalece un sistema de inteligencia económica para enfrentar el crimen organizado, con efectos sobre las facultades de análisis, el acceso a información y la coordinación de la UAF con otros organismos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
+    "analysis_summary": "La iniciativa crea o fortalece un sistema de inteligencia económica para enfrentar el crimen organizado, con efectos sobre las facultades de análisis, el acceso a información y la coordinación de la UAF con otros organismos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Ámbitos jurídicos afectados: Intercambio de información y coordinación interinstitucional; Delitos base; Responsabilidades UAF.",
+    "fingerprint": "bd3e54908289b50c81634b69dea5e34917d883fca2cdc5530e58083e367971f7",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "15975-25"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "15975-25",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "15975-25"
+    ],
+    "group_primary": "15975-25"
+  },
+  {
+    "bulletin": "16808-25",
+    "title": "Modifica la ley N° 19.913 para prevenir y sancionar con mayor rigurosidad el lavado de activos asociado al comercio ilegal.",
+    "entry_date": "2024-05-06",
+    "initiative_type": "Moción",
+    "origin_chamber": "Cámara de Diputados",
+    "state": "En tramitación",
+    "stage": "Segundo trámite constitucional (Senado)",
+    "commission": "Primer informe de comisión de Seguridad Pública",
+    "urgency": "Sin urgencia",
+    "latest_movement": "La Cámara de Diputados aprobó el proyecto y remitió los antecedentes al Senado para su segundo trámite constitucional.",
+    "latest_movement_date": "2026-06-03",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16808-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=16808-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Modifica la ley N° 19.913 para prevenir y sancionar con mayor rigurosidad el lavado de activos asociado al comercio ilegal.",
+    "raw_hash": "",
+    "metadata": {
+      "committee_report": "Primer informe de comisión de Seguridad Pública",
+      "promoters": [
+        "Cristián Araya",
+        "Chiara Barchiesi",
+        "Catalina Del Real",
+        "Juan Irarrázaval",
+        "José Carlos Meza",
+        "Benjamín Moreno",
+        "Agustín Romero",
+        "Stephan Schubert",
+        "Luis Sánchez",
+        "Renzo Trisotti"
+      ],
+      "matters": [
+        "Lavado de activos asociado al comercio ilegal",
+        "Modificación del artículo 3 de la Ley N.º 19.913",
+        "Contrabando, falsificación y trazabilidad financiera"
+      ],
+      "senado_detail_schema": "3",
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-06-03",
+          "substage": "La Cámara de Diputados aprobó el proyecto y remitió los antecedentes al Senado para su segundo trámite constitucional.",
+          "stage": "Segundo trámite constitucional (Senado)",
+          "documents": []
+        }
+      ],
+      "press_mentions": [],
+      "field_ranks": {
+        "stage": 100,
+        "commission": 100,
+        "state": 100,
+        "latest_movement": 100,
+        "latest_movement_date": 100
+      },
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "16808-25"
+      ],
+      "initiative_group_primary": "16808-25",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: ficha individual del boletín",
+      "movement_source": "Senado: ficha individual del boletín",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "senado_proceedings_table_found": true
+    },
+    "is_current": true,
+    "lifecycle_code": "active",
+    "lifecycle_status": "En tramitación activa",
+    "lifecycle_reason": "Registra actividad oficial dentro de los últimos 730 días.",
+    "lifecycle_flags": [
+      "active"
+    ],
+    "reference_date": "2026-06-03",
+    "recency_days": 62,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "relevance_score": 100,
+    "pertinence_score": 312,
+    "priority_score": 87,
+    "priority": "Crítica",
+    "probability": 52,
+    "direct_hits": [
+      "ley n° 19.913"
+    ],
+    "impacts": {
+      "Delitos base": {
+        "score": 16,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "comercio ilegal"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "ros",
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      "Tecnología y datos": {
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 16,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "comercio ilegal"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "ros",
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "promoters": [
+      "Cristián Araya",
+      "Chiara Barchiesi",
+      "Catalina Del Real",
+      "Juan Irarrázaval",
+      "José Carlos Meza",
+      "Benjamín Moreno",
+      "Agustín Romero",
+      "Stephan Schubert",
+      "Luis Sánchez",
+      "Renzo Trisotti"
+    ],
+    "affected_legal_areas": [
+      "Comercio ilícito, contrabando y falsificación",
+      "Fiscalización y régimen sancionatorio",
+      "Delitos base",
+      "Sujetos obligados",
+      "Reportes y operaciones",
+      "Tecnología y datos"
+    ],
+    "matter_summary": "La iniciativa busca fortalecer la prevención y sanción del lavado de activos vinculado al comercio ilegal. Su foco es seguir la ruta financiera de cadenas de contrabando, falsificación y comercialización ilícita, incorporando o reforzando deberes preventivos y herramientas de análisis bajo la Ley N.º 19.913. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones.",
+    "analysis_summary": "La iniciativa busca fortalecer la prevención y sanción del lavado de activos vinculado al comercio ilegal. Su foco es seguir la ruta financiera de cadenas de contrabando, falsificación y comercialización ilícita, incorporando o reforzando deberes preventivos y herramientas de análisis bajo la Ley N.º 19.913. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones. Promovida por Cristián Araya, Chiara Barchiesi, Catalina Del Real, Juan Irarrázaval, José Carlos Meza, Benjamín Moreno, Agustín Romero, Stephan Schubert y otros parlamentarios. Ámbitos jurídicos afectados: Comercio ilícito, contrabando y falsificación; Fiscalización y régimen sancionatorio; Delitos base; Sujetos obligados; Reportes y operaciones; Tecnología y datos.",
+    "fingerprint": "2f09b133e9b6d2c7edfdbeefa3e385c677b7de072349f28fcde51a191f9e0804",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "16808-25"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "16808-25",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "16808-25"
+    ],
+    "group_primary": "16808-25"
+  },
+  {
+    "bulletin": "18080-03",
+    "title": "Fortalece la transparencia y trazabilidad financiera en operaciones prendarias.",
+    "entry_date": "2026-01-26",
+    "initiative_type": "Moción",
+    "origin_chamber": "Senado",
+    "state": "En tramitación",
+    "stage": "Primer trámite constitucional (Senado)",
+    "commission": "Primer informe de comisión de Economía",
+    "urgency": "Sin urgencia",
+    "latest_movement": "Ingreso del proyecto y envío a la Comisión de Economía para primer informe.",
+    "latest_movement_date": "2026-01-26",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18080-03"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Fortalece la transparencia y trazabilidad financiera en operaciones prendarias.",
+    "raw_hash": "",
+    "metadata": {
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "18080-03"
+      ],
+      "initiative_group_primary": "18080-03",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: ficha individual del boletín",
+      "movement_source": "Senado: ficha individual del boletín",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "committee_report": "Primer informe de comisión de Economía",
+      "senado_proceedings_table_found": true,
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2026-01-26",
+          "substage": "Ingreso del proyecto y envío a la Comisión de Economía para primer informe.",
+          "stage": "Primer trámite constitucional (Senado)",
+          "documents": []
+        }
+      ]
+    },
+    "is_current": true,
+    "lifecycle_code": "active",
+    "lifecycle_status": "En tramitación activa",
+    "lifecycle_reason": "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa.",
+    "lifecycle_flags": [
+      "active"
+    ],
+    "reference_date": "2026-01-26",
+    "recency_days": null,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "relevance_score": 30,
+    "pertinence_score": 130,
+    "priority_score": 31,
+    "priority": "Baja",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      "Tecnología y datos": {
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    ],
+    "decisions": [
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "promoters": [],
+    "affected_legal_areas": [
+      "Sujetos obligados",
+      "Reportes y operaciones",
+      "Tecnología y datos"
+    ],
+    "matter_summary": "La iniciativa aborda la siguiente materia: Fortalece la transparencia y trazabilidad financiera en operaciones prendarias. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
+    "analysis_summary": "La iniciativa aborda la siguiente materia: Fortalece la transparencia y trazabilidad financiera en operaciones prendarias. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Ámbitos jurídicos afectados: Sujetos obligados; Reportes y operaciones; Tecnología y datos.",
+    "fingerprint": "8e351070fe3b3b426b8f0b95ab0541919b207f55b067425de0b08a1c15a33de4",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "18080-03"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "18080-03",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "18080-03"
+    ],
+    "group_primary": "18080-03"
+  },
+  {
+    "bulletin": "17881-25",
+    "title": "Previene y sanciona la extorsión y el secuestro exprés y mejora la trazabilidad de remesas vinculadas al crimen organizado.",
+    "entry_date": "2025-09-26",
+    "initiative_type": "Moción",
+    "origin_chamber": "Cámara de Diputados",
+    "state": "En tramitación",
+    "stage": "Primer trámite constitucional (C.Diputados)",
+    "commission": "Primer informe de comisión de Seguridad Ciudadana",
+    "urgency": "Sin urgencia",
+    "latest_movement": "Ingreso del proyecto y envío a la Comisión de Seguridad Ciudadana para primer informe.",
+    "latest_movement_date": "2025-09-26",
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17881-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17881-25"
+    ],
+    "discovered_from": [
+      "Portafolio inicial de configuración"
+    ],
+    "evidence_text": "Previene y sanciona la extorsión y el secuestro exprés y mejora la trazabilidad de remesas vinculadas al crimen organizado.",
+    "raw_hash": "",
+    "metadata": {
+      "initiative_group_id": "",
+      "initiative_group_bulletins": [
+        "17881-25"
+      ],
+      "initiative_group_primary": "17881-25",
+      "initiative_group_role": "Individual",
+      "official_stage_source": "Senado: ficha individual del boletín",
+      "movement_source": "Senado: ficha individual del boletín",
+      "official_detail_verified": true,
+      "official_status_verified": true,
+      "entry_date_verified": true,
+      "movement_verified": true,
+      "movement_authoritative": true,
+      "movement_context_exact": true,
+      "committee_report": "Primer informe de comisión de Seguridad Ciudadana",
+      "senado_proceedings_table_found": true,
+      "senado_proceedings": [
+        {
+          "session": "—",
+          "date": "2025-09-26",
+          "substage": "Ingreso del proyecto y envío a la Comisión de Seguridad Ciudadana para primer informe.",
+          "stage": "Primer trámite constitucional (C.Diputados)",
+          "documents": []
+        }
+      ]
+    },
+    "is_current": true,
+    "lifecycle_code": "active",
+    "lifecycle_status": "En tramitación activa",
+    "lifecycle_reason": "No existe evidencia oficial suficiente de ingreso reciente o tramitación activa.",
+    "lifecycle_flags": [
+      "active"
+    ],
+    "reference_date": "2025-09-26",
+    "recency_days": null,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "relevance_score": 48,
+    "pertinence_score": 148,
+    "priority_score": 44,
+    "priority": "Media",
+    "probability": 35,
+    "direct_hits": [],
+    "impacts": {
+      "Delitos base": {
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "crimen organizado",
+          "extorsión",
+          "extorsion",
+          "secuestro"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      "Reportes y operaciones": {
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      "Tecnología y datos": {
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "crimen organizado",
+          "extorsión",
+          "extorsion",
+          "secuestro"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "remesas"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "promoters": [],
+    "affected_legal_areas": [
+      "Remesas y transferencias transfronterizas",
+      "Fiscalización y régimen sancionatorio",
+      "Delitos base",
+      "Sujetos obligados",
+      "Reportes y operaciones",
+      "Tecnología y datos"
+    ],
+    "matter_summary": "La iniciativa aborda la siguiente materia: Previene y sanciona la extorsión y el secuestro exprés y mejora la trazabilidad de remesas vinculadas al crimen organizado. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
+    "analysis_summary": "La iniciativa aborda la siguiente materia: Previene y sanciona la extorsión y el secuestro exprés y mejora la trazabilidad de remesas vinculadas al crimen organizado. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Ámbitos jurídicos afectados: Remesas y transferencias transfronterizas; Fiscalización y régimen sancionatorio; Delitos base; Sujetos obligados; Reportes y operaciones; Tecnología y datos.",
+    "fingerprint": "fd1a3e4d117c89fa0ff116d1e4e8d017cc9ef44f3b8ebebf36c562771a401c4c",
+    "initiative_group_id": "",
+    "initiative_group_bulletins": [
+      "17881-25"
+    ],
+    "initiative_group_size": 1,
+    "initiative_group_primary": "17881-25",
+    "initiative_group_role": "Individual",
+    "is_grouped_initiative": false,
+    "is_group_primary": true,
+    "group_id": "",
+    "group_bulletins": [
+      "17881-25"
+    ],
+    "group_primary": "17881-25"
+  }
+]
