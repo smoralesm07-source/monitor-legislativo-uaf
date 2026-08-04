@@ -1,8 +1,6 @@
 {
-  "generated_at": "2026-08-03T22:08:15-04:00",
+  "generated_at": "",
   "total": 0,
-  "by_reason": {
-    "irrelevant_no_laft": 1930
-  },
-  "rule": "Solo se publican iniciativas vigentes que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de lavado de activos o financiamiento del terrorismo."
+  "by_reason": {},
+  "rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base."
 }

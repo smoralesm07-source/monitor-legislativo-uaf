@@ -1,54 +1,33 @@
 {
-  "version": "1.0.6",
-  "started_at": "2026-08-03T22:05:35-04:00",
-  "finished_at": "2026-08-03T22:08:15-04:00",
+  "version": "1.0.7",
+  "started_at": "",
+  "finished_at": "",
   "sources": {
     "Cámara XML": {
-      "ok": true,
-      "items": 1980,
-      "years": [
-        2026,
-        2025,
-        2024
-      ]
+      "ok": false,
+      "error": "Pendiente de nueva línea base"
     },
-    "BCN Ley 19.913": {
-      "ok": true,
-      "items": 29,
-      "note": "Fuente histórica utilizada solo para descubrir candidatos; no acredita vigencia."
-    },
-    "Cámara detalle oficial": {
-      "ok": true,
-      "items": 64,
-      "errors": 0,
-      "attempts": 64,
-      "note": "Fechas y movimientos obtenidos del XML oficial por boletín."
-    },
-    "Senado fichas oficiales": {
-      "ok": true,
-      "items": 64,
-      "errors": 0,
-      "attempts": 64,
-      "note": "Se consultan las fichas oficiales; no se usa la lista de 'últimos vistos' para fechar trámites."
+    "Senado XML movimientos": {
+      "ok": false,
+      "error": "Pendiente de nueva línea base"
     }
   },
-  "candidates_discovered": 1994,
-  "newly_discovered": 0,
-  "projects_monitored": 64,
-  "projects_enriched": 64,
   "alerts_generated": 0,
-  "baseline": false,
+  "baseline": true,
+  "projects_monitored": 0,
+  "projects_enriched": 0,
+  "newly_discovered": 0,
+  "direct_projects": 0,
+  "laft_related_projects": 0,
+  "legislative_history_years": 3,
   "lifecycle_counts": {
-    "active": 64
+    "new": 0,
+    "upcoming": 0,
+    "active": 0
   },
   "excluded_count": 0,
-  "irrelevant_discarded": 1930,
-  "initiative_groups": 64,
   "exclusion_counts": {},
-  "eligibility_rule": "Solo se publican iniciativas vigentes que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de lavado de activos o financiamiento del terrorismo.",
+  "eligibility_rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base.",
   "email_sent": false,
-  "email_message": "Sin alertas legislativas nuevas no enviadas",
-  "email_alerts_detected": 0,
-  "email_alerts_pending": 0,
-  "email_alerts_previously_sent": 0
+  "email_message": "Pendiente de nueva línea base"
 }
