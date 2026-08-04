@@ -439,3 +439,258 @@ def sanitize_project_record(record: dict[str, Any], *args: Any, **kwargs: Any) -
 
     cleaned = compact(record)
     return cleaned if isinstance(cleaned, dict) else {}
+def annotate_initiative_groups(projects: Any, *args: Any, **kwargs: Any) -> Any:
+    """Anota proyectos refundidos o relacionados sin alterar el tipo de entrada.
+
+    Compatibilidad:
+    - lista de fichas;
+    - diccionario ``boletín -> ficha``;
+    - contenedor ``{"projects": ...}``;
+    - una ficha individual.
+
+    La función modifica las fichas en el objeto recibido y también lo devuelve.
+    Esto permite usarla tanto como procedimiento como función de transformación.
+    """
+    import hashlib
+    import re
+    from collections import defaultdict
+    from copy import deepcopy
+
+    bulletin_re = re.compile(r"(?<!\d)(\d{3,6}\s*-\s*\d{1,3})(?!\d)")
+
+    def normalize_bulletin(value: Any) -> str:
+        text = str(value or "").strip()
+        match = bulletin_re.search(text)
+        if not match:
+            return ""
+        return re.sub(r"\s+", "", match.group(1))
+
+    relation_keys = (
+        "related_bulletins",
+        "group_bulletins",
+        "refunded_bulletins",
+        "refundidos",
+        "merged_with",
+        "bulletins_refunded",
+        "initiative_group_bulletins",
+        "boletines_refundidos",
+        "boletines_relacionados",
+    )
+    text_keys = (
+        "refunded",
+        "refundido",
+        "related_projects",
+        "title",
+        "evidence_text",
+        "latest_movement",
+        "stage",
+        "state",
+        "description",
+    )
+
+    def values_to_bulletins(value: Any) -> set[str]:
+        found: set[str] = set()
+        if value is None:
+            return found
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if str(key).lower() in relation_keys or str(key).lower() in text_keys:
+                    found.update(values_to_bulletins(child))
+                elif isinstance(child, (dict, list, tuple, set)):
+                    found.update(values_to_bulletins(child))
+            return found
+        if isinstance(value, (list, tuple, set)):
+            for child in value:
+                found.update(values_to_bulletins(child))
+            return found
+        for raw in bulletin_re.findall(str(value)):
+            normalized = normalize_bulletin(raw)
+            if normalized:
+                found.add(normalized)
+        return found
+
+    def record_relations(record: dict[str, Any]) -> set[str]:
+        found: set[str] = set()
+        for key in relation_keys:
+            found.update(values_to_bulletins(record.get(key)))
+        metadata = record.get("metadata")
+        if isinstance(metadata, dict):
+            for key in relation_keys:
+                found.update(values_to_bulletins(metadata.get(key)))
+            for key in text_keys:
+                found.update(values_to_bulletins(metadata.get(key)))
+        for key in text_keys:
+            found.update(values_to_bulletins(record.get(key)))
+        return found
+
+    def matrix_candidate(record: dict[str, Any]) -> str:
+        # Primero respeta campos estructurados, si existen.
+        for source in (record, record.get("metadata") if isinstance(record.get("metadata"), dict) else {}):
+            for key in (
+                "matrix_bulletin",
+                "matriz_bulletin",
+                "primary_bulletin",
+                "initiative_group_primary",
+                "group_primary",
+            ):
+                candidate = normalize_bulletin(source.get(key))
+                if candidate:
+                    return candidate
+
+        # Luego detecta expresiones como "15462-03 *matriz*".
+        joined = " ".join(
+            str(record.get(key, "") or "")
+            for key in ("refunded", "refundido", "evidence_text", "latest_movement", "description")
+        )
+        metadata = record.get("metadata")
+        if isinstance(metadata, dict):
+            joined += " " + " ".join(str(metadata.get(key, "") or "") for key in text_keys)
+
+        patterns = (
+            r"(\d{3,6}\s*-\s*\d{1,3})\s*(?:\*|\(|\[)?\s*matriz",
+            r"matriz\s*(?:\:|-)?\s*(\d{3,6}\s*-\s*\d{1,3})",
+        )
+        for pattern in patterns:
+            match = re.search(pattern, joined, flags=re.IGNORECASE)
+            if match:
+                return normalize_bulletin(match.group(1))
+        return ""
+
+    container_kind = "single"
+    container = projects
+    records: list[dict[str, Any]] = []
+
+    if isinstance(projects, dict) and "projects" in projects:
+        container_kind = "wrapped"
+        inner = projects.get("projects")
+        if isinstance(inner, dict):
+            records = [item for item in inner.values() if isinstance(item, dict)]
+        elif isinstance(inner, list):
+            records = [item for item in inner if isinstance(item, dict)]
+    elif isinstance(projects, dict) and "bulletin" not in projects:
+        container_kind = "mapping"
+        records = [item for item in projects.values() if isinstance(item, dict)]
+    elif isinstance(projects, list):
+        container_kind = "list"
+        records = [item for item in projects if isinstance(item, dict)]
+    elif isinstance(projects, dict):
+        records = [projects]
+    else:
+        return projects
+
+    by_bulletin: dict[str, dict[str, Any]] = {}
+    for record in records:
+        bulletin = normalize_bulletin(
+            record.get("bulletin")
+            or record.get("boletin")
+            or record.get("id")
+        )
+        if bulletin:
+            record.setdefault("bulletin", bulletin)
+            by_bulletin[bulletin] = record
+
+    graph: dict[str, set[str]] = defaultdict(set)
+    explicit_matrix: dict[str, str] = {}
+
+    for bulletin, record in by_bulletin.items():
+        graph[bulletin].add(bulletin)
+        matrix = matrix_candidate(record)
+        if matrix:
+            explicit_matrix[bulletin] = matrix
+
+        relations = record_relations(record)
+        relations.add(bulletin)
+        for related in relations:
+            graph[bulletin].add(related)
+            graph[related].add(bulletin)
+
+    visited: set[str] = set()
+    components: list[set[str]] = []
+
+    for node in list(graph):
+        if node in visited:
+            continue
+        stack = [node]
+        component: set[str] = set()
+        while stack:
+            current = stack.pop()
+            if current in visited:
+                continue
+            visited.add(current)
+            component.add(current)
+            stack.extend(graph.get(current, set()) - visited)
+        components.append(component)
+
+    for component in components:
+        present = sorted(item for item in component if item in by_bulletin)
+        if not present:
+            continue
+
+        primary_candidates = [
+            candidate
+            for bulletin in present
+            for candidate in [explicit_matrix.get(bulletin, "")]
+            if candidate and candidate in component
+        ]
+
+        if primary_candidates:
+            primary = primary_candidates[0]
+        else:
+            # Prefiere la ficha marcada como matriz y, luego, la de ingreso más antiguo.
+            marked = [
+                bulletin
+                for bulletin in present
+                if bool(by_bulletin[bulletin].get("is_matrix"))
+                or bool(by_bulletin[bulletin].get("is_matriz"))
+                or bool(
+                    (by_bulletin[bulletin].get("metadata") or {}).get("is_matrix")
+                    if isinstance(by_bulletin[bulletin].get("metadata"), dict)
+                    else False
+                )
+            ]
+            if marked:
+                primary = marked[0]
+            else:
+                def sort_key(bulletin: str) -> tuple[str, str]:
+                    date = str(by_bulletin[bulletin].get("entry_date", "") or "9999-99-99")
+                    return (date, bulletin)
+                primary = sorted(present, key=sort_key)[0]
+
+        all_bulletins = sorted(component)
+        digest = hashlib.sha1("|".join(all_bulletins).encode("utf-8")).hexdigest()[:12]
+        group_id = f"grp-{digest}"
+
+        for bulletin in present:
+            record = by_bulletin[bulletin]
+            grouped = len(all_bulletins) > 1
+            role = "Matriz" if grouped and bulletin == primary else ("Refundido" if grouped else "Individual")
+
+            annotations = {
+                "initiative_group_id": group_id if grouped else "",
+                "initiative_group_bulletins": all_bulletins if grouped else [bulletin],
+                "initiative_group_size": len(all_bulletins) if grouped else 1,
+                "initiative_group_primary": primary if grouped else bulletin,
+                "initiative_group_role": role,
+                "is_grouped_initiative": grouped,
+                "is_group_primary": bulletin == primary,
+                # Alias de compatibilidad para versiones previas o posteriores.
+                "group_id": group_id if grouped else "",
+                "group_bulletins": all_bulletins if grouped else [bulletin],
+                "group_primary": primary if grouped else bulletin,
+            }
+            record.update(annotations)
+
+            metadata = record.get("metadata")
+            if not isinstance(metadata, dict):
+                metadata = {}
+                record["metadata"] = metadata
+            metadata.update(
+                {
+                    "initiative_group_id": annotations["initiative_group_id"],
+                    "initiative_group_bulletins": annotations["initiative_group_bulletins"],
+                    "initiative_group_primary": annotations["initiative_group_primary"],
+                    "initiative_group_role": annotations["initiative_group_role"],
+                }
+            )
+
+    return container
