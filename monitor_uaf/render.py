@@ -199,3 +199,165 @@ function init(){initFilters();renderKpis();updateHeader();renderAudit();renderHe
 </script>
 </body>
 </html>'''
+
+def _extract_dashboard_records(value: Any, preferred_keys: tuple[str, ...]) -> list[dict[str, Any]]:
+    """Normaliza listas o contenedores JSON usados por los scripts de mantenimiento."""
+    if value is None:
+        return []
+    if isinstance(value, dict):
+        for key in preferred_keys:
+            candidate = value.get(key)
+            if isinstance(candidate, list):
+                value = candidate
+                break
+        else:
+            # state.json puede ser un diccionario indexado por boletín.
+            if value and all(isinstance(item, dict) for item in value.values()):
+                value = list(value.values())
+            else:
+                value = [value]
+    if not isinstance(value, (list, tuple, set)):
+        return []
+    return [dict(item) for item in value if isinstance(item, dict)]
+
+
+def _compact_dashboard_value(value: Any, *, depth: int = 0, max_string: int = 12_000) -> Any:
+    """Elimina contenido bruto innecesario sin perder antecedentes legislativos."""
+    if depth > 12:
+        return None
+    if value is None or isinstance(value, (bool, int, float)):
+        return value
+    if isinstance(value, str):
+        return value[:max_string]
+    if isinstance(value, dict):
+        excluded = {
+            "raw_html", "html_raw", "page_html", "source_html",
+            "raw_xml", "xml_raw", "response_body", "response_text",
+            "downloaded_content", "full_document_text", "document_full_text",
+            "binary_content", "base64", "screenshot_data",
+        }
+        return {
+            str(key): _compact_dashboard_value(child, depth=depth + 1, max_string=max_string)
+            for key, child in value.items()
+            if str(key).lower() not in excluded
+        }
+    if isinstance(value, (list, tuple, set)):
+        return [
+            _compact_dashboard_value(item, depth=depth + 1, max_string=max_string)
+            for item in list(value)[:500]
+        ]
+    return str(value)[:max_string]
+
+
+def prepare_dashboard_projects(
+    projects: Any,
+    *args: Any,
+    **kwargs: Any,
+) -> list[dict[str, Any]]:
+    """Prepara fichas para JSON/HTML y mantiene compatibilidad con maintenance_compact.py.
+
+    Acepta listas, ``state.json`` indexado por boletín o contenedores con una
+    clave ``projects``. Los argumentos adicionales se ignoran deliberadamente
+    para tolerar versiones distintas del script de mantenimiento.
+    """
+    records = _extract_dashboard_records(
+        projects,
+        ("projects", "items", "records", "results", "data"),
+    )
+
+    try:
+        from .analysis import sanitize_project_record
+    except (ImportError, AttributeError):
+        sanitize_project_record = None
+
+    deduplicated: dict[str, dict[str, Any]] = {}
+    anonymous: list[dict[str, Any]] = []
+    for record in records:
+        if sanitize_project_record is not None:
+            try:
+                cleaned = sanitize_project_record(record)
+            except Exception:
+                cleaned = _compact_dashboard_value(record)
+        else:
+            cleaned = _compact_dashboard_value(record)
+        if not isinstance(cleaned, dict):
+            continue
+        bulletin = str(
+            cleaned.get("bulletin")
+            or cleaned.get("boletin")
+            or cleaned.get("id")
+            or ""
+        ).strip()
+        if bulletin:
+            previous = deduplicated.get(bulletin)
+            # Conserva preferentemente la ficha más completa.
+            if previous is None or len(json.dumps(cleaned, ensure_ascii=False)) >= len(
+                json.dumps(previous, ensure_ascii=False)
+            ):
+                deduplicated[bulletin] = cleaned
+        else:
+            anonymous.append(cleaned)
+
+    output = list(deduplicated.values()) + anonymous
+    output.sort(
+        key=lambda item: (
+            int(item.get("priority_score") or item.get("score") or 0),
+            str(item.get("latest_movement_date") or item.get("updated_at") or ""),
+            str(item.get("bulletin") or item.get("boletin") or ""),
+        ),
+        reverse=True,
+    )
+    limit = kwargs.get("limit") or kwargs.get("max_projects")
+    if limit:
+        try:
+            output = output[: max(0, int(limit))]
+        except (TypeError, ValueError):
+            pass
+    return output
+
+
+def prepare_dashboard_alerts(
+    alerts: Any,
+    *args: Any,
+    **kwargs: Any,
+) -> list[dict[str, Any]]:
+    """Compacta y ordena alertas acumuladas para su publicación en el dashboard."""
+    records = _extract_dashboard_records(
+        alerts,
+        ("alerts", "items", "records", "results", "data"),
+    )
+    seen: set[str] = set()
+    output: list[dict[str, Any]] = []
+    for record in records:
+        cleaned = _compact_dashboard_value(record)
+        if not isinstance(cleaned, dict):
+            continue
+        identity = str(
+            cleaned.get("id")
+            or cleaned.get("fingerprint")
+            or cleaned.get("alert_id")
+            or "|".join(
+                str(cleaned.get(key) or "")
+                for key in ("bulletin", "type", "detected_at", "change", "message")
+            )
+        )
+        if identity in seen:
+            continue
+        seen.add(identity)
+        output.append(cleaned)
+
+    output.sort(
+        key=lambda item: str(
+            item.get("detected_at")
+            or item.get("created_at")
+            or item.get("date")
+            or ""
+        ),
+        reverse=True,
+    )
+    limit = kwargs.get("limit") or kwargs.get("max_alerts") or 500
+    try:
+        output = output[: max(0, int(limit))]
+    except (TypeError, ValueError):
+        output = output[:500]
+    return output
