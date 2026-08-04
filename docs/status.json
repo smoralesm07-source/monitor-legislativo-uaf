@@ -1,7 +1,7 @@
 {
-  "version": "1.0.5",
-  "started_at": "2026-08-03T21:36:28-04:00",
-  "finished_at": "2026-08-03T21:39:09-04:00",
+  "version": "1.0.6",
+  "started_at": "2026-08-03T22:05:35-04:00",
+  "finished_at": "2026-08-03T22:08:15-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
@@ -47,5 +47,8 @@
   "exclusion_counts": {},
   "eligibility_rule": "Solo se publican iniciativas vigentes que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de lavado de activos o financiamiento del terrorismo.",
   "email_sent": false,
-  "email_message": "Sin alertas nuevas"
+  "email_message": "Sin alertas legislativas nuevas no enviadas",
+  "email_alerts_detected": 0,
+  "email_alerts_pending": 0,
+  "email_alerts_previously_sent": 0
 }

@@ -1,5 +1,5 @@
 {
-  "last_run_at": "2026-08-03T21:39:09-04:00",
+  "last_run_at": "2026-08-03T22:08:15-04:00",
   "projects": {
     "10058-07": {
       "bulletin": "10058-07",
@@ -26,12 +26,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -267,12 +267,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -504,12 +504,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -741,12 +741,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -985,12 +985,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1231,12 +1231,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1468,12 +1468,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1715,12 +1715,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -1952,12 +1952,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2193,12 +2193,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2430,12 +2430,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2667,12 +2667,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -2904,12 +2904,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -3153,11 +3153,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -3385,11 +3385,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [
         "2024-04"
@@ -3640,12 +3640,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -3883,11 +3883,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -4117,12 +4117,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -4363,11 +4363,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -4595,11 +4595,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -4830,11 +4830,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -5062,11 +5062,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -5296,12 +5296,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -5534,12 +5534,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -5784,11 +5784,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -6016,11 +6016,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -6248,11 +6248,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -6499,11 +6499,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -6731,11 +6731,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -6963,11 +6963,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -7195,11 +7195,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -7430,11 +7430,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -7662,11 +7662,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -7896,12 +7896,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -8134,12 +8134,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -8370,11 +8370,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -8604,12 +8604,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -8840,11 +8840,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -9072,11 +9072,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -9304,11 +9304,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -9536,11 +9536,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -9768,11 +9768,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -10002,12 +10002,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -10238,11 +10238,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -10470,11 +10470,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [
         "2025-08"
@@ -10705,11 +10705,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -10939,12 +10939,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -11190,12 +11190,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -11430,11 +11430,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -11691,12 +11691,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -11927,11 +11927,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -12159,11 +12159,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -12391,11 +12391,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -12626,11 +12626,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [
         "2026-05"
@@ -12862,12 +12862,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -13104,11 +13104,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -13338,12 +13338,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -13605,12 +13605,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -13841,11 +13841,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -14073,11 +14073,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -14307,12 +14307,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -14543,11 +14543,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -14775,11 +14775,11 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4
       },
       "related_bulletins": [],
       "group_bulletins": [
@@ -15008,12 +15008,12 @@
       ],
       "raw_hash": "6c15de0998161e060d561d945912a3e9d0b5f2b45a5b4116c54b8c86f543b9e2",
       "metadata": {
-        "movement_rank": 4,
+        "movement_source": "Senado ficha oficial",
         "newly_discovered": false,
         "title_rank": 4,
         "official_date_verified": false,
-        "bcn_associated": true,
-        "movement_source": "Senado ficha oficial"
+        "movement_rank": 4,
+        "bcn_associated": true
       },
       "related_bulletins": [],
       "group_bulletins": [
