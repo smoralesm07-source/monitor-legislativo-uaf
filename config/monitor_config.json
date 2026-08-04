@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "timezone": "America/Santiago",
   "discovery_years": 3,
   "request_timeout_seconds": 35,
@@ -358,5 +358,19 @@
   "historical_entry_cutoff_year": 2018,
   "official_document_summary_max_chars": 850,
   "top_direct_projects_limit": 5,
-  "default_project_sort": "latest_movement"
+  "default_project_sort": "latest_movement",
+  "continuity_fallback_enabled": true,
+  "continuity_min_ratio": 0.35,
+  "continuity_min_verified_details": 1,
+  "camara_project_ids": {
+    "15975-25": "16514",
+    "16808-25": "17412",
+    "17912-25": "18569",
+    "16529-05": "17097",
+    "16928-07": "17540",
+    "18080-03": "18742",
+    "17881-25": "18535",
+    "18216-05": "18872",
+    "16764-03": "17388"
+  }
 }
