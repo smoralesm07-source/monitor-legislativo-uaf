@@ -82,7 +82,7 @@ def test_senado_detail_parser_includes_proceedings_and_presentations(monkeypatch
     assert len(project.metadata["senado_proceedings"]) == 3
     assert project.metadata["senado_proceedings"][0]["documents"][0]["url"].endswith("/docs/mocion.pdf")
     assert len(project.metadata["commission_presentations"]) == 2
-    assert project.latest_movement_date == "2024-08-27"
+    assert project.latest_movement_date == "2024-06-04"
 
 
 def test_new_commission_presentation_generates_alert():
@@ -139,14 +139,15 @@ def test_dashboard_includes_active_navigation_and_temporal_chart(tmp_path):
     output = tmp_path / "index.html"
     render_dashboard([project], [alert], {"alerts_generated": 1, "sources": {}}, output)
     page = output.read_text(encoding="utf-8")
-    assert "Análisis temporal de movimientos" in page
+    assert "Mapa de materias y avance legislativo" in page
     assert "Modifican Ley 19.913" in page
-    assert "navigate('direct'" in page
+    assert "setLevel('1')" in page
     assert "demo-alert" in page
     assert "Cronología de tramitación" in page
     assert "Presentaciones ante comisión" in page
     assert "Decisiones sugeridas" not in page
-    assert "Dimensiones de impacto" not in page
+    assert "Áreas UAF potencialmente responsables" not in page
+    assert "Cobertura de prensa vinculada" in page
 
 
 def test_terminal_project_is_excluded_from_active_portfolio():
@@ -193,3 +194,109 @@ def test_recent_project_is_current_and_new():
     assert result["is_current"] is True
     assert "new" in result["lifecycle_flags"]
     assert "active" in result["lifecycle_flags"]
+
+
+def test_senado_current_stage_overrides_historical_stage(monkeypatch):
+    source = SenadoSource(HttpClient())
+    html_data = (FIXTURES / "senado_16808_detail.html").read_bytes()
+    monkeypatch.setattr(source.client, "get", lambda url, params=None: FetchResult(url=url, status_code=200, content=html_data, content_type="text/html; charset=utf-8"))
+    project = source.detail("16808-25")
+    assert project.stage == "Segundo trámite constitucional (Senado)"
+    assert project.commission == "Primer informe de comisión de Seguridad Pública"
+    assert project.latest_movement_date == "2026-06-03"
+    assert "Cristián Araya" in project.metadata["promoters"]
+
+
+def test_authoritative_merge_keeps_senate_current_stage():
+    camara = CandidateProject(
+        bulletin="16808-25", stage="Primer trámite constitucional", commission="Primer informe",
+        metadata={"field_ranks": {"stage": 60, "commission": 60}},
+    )
+    senado = CandidateProject(
+        bulletin="16808-25", stage="Segundo trámite constitucional (Senado)",
+        commission="Primer informe de comisión de Seguridad Pública",
+        metadata={"field_ranks": {"stage": 100, "commission": 100}},
+    )
+    camara.merge(senado)
+    assert camara.stage.startswith("Segundo trámite")
+    assert "Seguridad Pública" in camara.commission
+
+
+def test_strategic_reading_does_not_repeat_latest_movement():
+    project = CandidateProject(
+        bulletin="16808-25",
+        title="Modifica la ley N° 19.913 para prevenir el lavado de activos asociado al comercio ilegal",
+        latest_movement="Oficio a Cámara revisora",
+        metadata={"promoters": ["Cristián Araya", "Chiara Barchiesi"]},
+    )
+    result = classify(project, CONFIG)
+    assert "Oficio a Cámara revisora" not in result["analysis_summary"]
+    assert "Cristián Araya" in result["analysis_summary"]
+    assert "comercio ilegal" in result["matter_summary"].lower()
+    assert result["affected_legal_areas"]
+
+
+def test_press_parser_filters_and_keeps_project_mention():
+    from monitor_uaf.press import ProjectPressSource
+    source = ProjectPressSource(HttpClient(), CONFIG)
+    content = (FIXTURES / "google_news_16808.xml").read_bytes()
+    rows = source._parse(content, '"16808-25"')
+    assert len(rows) == 1
+    assert rows[0]["outlet"] == "Diario Constitucional"
+
+
+def test_official_document_scanner_detects_uaf_in_later_indications(monkeypatch):
+    from monitor_uaf.documents import OfficialProjectDocumentSource
+
+    source = OfficialProjectDocumentSource(HttpClient(), CONFIG)
+    page = (FIXTURES / "camara_documents_18216.html").read_bytes()
+    indication = (FIXTURES / "indications_18216.html").read_bytes()
+
+    def fake_get(url, params=None):
+        if "verDoc.aspx" in url:
+            return FetchResult(url=url, status_code=200, content=indication, content_type="text/html; charset=utf-8")
+        return FetchResult(url=url, status_code=200, content=page, content_type="text/html; charset=utf-8")
+
+    monkeypatch.setattr(source.client, "get", fake_get)
+    project = CandidateProject(
+        bulletin="18216-05",
+        title="Para la reconstrucción nacional y el desarrollo económico y social",
+        entry_date="2026-04-22",
+    )
+    enriched = source.scan(project)
+    result = classify(project.merge(enriched), CONFIG)
+    assert result["relevance_level"] == 1
+    assert enriched.metadata["official_documents_matched"]
+    assert "Unidad de Análisis Financiero" in enriched.evidence_text
+    assert "impacto UAF no surge del título" in result["matter_summary"]
+
+
+def test_seed_contains_bulletin_18216_05():
+    assert "18216-05" in CONFIG["seed_bulletins"]
+
+
+def test_dashboard_orders_direct_before_secondary_and_has_compact_matter_map(tmp_path):
+    from monitor_uaf.render import render_dashboard
+
+    direct = classify(CandidateProject(
+        bulletin="18216-05",
+        title="Proyecto económico con obligación de reportar a la Unidad de Análisis Financiero",
+        entry_date="2026-04-22",
+        stage="Discusión de informe de Comisión Mixta (Senado)",
+        latest_movement_date="2026-08-04",
+        evidence_text="Los bancos deberán reportar operaciones sospechosas a la UAF.",
+    ), CONFIG)
+    secondary = classify(CandidateProject(
+        bulletin="19010-07",
+        title="Crea un registro de beneficiarios finales",
+        entry_date="2026-07-01",
+        stage="Primer trámite constitucional",
+        latest_movement_date="2026-07-01",
+    ), CONFIG)
+    output = tmp_path / "index.html"
+    render_dashboard([secondary, direct], [], {"sources": {}}, output)
+    page = output.read_text(encoding="utf-8")
+    assert "Mapa de materias y avance legislativo" in page
+    assert "stageWeight" in page
+    assert page.index("18216-05") < page.index("19010-07")
+    assert "Áreas UAF potencialmente responsables" not in page
