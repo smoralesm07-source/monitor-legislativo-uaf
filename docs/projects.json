@@ -1,176 +1,6 @@
 [
   {
-    "bulletin": "18439-02",
-    "title": "Tramitación de Proyectos",
-    "entry_date": "2026-07-07T00:00:00",
-    "initiative_type": "Moción",
-    "origin_chamber": "Senado",
-    "state": "En tramitación",
-    "stage": "",
-    "commission": "",
-    "urgency": "",
-    "latest_movement": "",
-    "latest_movement_date": "",
-    "source_urls": [
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18439-02",
-      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18439-02"
-    ],
-    "discovered_from": [
-      "Cámara XML detalle estructurado",
-      "Cámara XML mociones",
-      "Documentos oficiales de tramitación",
-      "Senado ficha individual de tramitación",
-      "Senado proyectos iniciados recientes"
-    ],
-    "evidence_text": "19122 18439-02 Modifica el decreto ley N°3.356, de 1980, para permitir el porte de armas de fuego al personal en retiro de Carabineros de Chile, en las condiciones que indica 2026-07-07T00:00:00 Moción Senado true 19122 18439-02 Modifica el decreto ley N°3.356, de 1980, para permitir el porte de armas de fuego al personal en retiro de Carabineros de Chile, en las condiciones que indica 2026-07-07T00:00:00 Moción Senado true 18439-02 | Modifica el decreto ley N°3.356, de 1980, para permitir el porte de armas de fuego al personal en retiro de Carabineros de Chile, en las condiciones que indica |  | En tramitación | 07/07/2026 18439-02 | Modifica el decreto ley N°3.356, de 1980, para permitir el porte de armas de fuego al personal en retiro de Carabineros de Chile, en las condiciones que indica |  | En tramitación | 07/07/2026 19122 18439-02 Modifica el decreto ley N°3.356, de 1980, para permitir el porte de armas de fuego al personal en retiro de Carabineros de Chile, en las condiciones que indica 2026-07-07T00:00:00 Moción Senado 0 1120 Manuel José Ossandón Irarrázabal 0 1324 Karim Bianchi Retamales 0 1502 Miguel Ángel Becker Alvear 0 1518 Cristian Vial Maceratta true Tramitación de Proyectos",
-    "raw_hash": "4ecd72a8a248fb7c3b06af6773646f33296d2536e0083729b935a9586483cb61",
-    "metadata": {
-      "title_rank": 5,
-      "entry_date_verified": false,
-      "field_ranks": {
-        "title": 90,
-        "entry_date": 90,
-        "initiative_type": 90,
-        "origin_chamber": 90,
-        "state": 120,
-        "stage": 125,
-        "commission": 125,
-        "urgency": 120,
-        "latest_movement": 0,
-        "latest_movement_date": 0
-      },
-      "senate_current_list_verified": true,
-      "official_status_verified": false,
-      "newly_discovered": false,
-      "camara_proceedings": [],
-      "promoters": [
-        "0 1120 Manuel José Ossandón Irarrázabal 0 1324 Karim Bianchi Retamales 0 1502 Miguel Ángel Becker Alvear 0 1518 Cristian Vial Maceratta",
-        "1120 Manuel José Ossandón Irarrázabal",
-        "1324 Karim Bianchi Retamales",
-        "1502 Miguel Ángel Becker Alvear",
-        "1518 Cristian Vial Maceratta"
-      ],
-      "matters": [
-        "Tramitación de Proyectos"
-      ],
-      "official_stage_source": "Senado ficha individual",
-      "official_detail_verified": false,
-      "movement_verified": false,
-      "movement_authoritative": false,
-      "movement_context_exact": true,
-      "senado_rows": [],
-      "senado_detail_schema": "5",
-      "senado_proceedings_table_found": false,
-      "senado_presentations_table_found": false,
-      "official_documents_scanned": 0,
-      "official_documents_fetched": 0,
-      "official_documents_matched": [],
-      "official_document_reviews": [],
-      "official_document_hits": [],
-      "official_documents_schema": "2",
-      "initiative_group_id": "grp-dc574dc2e5f0",
-      "initiative_group_bulletins": [
-        "18439-02",
-        "2026-07"
-      ],
-      "initiative_group_primary": "18439-02",
-      "initiative_group_role": "Matriz",
-      "press_mentions": [],
-      "press_checked_at": "2026-08-04T17:36:45+00:00"
-    },
-    "is_current": true,
-    "lifecycle_code": "active",
-    "lifecycle_status": "En tramitación activa",
-    "lifecycle_reason": "La lista oficial del Senado la mantiene entre los proyectos recientes en tramitación.",
-    "lifecycle_flags": [
-      "active"
-    ],
-    "reference_date": "",
-    "recency_days": null,
-    "relevance_level": 2,
-    "relevance_label": "Otra materia LA/FT con impacto potencial",
-    "relevance_score": 17,
-    "pertinence_score": 117,
-    "priority_score": 22,
-    "priority": "Baja",
-    "probability": 35,
-    "direct_hits": [],
-    "impacts": {
-      "Reportes y operaciones": {
-        "score": 10,
-        "level": 2,
-        "hits": [
-          "ros"
-        ],
-        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
-      },
-      "Cooperación institucional": {
-        "score": 7,
-        "level": 2,
-        "hits": [
-          "carabineros"
-        ],
-        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-      }
-    },
-    "top_impacts": [
-      {
-        "name": "Reportes y operaciones",
-        "score": 10,
-        "level": 2,
-        "hits": [
-          "ros"
-        ],
-        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
-      },
-      {
-        "name": "Cooperación institucional",
-        "score": 7,
-        "level": 2,
-        "hits": [
-          "carabineros"
-        ],
-        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-      }
-    ],
-    "decisions": [
-      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
-      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-    ],
-    "promoters": [
-      "0 1120 Manuel José Ossandón Irarrázabal 0 1324 Karim Bianchi Retamales 0 1502 Miguel Ángel Becker Alvear 0 1518 Cristian Vial Maceratta",
-      "1120 Manuel José Ossandón Irarrázabal",
-      "1324 Karim Bianchi Retamales",
-      "1502 Miguel Ángel Becker Alvear",
-      "1518 Cristian Vial Maceratta"
-    ],
-    "affected_legal_areas": [
-      "Reportes y operaciones",
-      "Cooperación institucional"
-    ],
-    "matter_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
-    "analysis_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Promovida por 0 1120 Manuel José Ossandón Irarrázabal 0 1324 Karim Bianchi Retamales 0 1502 Miguel Ángel Becker Alvear 0 1518 Cristian Vial Maceratta, 1120 Manuel José Ossandón Irarrázabal, 1324 Karim Bianchi Retamales, 1502 Miguel Ángel Becker Alvear, 1518 Cristian Vial Maceratta. Ámbitos jurídicos afectados: Reportes y operaciones; Cooperación institucional.",
-    "fingerprint": "b3d2967b3b134717df560993d06f26115dddf77fbd0f2d32f81699d7d5a30044",
-    "initiative_group_id": "grp-dc574dc2e5f0",
-    "initiative_group_bulletins": [
-      "18439-02",
-      "2026-07"
-    ],
-    "initiative_group_size": 2,
-    "initiative_group_primary": "18439-02",
-    "initiative_group_role": "Matriz",
-    "is_grouped_initiative": true,
-    "is_group_primary": true,
-    "group_id": "grp-dc574dc2e5f0",
-    "group_bulletins": [
-      "18439-02",
-      "2026-07"
-    ],
-    "group_primary": "18439-02"
-  },
-  {
-    "bulletin": "18422-06",
+    "bulletin": "18407-25",
     "title": "Tramitación de Proyectos",
     "entry_date": "2026-06-24T00:00:00",
     "initiative_type": "Moción",
@@ -182,18 +12,20 @@
     "latest_movement": "",
     "latest_movement_date": "",
     "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
       "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18422-06",
-      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18422-06"
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18407-25"
     ],
     "discovered_from": [
+      "BCN proyectos asociados a Ley 19.913",
       "Cámara XML detalle estructurado",
       "Cámara XML mociones",
       "Documentos oficiales de tramitación",
       "Senado ficha individual de tramitación",
       "Senado proyectos iniciados recientes"
     ],
-    "evidence_text": "19097 18422-06 Modifica la Ley de Migración y Extranjería, con el objeto de reforzar la trazabilidad de la información referida a niños, niñas y adolescentes extranjeros que ingresan al país 2026-06-24T00:00:00 Moción Senado true 19097 18422-06 Modifica la Ley de Migración y Extranjería, con el objeto de reforzar la trazabilidad de la información referida a niños, niñas y adolescentes extranjeros que ingresan al país 2026-06-24T00:00:00 Moción Senado true 18422-06 | Modifica la Ley de Migración y Extranjería, con el objeto de reforzar la trazabilidad de la información referida a niños, niñas y adolescentes extranjeros que ingresan al país |  | En tramitación | 24/06/2026 18422-06 | Modifica la Ley de Migración y Extranjería, con el objeto de reforzar la trazabilidad de la información referida a niños, niñas y adolescentes extranjeros que ingresan al país |  | En tramitación | 24/06/2026 19097 18422-06 Modifica la Ley de Migración y Extranjería, con el objeto de reforzar la trazabilidad de la información referida a niños, niñas y adolescentes extranjeros que ingresan al país 2026-06-24T00:00:00 Moción Senado 0 1320 Loreto Carvajal Ambiado 0 1344 Matías Walker Prieto 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1503 Miguel Ángel Calisto Águila true Tramitación de Proyectos",
+    "evidence_text": "19090 18407-25 Modifica diversos cuerpos legales, con el objeto de agravar las sanciones aplicables en materia de lavado de activos 2026-06-24T00:00:00 Moción Senado true 19090 18407-25 Modifica diversos cuerpos legales, con el objeto de agravar las sanciones aplicables en materia de lavado de activos 2026-06-24T00:00:00 Moción Senado true 18407-25 | Modifica diversos cuerpos legales, con el objeto de agravar las sanciones aplicables en materia de lavado de activos |  | En tramitación | 24/06/2026 18407-25 | Modifica diversos cuerpos legales, con el objeto de agravar las sanciones aplicables en materia de lavado de activos |  | En tramitación | 24/06/2026 Modifica diversos cuerpos legales, con el objeto de agravar las sanciones aplicables en materia de lavado de activos (18407-25) https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25 19090 18407-25 Modifica diversos cuerpos legales, con el objeto de agravar las sanciones aplicables en materia de lavado de activos 2026-06-24T00:00:00 Moción Senado 0 1341 Alejandra Sepúlveda Orbenes 0 1343 Esteban Velásquez Núñez true Tramitación de Proyectos",
     "raw_hash": "4ecd72a8a248fb7c3b06af6773646f33296d2536e0083729b935a9586483cb61",
     "metadata": {
       "title_rank": 5,
@@ -212,15 +44,185 @@
       },
       "senate_current_list_verified": true,
       "official_status_verified": false,
+      "bcn_associated": true,
+      "official_documents_scanned": 0,
+      "official_documents_fetched": 0,
+      "official_documents_matched": [],
+      "official_document_reviews": [],
+      "official_document_hits": [],
+      "official_documents_schema": "2",
       "newly_discovered": false,
       "camara_proceedings": [],
       "promoters": [
-        "0 1320 Loreto Carvajal Ambiado 0 1344 Matías Walker Prieto 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1503 Miguel Ángel Calisto Águila",
-        "1320 Loreto Carvajal Ambiado",
-        "1344 Matías Walker Prieto",
-        "1500 Danisa Astudillo Peiretti",
-        "1502 Miguel Ángel Becker Alvear",
-        "1503 Miguel Ángel Calisto Águila"
+        "0 1341 Alejandra Sepúlveda Orbenes 0 1343 Esteban Velásquez Núñez",
+        "1341 Alejandra Sepúlveda Orbenes",
+        "1343 Esteban Velásquez Núñez"
+      ],
+      "matters": [
+        "Tramitación de Proyectos"
+      ],
+      "official_stage_source": "Senado ficha individual",
+      "official_detail_verified": false,
+      "movement_verified": false,
+      "movement_authoritative": false,
+      "movement_context_exact": true,
+      "senado_rows": [],
+      "senado_detail_schema": "5",
+      "senado_proceedings_table_found": false,
+      "senado_presentations_table_found": false,
+      "initiative_group_id": "grp-4d58a6470865",
+      "initiative_group_bulletins": [
+        "18407-25",
+        "2026-06"
+      ],
+      "initiative_group_primary": "18407-25",
+      "initiative_group_role": "Matriz",
+      "press_mentions": [],
+      "press_checked_at": "2026-08-04T22:51:46+00:00"
+    },
+    "is_current": true,
+    "lifecycle_code": "active",
+    "lifecycle_status": "En tramitación activa",
+    "lifecycle_reason": "La lista oficial del Senado la mantiene entre los proyectos recientes en tramitación.",
+    "lifecycle_flags": [
+      "active"
+    ],
+    "reference_date": "",
+    "recency_days": null,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "relevance_score": 76,
+    "pertinence_score": 276,
+    "priority_score": 65,
+    "priority": "Alta",
+    "probability": 35,
+    "direct_hits": [
+      "BCN: proyecto asociado a Ley 19.913"
+    ],
+    "impacts": {
+      "Delitos base": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      "Fiscalización y sanciones": {
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    },
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "promoters": [
+      "0 1341 Alejandra Sepúlveda Orbenes 0 1343 Esteban Velásquez Núñez",
+      "1341 Alejandra Sepúlveda Orbenes",
+      "1343 Esteban Velásquez Núñez"
+    ],
+    "affected_legal_areas": [
+      "Fiscalización y régimen sancionatorio",
+      "Delitos base",
+      "Fiscalización y sanciones"
+    ],
+    "matter_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones.",
+    "analysis_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones. Promovida por 0 1341 Alejandra Sepúlveda Orbenes 0 1343 Esteban Velásquez Núñez, 1341 Alejandra Sepúlveda Orbenes, 1343 Esteban Velásquez Núñez. Ámbitos jurídicos afectados: Fiscalización y régimen sancionatorio; Delitos base; Fiscalización y sanciones.",
+    "fingerprint": "69fc777024dd5678fd83fe83764c0048206c88ed81f2e1a0e1c7c4591a68f347",
+    "initiative_group_id": "grp-4d58a6470865",
+    "initiative_group_bulletins": [
+      "18407-25",
+      "2026-06"
+    ],
+    "initiative_group_size": 2,
+    "initiative_group_primary": "18407-25",
+    "initiative_group_role": "Matriz",
+    "is_grouped_initiative": true,
+    "is_group_primary": true,
+    "group_id": "grp-4d58a6470865",
+    "group_bulletins": [
+      "18407-25",
+      "2026-06"
+    ],
+    "group_primary": "18407-25"
+  },
+  {
+    "bulletin": "18080-03",
+    "title": "Tramitación de Proyectos",
+    "entry_date": "2026-01-26T00:00:00",
+    "initiative_type": "Moción",
+    "origin_chamber": "Senado",
+    "state": "En tramitación",
+    "stage": "",
+    "commission": "",
+    "urgency": "",
+    "latest_movement": "",
+    "latest_movement_date": "",
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18080-03"
+    ],
+    "discovered_from": [
+      "BCN proyectos asociados a Ley 19.913",
+      "Cámara XML detalle estructurado",
+      "Cámara XML mociones",
+      "Documentos oficiales de tramitación",
+      "Senado ficha individual de tramitación",
+      "Senado proyectos iniciados recientes"
+    ],
+    "evidence_text": "18742 18080-03 Modifica diversos cuerpos legales, con el objeto de fortalecer la transparencia y trazabilidad financiera en las operaciones prendarias 2026-01-26T00:00:00 Moción Senado true 18742 18080-03 Modifica diversos cuerpos legales, con el objeto de fortalecer la transparencia y trazabilidad financiera en las operaciones prendarias 2026-01-26T00:00:00 Moción Senado true 18080-03 | Modifica diversos cuerpos legales, con el objeto de fortalecer la transparencia y trazabilidad financiera en las operaciones prendarias |  | En tramitación | 26/01/2026 18080-03 | Modifica diversos cuerpos legales, con el objeto de fortalecer la transparencia y trazabilidad financiera en las operaciones prendarias |  | En tramitación | 26/01/2026 Modifica diversos cuerpos legales, con el objeto de fortalecer la transparencia y trazabilidad financiera en las operaciones prendarias (18080-03) https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03 18742 18080-03 Modifica diversos cuerpos legales, con el objeto de fortalecer la transparencia y trazabilidad financiera en las operaciones prendarias 2026-01-26T00:00:00 Moción Senado 0 1324 Karim Bianchi Retamales true Tramitación de Proyectos",
+    "raw_hash": "4ecd72a8a248fb7c3b06af6773646f33296d2536e0083729b935a9586483cb61",
+    "metadata": {
+      "title_rank": 5,
+      "entry_date_verified": false,
+      "field_ranks": {
+        "title": 90,
+        "entry_date": 90,
+        "initiative_type": 90,
+        "origin_chamber": 90,
+        "state": 120,
+        "stage": 125,
+        "commission": 125,
+        "urgency": 120,
+        "latest_movement": 0,
+        "latest_movement_date": 0
+      },
+      "senate_current_list_verified": true,
+      "official_status_verified": false,
+      "bcn_associated": true,
+      "newly_discovered": false,
+      "camara_proceedings": [],
+      "promoters": [
+        "0 1324 Karim Bianchi Retamales",
+        "1324 Karim Bianchi Retamales"
       ],
       "matters": [
         "Tramitación de Proyectos"
@@ -240,16 +242,15 @@
       "official_document_reviews": [],
       "official_document_hits": [],
       "official_documents_schema": "2",
-      "initiative_group_id": "grp-4616762864ca",
+      "initiative_group_id": "grp-34215e65827b",
       "initiative_group_bulletins": [
-        "18369-07",
-        "18422-06",
-        "2026-06"
+        "18080-03",
+        "2026-01"
       ],
-      "initiative_group_primary": "18369-07",
-      "initiative_group_role": "Refundido",
+      "initiative_group_primary": "18080-03",
+      "initiative_group_role": "Matriz",
       "press_mentions": [],
-      "press_checked_at": "2026-08-04T17:36:44+00:00"
+      "press_checked_at": "2026-08-04T22:51:45+00:00"
     },
     "is_current": true,
     "lifecycle_code": "active",
@@ -260,20 +261,30 @@
     ],
     "reference_date": "",
     "recency_days": null,
-    "relevance_level": 2,
-    "relevance_label": "Otra materia LA/FT con impacto potencial",
-    "relevance_score": 18,
-    "pertinence_score": 118,
-    "priority_score": 23,
-    "priority": "Baja",
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "relevance_score": 85,
+    "pertinence_score": 285,
+    "priority_score": 71,
+    "priority": "Alta",
     "probability": 35,
-    "direct_hits": [],
+    "direct_hits": [
+      "BCN: proyecto asociado a Ley 19.913"
+    ],
     "impacts": {
+      "Sujetos obligados": {
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
       "Reportes y operaciones": {
         "score": 10,
         "level": 2,
         "hits": [
-          "ros"
+          "trazabilidad financiera"
         ],
         "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
       },
@@ -288,11 +299,20 @@
     },
     "top_impacts": [
       {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
         "name": "Reportes y operaciones",
         "score": 10,
         "level": 2,
         "hits": [
-          "ros"
+          "trazabilidad financiera"
         ],
         "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
       },
@@ -307,381 +327,38 @@
       }
     ],
     "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
       "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
       "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
     ],
     "promoters": [
-      "0 1320 Loreto Carvajal Ambiado 0 1344 Matías Walker Prieto 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1503 Miguel Ángel Calisto Águila",
-      "1320 Loreto Carvajal Ambiado",
-      "1344 Matías Walker Prieto",
-      "1500 Danisa Astudillo Peiretti",
-      "1502 Miguel Ángel Becker Alvear",
-      "1503 Miguel Ángel Calisto Águila"
+      "0 1324 Karim Bianchi Retamales",
+      "1324 Karim Bianchi Retamales"
     ],
     "affected_legal_areas": [
+      "Sujetos obligados",
       "Reportes y operaciones",
       "Tecnología y datos"
     ],
-    "matter_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
-    "analysis_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Promovida por 0 1320 Loreto Carvajal Ambiado 0 1344 Matías Walker Prieto 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1503 Miguel Ángel Calisto Águila, 1320 Loreto Carvajal Ambiado, 1344 Matías Walker Prieto, 1500 Danisa Astudillo Peiretti, 1502 Miguel Ángel Becker Alvear, 1503 Miguel Ángel Calisto Águila. Ámbitos jurídicos afectados: Reportes y operaciones; Tecnología y datos.",
-    "fingerprint": "fbae49cd26beab354ae624c3797212803a498daf4571c867419dba78add9c39e",
-    "initiative_group_id": "grp-4616762864ca",
+    "matter_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones.",
+    "analysis_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es directa porque modifica o menciona expresamente la Ley N.º 19.913 o sus funciones. Promovida por 0 1324 Karim Bianchi Retamales, 1324 Karim Bianchi Retamales. Ámbitos jurídicos afectados: Sujetos obligados; Reportes y operaciones; Tecnología y datos.",
+    "fingerprint": "f332b3df182ffaa793531b5d1f1a387e1a69f4f6a391ec20f3bf4ed1d643d042",
+    "initiative_group_id": "grp-34215e65827b",
     "initiative_group_bulletins": [
-      "18369-07",
-      "18422-06",
-      "2026-06"
-    ],
-    "initiative_group_size": 3,
-    "initiative_group_primary": "18369-07",
-    "initiative_group_role": "Refundido",
-    "is_grouped_initiative": true,
-    "is_group_primary": false,
-    "group_id": "grp-4616762864ca",
-    "group_bulletins": [
-      "18369-07",
-      "18422-06",
-      "2026-06"
-    ],
-    "group_primary": "18369-07"
-  },
-  {
-    "bulletin": "18369-07",
-    "title": "Tramitación de Proyectos",
-    "entry_date": "2026-06-16T00:00:00",
-    "initiative_type": "Moción",
-    "origin_chamber": "Senado",
-    "state": "En tramitación",
-    "stage": "",
-    "commission": "",
-    "urgency": "",
-    "latest_movement": "",
-    "latest_movement_date": "",
-    "source_urls": [
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18369-07",
-      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18369-07"
-    ],
-    "discovered_from": [
-      "Cámara XML detalle estructurado",
-      "Cámara XML mociones",
-      "Documentos oficiales de tramitación",
-      "Senado ficha individual de tramitación",
-      "Senado proyectos iniciados recientes"
-    ],
-    "evidence_text": "19037 18369-07 Modifica la Ordenanza de Aduanas, con el objeto de aumentar las penas asignadas al delito de contrabando de tabaco y sus derivados 2026-06-16T00:00:00 Moción Senado true 19037 18369-07 Modifica la Ordenanza de Aduanas, con el objeto de aumentar las penas asignadas al delito de contrabando de tabaco y sus derivados 2026-06-16T00:00:00 Moción Senado true 18369-07 | Modifica la Ordenanza de Aduanas, con el objeto de aumentar las penas asignadas al delito de contrabando de tabaco y sus derivados |  | En tramitación | 16/06/2026 18369-07 | Modifica la Ordenanza de Aduanas, con el objeto de aumentar las penas asignadas al delito de contrabando de tabaco y sus derivados |  | En tramitación | 16/06/2026 19037 18369-07 Modifica la Ordenanza de Aduanas, con el objeto de aumentar las penas asignadas al delito de contrabando de tabaco y sus derivados 2026-06-16T00:00:00 Moción Senado 0 1340 Gustavo Sanhueza Dueñas 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1505 Rodolfo Carter Fernández 0 1518 Cristian Vial Maceratta true Tramitación de Proyectos",
-    "raw_hash": "4ecd72a8a248fb7c3b06af6773646f33296d2536e0083729b935a9586483cb61",
-    "metadata": {
-      "title_rank": 5,
-      "entry_date_verified": false,
-      "field_ranks": {
-        "title": 90,
-        "entry_date": 90,
-        "initiative_type": 90,
-        "origin_chamber": 90,
-        "state": 120,
-        "stage": 125,
-        "commission": 125,
-        "urgency": 120,
-        "latest_movement": 0,
-        "latest_movement_date": 0
-      },
-      "senate_current_list_verified": true,
-      "official_status_verified": false,
-      "newly_discovered": false,
-      "camara_proceedings": [],
-      "promoters": [
-        "0 1340 Gustavo Sanhueza Dueñas 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1505 Rodolfo Carter Fernández 0 1518 Cristian Vial Maceratta",
-        "1340 Gustavo Sanhueza Dueñas",
-        "1500 Danisa Astudillo Peiretti",
-        "1502 Miguel Ángel Becker Alvear",
-        "1505 Rodolfo Carter Fernández",
-        "1518 Cristian Vial Maceratta"
-      ],
-      "matters": [
-        "Tramitación de Proyectos"
-      ],
-      "official_stage_source": "Senado ficha individual",
-      "official_detail_verified": false,
-      "movement_verified": false,
-      "movement_authoritative": false,
-      "movement_context_exact": true,
-      "senado_rows": [],
-      "senado_detail_schema": "5",
-      "senado_proceedings_table_found": false,
-      "senado_presentations_table_found": false,
-      "official_documents_scanned": 0,
-      "official_documents_fetched": 0,
-      "official_documents_matched": [],
-      "official_document_reviews": [],
-      "official_document_hits": [],
-      "official_documents_schema": "2",
-      "initiative_group_id": "grp-4616762864ca",
-      "initiative_group_bulletins": [
-        "18369-07",
-        "18422-06",
-        "2026-06"
-      ],
-      "initiative_group_primary": "18369-07",
-      "initiative_group_role": "Matriz",
-      "press_mentions": [],
-      "press_checked_at": "2026-08-04T17:36:44+00:00"
-    },
-    "is_current": true,
-    "lifecycle_code": "active",
-    "lifecycle_status": "En tramitación activa",
-    "lifecycle_reason": "La lista oficial del Senado la mantiene entre los proyectos recientes en tramitación.",
-    "lifecycle_flags": [
-      "active"
-    ],
-    "reference_date": "",
-    "recency_days": null,
-    "relevance_level": 2,
-    "relevance_label": "Otra materia LA/FT con impacto potencial",
-    "relevance_score": 19,
-    "pertinence_score": 119,
-    "priority_score": 23,
-    "priority": "Baja",
-    "probability": 35,
-    "direct_hits": [],
-    "impacts": {
-      "Delitos base": {
-        "score": 12,
-        "level": 3,
-        "hits": [
-          "contrabando"
-        ],
-        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
-      },
-      "Cooperación institucional": {
-        "score": 7,
-        "level": 2,
-        "hits": [
-          "aduanas"
-        ],
-        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-      }
-    },
-    "top_impacts": [
-      {
-        "name": "Delitos base",
-        "score": 12,
-        "level": 3,
-        "hits": [
-          "contrabando"
-        ],
-        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
-      },
-      {
-        "name": "Cooperación institucional",
-        "score": 7,
-        "level": 2,
-        "hits": [
-          "aduanas"
-        ],
-        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-      }
-    ],
-    "decisions": [
-      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
-      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-    ],
-    "promoters": [
-      "0 1340 Gustavo Sanhueza Dueñas 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1505 Rodolfo Carter Fernández 0 1518 Cristian Vial Maceratta",
-      "1340 Gustavo Sanhueza Dueñas",
-      "1500 Danisa Astudillo Peiretti",
-      "1502 Miguel Ángel Becker Alvear",
-      "1505 Rodolfo Carter Fernández",
-      "1518 Cristian Vial Maceratta"
-    ],
-    "affected_legal_areas": [
-      "Comercio ilícito, contrabando y falsificación",
-      "Delitos base",
-      "Cooperación institucional"
-    ],
-    "matter_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
-    "analysis_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Promovida por 0 1340 Gustavo Sanhueza Dueñas 0 1500 Danisa Astudillo Peiretti 0 1502 Miguel Ángel Becker Alvear 0 1505 Rodolfo Carter Fernández 0 1518 Cristian Vial Maceratta, 1340 Gustavo Sanhueza Dueñas, 1500 Danisa Astudillo Peiretti, 1502 Miguel Ángel Becker Alvear, 1505 Rodolfo Carter Fernández, 1518 Cristian Vial Maceratta. Ámbitos jurídicos afectados: Comercio ilícito, contrabando y falsificación; Delitos base; Cooperación institucional.",
-    "fingerprint": "71c97a42eadefcf94addad89dde8bfdb0e75e88522578ca40c20ca9dfd7d5df0",
-    "initiative_group_id": "grp-4616762864ca",
-    "initiative_group_bulletins": [
-      "18369-07",
-      "18422-06",
-      "2026-06"
-    ],
-    "initiative_group_size": 3,
-    "initiative_group_primary": "18369-07",
-    "initiative_group_role": "Matriz",
-    "is_grouped_initiative": true,
-    "is_group_primary": true,
-    "group_id": "grp-4616762864ca",
-    "group_bulletins": [
-      "18369-07",
-      "18422-06",
-      "2026-06"
-    ],
-    "group_primary": "18369-07"
-  },
-  {
-    "bulletin": "18102-02",
-    "title": "Tramitación de Proyectos",
-    "entry_date": "2026-03-03T00:00:00",
-    "initiative_type": "Moción",
-    "origin_chamber": "Senado",
-    "state": "En tramitación",
-    "stage": "",
-    "commission": "",
-    "urgency": "",
-    "latest_movement": "",
-    "latest_movement_date": "",
-    "source_urls": [
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18102-02",
-      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18102-02"
-    ],
-    "discovered_from": [
-      "Cámara XML detalle estructurado",
-      "Cámara XML mociones",
-      "Documentos oficiales de tramitación",
-      "Senado ficha individual de tramitación",
-      "Senado proyectos iniciados recientes"
-    ],
-    "evidence_text": "18766 18102-02 Modifica el decreto ley N° 3.356, del Ministerio de Defensa Nacional, de 1980, para incorporar entre quienes pueden portar armas de fuego, a los suboficiales en retiro de las Fuerzas Armadas y de Carabineros de Chile, en los términos que indica 2026-03-03T00:00:00 Moción Senado true 18766 18102-02 Modifica el decreto ley N° 3.356, del Ministerio de Defensa Nacional, de 1980, para incorporar entre quienes pueden portar armas de fuego, a los suboficiales en retiro de las Fuerzas Armadas y de Carabineros de Chile, en los términos que indica 2026-03-03T00:00:00 Moción Senado true 18102-02 | Modifica el decreto ley N° 3.356, del Ministerio de Defensa Nacional, de 1980, para incorporar entre quienes pueden portar armas de fuego, a los suboficiales en retiro de las Fuerzas Armadas y de Carabineros de Chile, en los términos que indica |  | En tramitación | 03/03/2026 18102-02 | Modifica el decreto ley N° 3.356, del Ministerio de Defensa Nacional, de 1980, para incorporar entre quienes pueden portar armas de fuego, a los suboficiales en retiro de las Fuerzas Armadas y de Carabineros de Chile, en los términos que indica |  | En tramitación | 03/03/2026 18766 18102-02 Modifica el decreto ley N° 3.356, del Ministerio de Defensa Nacional, de 1980, para incorporar entre quienes pueden portar armas de fuego, a los suboficiales en retiro de las Fuerzas Armadas y de Carabineros de Chile, en los términos que indica 2026-03-03T00:00:00 Moción Senado 0 986 Francisco Chahuán Chahuán true Tramitación de Proyectos",
-    "raw_hash": "4ecd72a8a248fb7c3b06af6773646f33296d2536e0083729b935a9586483cb61",
-    "metadata": {
-      "title_rank": 5,
-      "entry_date_verified": false,
-      "field_ranks": {
-        "title": 90,
-        "entry_date": 90,
-        "initiative_type": 90,
-        "origin_chamber": 90,
-        "state": 120,
-        "stage": 125,
-        "commission": 125,
-        "urgency": 120,
-        "latest_movement": 0,
-        "latest_movement_date": 0
-      },
-      "senate_current_list_verified": true,
-      "official_status_verified": false,
-      "newly_discovered": false,
-      "camara_proceedings": [],
-      "promoters": [
-        "0 986 Francisco Chahuán Chahuán",
-        "986 Francisco Chahuán Chahuán"
-      ],
-      "matters": [
-        "Tramitación de Proyectos"
-      ],
-      "official_stage_source": "Senado ficha individual",
-      "official_detail_verified": false,
-      "movement_verified": false,
-      "movement_authoritative": false,
-      "movement_context_exact": true,
-      "senado_rows": [],
-      "senado_detail_schema": "5",
-      "senado_proceedings_table_found": false,
-      "senado_presentations_table_found": false,
-      "official_documents_scanned": 0,
-      "official_documents_fetched": 0,
-      "official_documents_matched": [],
-      "official_document_reviews": [],
-      "official_document_hits": [],
-      "official_documents_schema": "2",
-      "initiative_group_id": "grp-e8381eea917c",
-      "initiative_group_bulletins": [
-        "18102-02",
-        "2026-03"
-      ],
-      "initiative_group_primary": "18102-02",
-      "initiative_group_role": "Matriz",
-      "press_mentions": [],
-      "press_checked_at": "2026-08-04T17:36:45+00:00"
-    },
-    "is_current": true,
-    "lifecycle_code": "active",
-    "lifecycle_status": "En tramitación activa",
-    "lifecycle_reason": "La lista oficial del Senado la mantiene entre los proyectos recientes en tramitación.",
-    "lifecycle_flags": [
-      "active"
-    ],
-    "reference_date": "",
-    "recency_days": null,
-    "relevance_level": 2,
-    "relevance_label": "Otra materia LA/FT con impacto potencial",
-    "relevance_score": 17,
-    "pertinence_score": 117,
-    "priority_score": 22,
-    "priority": "Baja",
-    "probability": 35,
-    "direct_hits": [],
-    "impacts": {
-      "Reportes y operaciones": {
-        "score": 10,
-        "level": 2,
-        "hits": [
-          "ros"
-        ],
-        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
-      },
-      "Cooperación institucional": {
-        "score": 7,
-        "level": 2,
-        "hits": [
-          "carabineros"
-        ],
-        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-      }
-    },
-    "top_impacts": [
-      {
-        "name": "Reportes y operaciones",
-        "score": 10,
-        "level": 2,
-        "hits": [
-          "ros"
-        ],
-        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
-      },
-      {
-        "name": "Cooperación institucional",
-        "score": 7,
-        "level": 2,
-        "hits": [
-          "carabineros"
-        ],
-        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-      }
-    ],
-    "decisions": [
-      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
-      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
-    ],
-    "promoters": [
-      "0 986 Francisco Chahuán Chahuán",
-      "986 Francisco Chahuán Chahuán"
-    ],
-    "affected_legal_areas": [
-      "Reportes y operaciones",
-      "Cooperación institucional"
-    ],
-    "matter_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base.",
-    "analysis_summary": "La iniciativa aborda la siguiente materia: Tramitación de Proyectos. Su relación con la UAF es indirecta, por sus efectos sobre el sistema preventivo LA/FT o los delitos base. Promovida por 0 986 Francisco Chahuán Chahuán, 986 Francisco Chahuán Chahuán. Ámbitos jurídicos afectados: Reportes y operaciones; Cooperación institucional.",
-    "fingerprint": "6fda43f4ca017199a4778c63bd17b505c958e8fb5cd22d8e2b4f1e2f9fb7dd45",
-    "initiative_group_id": "grp-e8381eea917c",
-    "initiative_group_bulletins": [
-      "18102-02",
-      "2026-03"
+      "18080-03",
+      "2026-01"
     ],
     "initiative_group_size": 2,
-    "initiative_group_primary": "18102-02",
+    "initiative_group_primary": "18080-03",
     "initiative_group_role": "Matriz",
     "is_grouped_initiative": true,
     "is_group_primary": true,
-    "group_id": "grp-e8381eea917c",
+    "group_id": "grp-34215e65827b",
     "group_bulletins": [
-      "18102-02",
-      "2026-03"
+      "18080-03",
+      "2026-01"
     ],
-    "group_primary": "18102-02"
+    "group_primary": "18080-03"
   }
 ]
