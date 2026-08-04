@@ -1,57 +1,52 @@
 {
-  "version": "1.0.4",
-  "started_at": "2026-08-04T10:44:09-04:00",
-  "finished_at": "2026-08-04T10:46:11-04:00",
+  "version": "1.1.1",
+  "started_at": "2026-08-04T11:17:53-04:00",
+  "finished_at": "2026-08-04T11:25:06-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
-      "items": 1989,
+      "items": 1991,
       "years": [
         2026,
         2025,
         2024
       ]
     },
-    "Senado descubrimiento": {
+    "Senado movimientos": {
+      "ok": true,
+      "items": 49
+    },
+    "BCN Ley 19.913": {
+      "ok": true,
+      "items": 29,
+      "note": "Solo descubrimiento histórico; Cámara o Senado deben acreditar vigencia."
+    },
+    "Documentos oficiales": {
       "ok": true,
       "items": 0,
-      "note": "Descubrimiento complementado mediante fichas oficiales por boletín; no se consulta el endpoint retirado que respondía 404."
+      "projects_searched": 0,
+      "note": "Indicaciones, informes y oficios; permite descubrir impacto UAF posterior al ingreso."
     },
-    "Cámara detalle oficial": {
+    "Prensa de proyectos": {
       "ok": true,
-      "items": 54,
-      "errors": 0,
-      "attempts": 54,
-      "note": "Fechas y movimientos obtenidos del XML oficial por boletín."
-    },
-    "Senado fichas oficiales": {
-      "ok": true,
-      "items": 54,
-      "errors": 0,
-      "attempts": 54,
-      "note": "Se consultan las fichas oficiales; no se usa la lista de 'últimos vistos' para fechar trámites."
+      "items": 4,
+      "projects_searched": 20,
+      "note": "Google News Chile + lista blanca; no modifica el estado legislativo."
     }
   },
-  "candidates_discovered": 1991,
-  "newly_discovered": 9,
-  "projects_monitored": 54,
-  "projects_enriched": 54,
-  "alerts_generated": 9,
+  "candidates_discovered": 2018,
+  "newly_discovered": 27,
+  "projects_monitored": 89,
+  "projects_enriched": 89,
+  "alerts_generated": 39,
   "baseline": false,
   "lifecycle_counts": {
-    "active": 54
+    "active": 89,
+    "upcoming": 1
   },
   "excluded_count": 0,
-  "irrelevant_discarded": 1937,
-  "initiative_groups": 1,
-  "direct_projects": 7,
-  "laft_related_projects": 47,
-  "legislative_history_years": 3,
   "exclusion_counts": {},
-  "eligibility_rule": "Solo se publican iniciativas vigentes detectadas en Cámara o Senado que modifican la Ley 19.913 o presentan una conexión explícita y verificable con prevención de LA/FT o delitos base.",
+  "eligibility_rule": "Solo iniciativas vigentes con impacto directo en Ley 19.913 o pertinencia LA/FT comprobable; la etapa vigente prioriza la ficha oficial de la cámara en que se tramita actualmente.",
   "email_sent": true,
-  "email_message": "Correo enviado a 2 destinatario(s)",
-  "email_alerts_detected": 9,
-  "email_alerts_pending": 9,
-  "email_alerts_previously_sent": 0
+  "email_message": "Correo enviado a 2 destinatario(s)"
 }

@@ -1,5 +1,3547 @@
 [
   {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "dc1de6c19c38906b9943",
+    "kind": "new_project",
+    "bulletin": "18216-05",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 99,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "Próximo hito legislativo",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 20,
+        "level": 5,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "propiedad industrial",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Presupuesto y dotación",
+        "score": 16,
+        "level": 4,
+        "hits": [
+          "mayor gasto fiscal",
+          "gasto fiscal",
+          "dotación",
+          "dotacion",
+          "presupuesto"
+        ],
+        "recommendation": "Preparar estimación de costo, perfiles, dotación, licencias, infraestructura y plazo de implementación."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "servicio de impuestos internos",
+          "aduanas",
+          "comisión para el mercado financiero",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "instituciones financieras",
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Preparar estimación de costo, perfiles, dotación, licencias, infraestructura y plazo de implementación.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18216-05",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18216-05"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "33defaf2ec76a66ab558",
+    "kind": "new_project",
+    "bulletin": "2975-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 92,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Responsabilidades UAF",
+        "score": 19,
+        "level": 5,
+        "hits": [
+          "inteligencia financiera",
+          "análisis financiero",
+          "analisis financiero",
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=2975-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=2975-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "9047699f8a1d73111268",
+    "kind": "presentacion",
+    "bulletin": "15975-25",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 89,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "relevance_level",
+        "before": "2",
+        "after": "1"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15975-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=15975-25"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "a334ca9185145db4b8f0",
+    "kind": "new_project",
+    "bulletin": "14767-03",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 86,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "interoperabilidad",
+          "trazabilidad",
+          "datos personales",
+          "identidad digital"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14767-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=14767-03"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "f8d7d0d2df512ffccec4",
+    "kind": "new_project",
+    "bulletin": "14838-03",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 86,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 16,
+        "level": 4,
+        "hits": [
+          "operaciones prendarias",
+          "apuestas en línea",
+          "apuestas en linea"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14838-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=14838-03"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "e0f9903f2549172cceb6",
+    "kind": "new_project",
+    "bulletin": "16889-05",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 86,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16889-05",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=16889-05"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "4314f7d3a7811611a915",
+    "kind": "new_project",
+    "bulletin": "10986-24",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=10986-24",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=10986-24"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "9673116a5d2078f05fe4",
+    "kind": "new_project",
+    "bulletin": "12712-24",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=12712-24",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=12712-24"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "c21ed5c3aaeda9405e40",
+    "kind": "new_project",
+    "bulletin": "14750-11",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14750-11",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=14750-11"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "8685aeb37c8a1453daf2",
+    "kind": "new_project",
+    "bulletin": "15869-19",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15869-19",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=15869-19"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "9660e75e66d2a6d2c07e",
+    "kind": "new_project",
+    "bulletin": "16132-06",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16132-06",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=16132-06"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "609b1df0ca42b12ae097",
+    "kind": "new_project",
+    "bulletin": "16391-01",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16391-01",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=16391-01"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "d273abfe214050465385",
+    "kind": "new_project",
+    "bulletin": "8654-15",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 85,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=8654-15",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=8654-15"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "4d867e0339a1e954554f",
+    "kind": "new_project",
+    "bulletin": "10058-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones",
+          "inhabilitación",
+          "inhabilitacion"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=10058-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=10058-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "a5cf306a020a9235ae7f",
+    "kind": "new_project",
+    "bulletin": "11455-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=11455-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=11455-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "bbcc851e27ed0c3311f8",
+    "kind": "new_project",
+    "bulletin": "11598-03",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=11598-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=11598-03"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "62981180d836271c9296",
+    "kind": "new_project",
+    "bulletin": "12602-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Responsabilidades UAF",
+        "score": 19,
+        "level": 5,
+        "hits": [
+          "análisis financiero",
+          "analisis financiero",
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=12602-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=12602-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "6413a929664e96aa9f3a",
+    "kind": "new_project",
+    "bulletin": "12680-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Responsabilidades UAF",
+        "score": 19,
+        "level": 5,
+        "hits": [
+          "análisis financiero",
+          "analisis financiero",
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "automotoras",
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "operaciones sospechosas",
+          "ros",
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=12680-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=12680-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "03c9ef2df1ea4c15eb7e",
+    "kind": "new_project",
+    "bulletin": "13972-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=13972-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=13972-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "dff972c2c167d8bc76ee",
+    "kind": "new_project",
+    "bulletin": "14539-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Responsabilidades UAF",
+        "score": 19,
+        "level": 5,
+        "hits": [
+          "análisis financiero",
+          "analisis financiero",
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 16,
+        "level": 4,
+        "hits": [
+          "ros",
+          "obligación de informar",
+          "obligacion de informar",
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14539-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=14539-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "7f75cc634e8e538c91d3",
+    "kind": "new_project",
+    "bulletin": "14818-29",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14818-29",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=14818-29"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "cf50561dad4d61d69e59",
+    "kind": "new_project",
+    "bulletin": "15272-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15272-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=15272-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "76cfdd26096521bdeb12",
+    "kind": "new_project",
+    "bulletin": "15897-02",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15897-02",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=15897-02"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "35d88870ede1af992d39",
+    "kind": "new_project",
+    "bulletin": "17341-25",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17341-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17341-25"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "dc70513bfaaf9a9a9e3c",
+    "kind": "new_project",
+    "bulletin": "17360-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17360-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17360-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "7fa9e3f572eb42409662",
+    "kind": "new_project",
+    "bulletin": "17459-25",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17459-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17459-25"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "4e9ea7e470552e6be133",
+    "kind": "new_project",
+    "bulletin": "17714-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17714-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17714-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "9cdcbb611ebdb931df4d",
+    "kind": "presentacion",
+    "bulletin": "17881-25",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "relevance_level",
+        "before": "2",
+        "after": "1"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 20,
+        "level": 5,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "extorsión",
+          "extorsion",
+          "secuestro",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "remesas",
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "ros",
+          "remesas",
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=17881-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=17881-25"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "ee8715b84484c295a7e9",
+    "kind": "presentacion",
+    "bulletin": "18080-03",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "relevance_level",
+        "before": "2",
+        "after": "1"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18080-03"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "2782047b4c7014a48535",
+    "kind": "new_project",
+    "bulletin": "18315-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 20,
+        "level": 5,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "tráfico de migrantes",
+          "trafico de migrantes",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18315-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18315-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "09d9b45b5b43ec3c7d10",
+    "kind": "presentacion",
+    "bulletin": "18407-25",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "relevance_level",
+        "before": "2",
+        "after": "1"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18407-25"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "0daff12570f7e12386cd",
+    "kind": "new_project",
+    "bulletin": "18434-07",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 82,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 14,
+        "level": 4,
+        "hits": [
+          "ros",
+          "roe",
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18434-07",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18434-07"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "5feb49ec58886eb1cacb",
+    "kind": "new_project",
+    "bulletin": "11929-13",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=11929-13",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=11929-13"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "51222c15a60ef13266dc",
+    "kind": "new_project",
+    "bulletin": "14782-13",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=14782-13",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=14782-13"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "b15a83107fea629fefd1",
+    "kind": "new_project",
+    "bulletin": "15850-11",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=15850-11",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=15850-11"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "2db632caea9c0de13b03",
+    "kind": "new_project",
+    "bulletin": "16143-02",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16143-02",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=16143-02"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "dab7df0b104dd9f8a637",
+    "kind": "new_project",
+    "bulletin": "16456-35",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/index.php?ac=ultimos_vistos&etc=&mo=tramitacion",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=16456-35",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=16456-35"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "71fb27585b76f6d9d508",
+    "kind": "new_project",
+    "bulletin": "18524-05",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18524-05",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18524-05"
+    ]
+  },
+  {
+    "detected_at": "2026-08-04T11:25:06-04:00",
+    "id": "1d7f1c767908cc7418a3",
+    "kind": "new_project",
+    "bulletin": "18525-06",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 81,
+    "relevance_level": 2,
+    "relevance_label": "Otra materia LA/FT con impacto potencial",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 18,
+        "level": 4,
+        "hits": [
+          "lavado de activos",
+          "crimen organizado",
+          "contrabando",
+          "falsificación"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Responsabilidades UAF",
+        "score": 17,
+        "level": 4,
+        "hits": [
+          "sistema de inteligencia económica",
+          "sistema de inteligencia economica",
+          "subsistema de inteligencia económica",
+          "subsistema de inteligencia economica"
+        ],
+        "recommendation": "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida."
+      },
+      {
+        "name": "Cooperación institucional",
+        "score": 15,
+        "level": 4,
+        "hits": [
+          "ministerio público",
+          "ministerio publico",
+          "aduanas",
+          "policía de investigaciones",
+          "policia de investigaciones",
+          "carabineros"
+        ],
+        "recommendation": "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 13,
+        "level": 3,
+        "hits": [
+          "fiscalización",
+          "fiscalizacion",
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      },
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      }
+    ],
+    "decisions": [
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Definir responsable institucional, procesos, protocolos, controles y capacidad operativa requerida.",
+      "Definir convenios, responsables, estándares de intercambio y mecanismos de gobernanza interinstitucional.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18525-06",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18525-06"
+    ]
+  },
+  {
     "detected_at": "2026-08-04T10:46:11-04:00",
     "id": "9f854327e4086d15c245",
     "kind": "new_project",
