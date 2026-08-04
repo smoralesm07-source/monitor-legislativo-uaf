@@ -302,3 +302,70 @@ def test_analysis_only_migration_does_not_generate_alert():
     new["laft_topics"] = ["secreto bancario"]
     new["fingerprint"] = "huella-analitica-distinta"
     assert compare_projects({"projects": {"19995-25": old}}, {"19995-25": new}, CONFIG) == []
+
+
+def test_same_official_date_with_reworded_movement_does_not_email():
+    old = classify(CandidateProject(
+        bulletin="19980-25",
+        title="Modifica la ley 19.913",
+        state="Primer trámite constitucional",
+        latest_movement="Ingreso de proyecto a la Cámara",
+        latest_movement_date="2026-07-01",
+    ), CONFIG)
+    new = classify(CandidateProject(
+        bulletin="19980-25",
+        title="Modifica la ley 19.913 y otras normas",
+        state="Primer trámite constitucional",
+        latest_movement="Se da cuenta del ingreso del proyecto",
+        latest_movement_date="2026-07-01",
+    ), CONFIG)
+    assert compare_projects({"projects": {"19980-25": old}}, {"19980-25": new}, CONFIG) == []
+
+
+def test_analytical_reclassification_does_not_email():
+    old = classify(CandidateProject(
+        bulletin="19981-25",
+        title="Modifica la ley 19.913",
+        state="Primer trámite constitucional",
+        latest_movement_date="2026-07-01",
+    ), CONFIG)
+    new = dict(old)
+    new["relevance_level"] = 2
+    new["relevance_label"] = "Prevención LA/FT relacionada"
+    assert compare_projects({"projects": {"19981-25": old}}, {"19981-25": new}, CONFIG) == []
+
+
+def test_new_official_movement_date_generates_alert():
+    old = classify(CandidateProject(
+        bulletin="19982-25",
+        title="Modifica la ley 19.913",
+        state="Primer trámite constitucional",
+        latest_movement="Ingreso",
+        latest_movement_date="2026-07-01",
+    ), CONFIG)
+    new = classify(CandidateProject(
+        bulletin="19982-25",
+        title="Modifica la ley 19.913",
+        state="Primer trámite constitucional",
+        latest_movement="Informe de comisión",
+        latest_movement_date="2026-07-20",
+    ), CONFIG)
+    alerts = compare_projects({"projects": {"19982-25": old}}, {"19982-25": new}, CONFIG)
+    assert len(alerts) == 1
+    assert alerts[0]["official_movement_date"] == "2026-07-20"
+
+
+def test_test_alerts_are_never_sent_by_production_notifier():
+    from monitor_uaf.notifier import production_alerts
+
+    alerts = [{"id": "test-1", "kind": "test", "bulletin": "0", "title": "Prueba"}]
+    assert production_alerts(alerts) == []
+
+
+def test_email_log_blocks_duplicate_alerts():
+    from monitor_uaf.notifier import filter_unsent_alerts, updated_email_log
+
+    alert = {"id": "alert-123", "kind": "project_changed", "bulletin": "19982-25"}
+    assert filter_unsent_alerts([alert], {"sent_alert_ids": []}) == [alert]
+    log = updated_email_log({"sent_alert_ids": []}, [alert], "2026-08-03T10:00:00-04:00")
+    assert filter_unsent_alerts([alert], log) == []
