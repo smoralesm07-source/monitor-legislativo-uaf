@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     # Dos barridos diarios. GitHub interpreta este cron en UTC.
+    # Chile continental: aproximadamente 08:17/17:17 en horario estándar
+    # y 09:17/18:17 en horario de verano.
     - cron: "17 12,21 * * *"
 
 concurrency:
@@ -13,7 +15,7 @@ concurrency:
 jobs:
   monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 25
     permissions:
       contents: write
     env:
@@ -30,7 +32,7 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v7
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Configurar Python
         uses: actions/setup-python@v7
@@ -40,6 +42,9 @@ jobs:
 
       - name: Instalar dependencias
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
+
+      - name: Verificar compatibilidad interna
+        run: python verify_compatibility.py
 
       - name: Compactar estado heredado
         run: python maintenance_compact.py
