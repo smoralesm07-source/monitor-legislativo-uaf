@@ -1,4 +1,4 @@
-# Monitor Legislativo UAF v1.0.7
+# Monitor Legislativo UAF v1.0.8
 
 Monitor diario de proyectos de ley vigentes con impacto en la Unidad de Análisis Financiero de Chile.
 
@@ -46,3 +46,8 @@ python monitor.py --render-only
 ## GitHub Actions
 
 El workflow `.github/workflows/monitor-legislativo.yml` ejecuta el barrido programado, guarda el estado, publica `docs/` en GitHub Pages y envía correo solo ante novedades legislativas materiales no informadas anteriormente.
+
+
+## Corrección v1.0.8
+
+Mantiene visibles los boletines de la cartera priorizada que fueron confirmados en fichas oficiales, aun cuando Cámara o Senado no entreguen una fecha estructurada. Los estados terminales continúan excluyéndose. Se eliminó el encabezado redundante del dashboard.
