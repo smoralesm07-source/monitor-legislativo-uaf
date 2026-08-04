@@ -415,3 +415,35 @@ def test_prepare_dashboard_projects_sorts_by_latest_modification():
     ]
     ordered = prepare_dashboard_projects(rows)
     assert [row["bulletin"] for row in ordered] == ["16808-25", "15975-25"]
+
+
+
+def test_camara_web_detail_fallback_parser(monkeypatch):
+    from monitor_uaf.sources import CamaraWebDetailSource
+    source = CamaraWebDetailSource(HttpClient(), {"16808-25": "17412"})
+    html_data = (FIXTURES / "camara_web_detail.html").read_bytes()
+    monkeypatch.setattr(
+        source.client,
+        "get",
+        lambda url, params=None: FetchResult(url=url, status_code=200, content=html_data, content_type="text/html; charset=utf-8"),
+    )
+    project = source.detail("16808-25")
+    assert project.stage == "Segundo trámite constitucional / Senado"
+    assert project.latest_movement_date == "2026-06-03"
+    assert "Seguridad Pública" in project.commission
+    assert "Cristián Araya" in project.metadata["promoters"]
+
+
+def test_continuity_guard_prevents_empty_dashboard():
+    from monitor_uaf.pipeline import _continuity_needed
+    assert _continuity_needed(0, 8, 0, CONFIG) is True
+    assert _continuity_needed(0, 8, 8, CONFIG) is False
+    assert _continuity_needed(8, 8, 0, CONFIG) is False
+
+
+def test_bootstrap_portfolio_is_not_empty():
+    import json
+    from monitor_uaf.config import DATA_DIR
+    rows = json.loads((DATA_DIR / "bootstrap_projects.json").read_text(encoding="utf-8"))
+    assert len(rows) >= 1
+    assert all(row.get("bulletin") != "2975-07" for row in rows)
