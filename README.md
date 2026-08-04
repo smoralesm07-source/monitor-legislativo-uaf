@@ -1,53 +1,229 @@
-# Monitor Legislativo UAF v1.0.8
+# Monitor Legislativo Estratégico UAF
 
-Monitor diario de proyectos de ley vigentes con impacto en la Unidad de Análisis Financiero de Chile.
+Motor en Python para vigilar diariamente proyectos de ley de Chile que:
 
-## Fuentes
+1. **Nivel 1 — modificación directa:** modifican la Ley N.º 19.913, nombran a la Unidad de Análisis Financiero o alteran expresamente sus artículos, atribuciones u obligaciones.
+2. **Nivel 2 — impacto legal potencial:** pueden afectar delitos base, sujetos obligados, acceso a información, secreto bancario, reportes, fiscalización, sanciones, presupuesto, dotación, datos, tecnología o cooperación institucional, aunque no nombren expresamente a la UAF.
 
-La versión 1.0.7 utiliza exclusivamente:
+El sistema descubre iniciativas nuevas, actualiza los proyectos vigilados, compara cada ejecución con el estado anterior, genera un dashboard y envía un correo solo cuando detecta alertas nuevas.
 
-- Cámara de Diputadas y Diputados: datos abiertos XML y ficha oficial por boletín.
-- Senado de la República: servicio XML de movimientos, XML de tramitación y ficha oficial por boletín.
 
-BCN y LeyChile no se consultan ni se utilizan para descubrir o clasificar iniciativas.
+## Cambios de la versión 1.0.4
 
-## Estructura del dashboard
+- elimina de la ficha individual los cuadros **Impacto institucional estimado** y **Decisiones sugeridas**;
+- amplía la extracción de la ficha oficial del Senado para incorporar fecha de ingreso, cámara de origen, tipo de iniciativa, tipo de proyecto, urgencia, refundición, etapa y comisión o informe;
+- incorpora una **cronología de tramitación** con sesión o legislatura, fecha, subetapa, etapa y enlaces a documentos;
+- incorpora las **presentaciones ante comisión** con fecha, título, organización, comisión y documento publicado;
+- utiliza los movimientos estructurados de la Cámara como respaldo cuando no existe una tabla disponible en el Senado;
+- genera alertas cuando, después de la línea base de esta versión, aparece o cambia una fila de tramitación o una presentación ante comisión;
+- evita correos masivos durante la migración: el primer enriquecimiento de las fichas con estas nuevas tablas se guarda como línea base técnica y no se considera por sí solo una modificación legislativa.
 
-1. Proyectos que modifican directamente la Ley N.º 19.913.
-2. Proyectos relacionados con prevención LA/FT o delitos base.
-3. Historia legislativa de los últimos tres años.
-4. Alertas materiales detectadas.
-5. Salud de las fuentes oficiales.
+La disponibilidad de presentaciones y documentos depende de que Cámara o Senado los hayan publicado en sus fichas oficiales.
 
-Los boletines refundidos o relacionados se agrupan bajo un nombre corto de iniciativa.
 
-## Historia legislativa
+## Cambios de la versión 1.0.3
 
-Cada ficha conserva hasta 18 hitos oficiales publicados durante los últimos tres años. El motor:
+- elimina de la cartera publicada leyes ya promulgadas o publicadas y proyectos terminados, archivados, retirados, rechazados o inadmisibles;
+- descarta proyectos antiguos que mantienen una etiqueta de trámite, pero no registran actividad oficial dentro de la ventana vigente;
+- exige simultáneamente relevancia UAF y vigencia legislativa comprobada;
+- utiliza la BCN únicamente como fuente histórica de descubrimiento, nunca como prueba suficiente de vigencia;
+- incorpora categorías y filtros para **nuevas / ingreso reciente**, **próximo hito legislativo** y **en tramitación activa**;
+- conserva en el dashboard solamente la cartera vigente;
+- registra en `data/exclusion_summary.json` cuántos candidatos fueron descartados y por qué, sin publicarlos como proyectos activos;
+- genera una alerta de cierre solo cuando un proyecto previamente validado por esta versión pasa realmente a un estado terminal.
 
-- toma la fecha individualizada en Cámara o Senado;
-- excluye fechas de navegación, consulta o detección del monitor;
-- deduplica un mismo hito publicado por ambas cámaras;
-- genera un resumen breve basado en la descripción oficial;
-- mantiene el texto oficial extraído y el enlace a la ficha.
+### Regla de vigencia
 
-## Ejecución
+Un proyecto aparece en el dashboard solo si, además de ser relevante para la UAF, cumple al menos una de estas condiciones:
 
-```bash
-python monitor.py
+- ingreso dentro de los últimos `new_project_days`;
+- movimiento oficial dentro de los últimos `active_movement_days`;
+- presencia en una fuente de movimientos recientes;
+- urgencia vigente;
+- votación, citación, Comisión Mixta, informe u otro próximo hito comprobable.
+
+Por defecto, la ventana para iniciativas nuevas es de 180 días y la ventana máxima de actividad es de 730 días. Ambas se configuran en `config/monitor_config.json`.
+
+## Fuentes utilizadas
+
+- Datos abiertos XML de la Cámara de Diputadas y Diputados: mensajes, mociones y detalle por boletín.
+- Fichas de tramitación y movimientos recientes del Senado.
+- Lista histórica de proyectos asociados a la Ley N.º 19.913 de la Biblioteca del Congreso Nacional, utilizada solo para descubrir candidatos que luego deben validarse en Cámara o Senado.
+
+La información oficial y la inferencia analítica se almacenan separadamente. La clasificación estratégica requiere validación jurídica antes de adoptar decisiones institucionales.
+
+## Estructura
+
+```text
+monitor_legislativo_uaf/
+├── monitor.py                         # Punto de entrada
+├── monitor_uaf/
+│   ├── analysis.py                    # Clasificación, puntajes y comparación
+│   ├── config.py                      # Rutas y configuración
+│   ├── http_client.py                 # Descarga con reintentos
+│   ├── models.py                      # Modelo de proyecto
+│   ├── notifier.py                    # Correo SMTP/Gmail
+│   ├── pipeline.py                    # Orquestación diaria
+│   ├── render.py                      # Dashboard HTML
+│   ├── sources.py                     # Cámara, Senado y BCN
+│   └── utils.py
+├── config/monitor_config.json         # Palabras, pesos y boletines iniciales
+├── data/                              # Estado histórico persistente
+├── docs/index.html                    # Sitio para GitHub Pages
+├── tests/                             # Pruebas sin conexión
+└── .github/workflows/monitor-legislativo.yml
 ```
 
-Para reconstruir solo el dashboard:
+## Comportamiento de las alertas
+
+### Primera ejecución
+
+La primera ejecución crea una **línea base**. Por defecto no envía correos, para evitar que todos los proyectos históricos sean tratados como novedades.
+
+### Ejecuciones posteriores
+
+Se genera una alerta cuando ocurre alguno de estos eventos:
+
+- aparece una iniciativa nueva clasificada en nivel 1 o nivel 2;
+- cambia la etapa o el estado del proyecto;
+- cambia la comisión responsable;
+- se incorpora o modifica una urgencia;
+- aparece un nuevo movimiento, votación, oficio o antecedente en la cronología oficial;
+- se incorpora o modifica una presentación ante comisión;
+- una iniciativa pasa de no relevante a relevante;
+- cambian sus dimensiones de impacto.
+
+Las alertas se clasifican como crítica, alta o media. Un avance de trámite, Comisión Mixta, aprobación, despacho, secreto bancario o expansión de sujetos obligados aumenta la severidad.
+
+## Ejecución local
+
+```bash
+python -m pip install -r requirements.txt
+pytest -q
+python monitor.py --no-email
+```
+
+El dashboard queda en:
+
+```text
+docs/index.html
+```
+
+Para regenerarlo sin consultar internet:
 
 ```bash
 python monitor.py --render-only
 ```
 
-## GitHub Actions
+## Configuración de correo Gmail
 
-El workflow `.github/workflows/monitor-legislativo.yml` ejecuta el barrido programado, guarda el estado, publica `docs/` en GitHub Pages y envía correo solo ante novedades legislativas materiales no informadas anteriormente.
+Usa una **clave de aplicación de Google**, no la contraseña normal de la cuenta.
 
+Variables necesarias:
 
-## Corrección v1.0.8
+```text
+MONITOR_EMAIL_ACTIVE=true
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=tu.correo@gmail.com
+SMTP_PASSWORD=clave-de-aplicacion
+MAIL_FROM_NAME=Monitor Legislativo UAF
+MAIL_TO=cuenta1@dominio.cl,cuenta2@dominio.cl
+PUBLIC_DASHBOARD_URL=https://USUARIO.github.io/REPOSITORIO/
+```
 
-Mantiene visibles los boletines de la cartera priorizada que fueron confirmados en fichas oficiales, aun cuando Cámara o Senado no entreguen una fecha estructurada. Los estados terminales continúan excluyéndose. Se eliminó el encabezado redundante del dashboard.
+Para una prueba local, carga las variables en la terminal y ejecuta:
+
+```bash
+python test_email.py
+```
+
+## Configuración en GitHub
+
+En el repositorio abre:
+
+```text
+Settings → Secrets and variables → Actions → New repository secret
+```
+
+Crea estos secretos:
+
+| Secreto | Contenido |
+|---|---|
+| `MONITOR_EMAIL_ACTIVE` | `true` |
+| `SMTP_HOST` | `smtp.gmail.com` |
+| `SMTP_PORT` | `587` |
+| `SMTP_USER` | cuenta remitente Gmail |
+| `SMTP_PASSWORD` | clave de aplicación Gmail |
+| `MAIL_FROM_NAME` | `Monitor Legislativo UAF` |
+| `MAIL_TO` | destinatarios separados por coma |
+| `PUBLIC_DASHBOARD_URL` | URL del GitHub Pages |
+
+Después abre **Actions → Probar correo del monitor → Run workflow** para validar SMTP. Luego ejecuta **Actions → Monitor legislativo UAF → Run workflow** para crear la primera línea base.
+
+## Activar GitHub Pages
+
+En:
+
+```text
+Settings → Pages
+```
+
+Selecciona:
+
+```text
+Source: GitHub Actions
+```
+
+El mismo workflow empaqueta `docs/` y lo publica explícitamente con GitHub Pages después de cada barrido. Esto evita depender de una compilación disparada por el commit automático. El workflow ejecuta dos barridos diarios y también puede iniciarse manualmente desde Actions.
+
+Para comprobar el correo sin esperar una alerta real, ejecuta:
+
+```text
+Actions → Probar correo del monitor → Run workflow
+```
+
+## Persistencia y auditoría
+
+- `data/state.json`: última versión de cada proyecto vigilado.
+- `data/discovery_index.json`: todos los boletines ya observados; permite reconocer nuevas iniciativas.
+- `data/alerts.json`: alertas acumuladas y deduplicadas.
+- `data/history.jsonl`: historial inmutable de alertas detectadas.
+- `data/status.json`: salud de fuentes, cantidad de candidatos, proyectos vigentes, exclusiones y resultado del correo.
+- `data/exclusion_summary.json`: resumen de proyectos omitidos por término, antigüedad o falta de vigencia comprobada.
+
+El workflow guarda automáticamente estos archivos mediante un commit. Por eso el historial de Git también funciona como respaldo y auditoría de cambios.
+
+## Ajustar las reglas de impacto
+
+Edita `config/monitor_config.json`:
+
+- `direct_terms`: expresiones que activan nivel 1.
+- `secondary_topics`: dimensiones, términos y peso de nivel 2.
+- `seed_bulletins`: proyectos recientes o estratégicos que deben revisarse siempre; no debe utilizarse para cargar catálogos históricos completos.
+- `new_project_days`: ventana para considerar una iniciativa nueva.
+- `active_movement_days`: antigüedad máxima admitida para acreditar actividad legislativa.
+- `terminal_state_terms`, `active_state_terms` y `upcoming_terms`: vocabulario de vigencia y cierre.
+- `critical_change_terms`: cambios que elevan la alerta.
+- `minimum_secondary_score`: sensibilidad del segundo nivel.
+
+Conviene validar mensualmente falsos positivos y falsos negativos, y recalibrar términos y pesos.
+
+## Controles de continuidad
+
+El motor incluye:
+
+- tres reintentos por consulta;
+- dos dominios alternativos para el servicio XML de la Cámara;
+- continuidad aunque una fuente falle;
+- conservación del estado anterior si fallan todas las fuentes;
+- registro visible de salud de Cámara, Senado y BCN;
+- pruebas automáticas antes de cada barrido;
+- bloqueo de ejecuciones simultáneas;
+- límite de 25 minutos por ejecución.
+
+Ningún monitor puede garantizar que las páginas oficiales estén siempre disponibles o que no cambien su estructura. La garantía operacional consiste en ejecutar el barrido programado, registrar el éxito o fallo y no generar falsas novedades cuando una fuente deja de responder.
+
+## Guía detallada de despliegue
+
+Consulta `GUIA_INSTALACION_GITHUB.md` para el procedimiento completo usando solamente el navegador.

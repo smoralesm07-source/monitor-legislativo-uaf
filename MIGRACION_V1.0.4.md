@@ -1,33 +1,49 @@
-# Migración a v1.0.4 — reparación de archivos sobredimensionados
+# Migración a v1.0.4 — ficha legislativa ampliada
 
-## Problema corregido
+## Objetivo
 
-La versión 1.0.3 persistía `evidence_text` dentro de `data/state.json`. En cada ejecución, el texto anterior podía volver a combinarse con la evidencia nueva. Luego ese contenido se copiaba a `data/projects.json` y se incrustaba en `docs/index.html`, generando archivos de decenas de megabytes.
+Esta versión reemplaza los cuadros de impacto institucional y decisiones sugeridas de la ficha individual por información legislativa oficial más detallada:
 
-La versión 1.0.4:
+- antecedentes generales del proyecto;
+- cronología de tramitación;
+- presentaciones ante comisión;
+- enlaces a documentos;
+- fuentes y auditoría.
 
-- utiliza la evidencia completa solo en memoria durante el barrido;
-- no la guarda en `state.json` ni en el dashboard;
-- limita y deduplica la evidencia de una misma ejecución;
-- compacta automáticamente estados heredados;
-- genera una proyección liviana para GitHub Pages;
-- limita el historial a 2.000 alertas;
-- cancela antes del commit si un archivo generado supera 8 MB;
-- incorpora un workflow manual de reparación.
+## Archivos que debes reemplazar
 
-## Actualización del repositorio existente
+```text
+monitor_uaf/sources.py
+monitor_uaf/analysis.py
+monitor_uaf/render.py
+config/monitor_config.json
+docs/index.html
+tests/test_monitor.py
+tests/fixtures/senado_detail.html
+README.md
+GUIA_INSTALACION_GITHUB.md
+MIGRACION_V1.0.4.md
+```
 
-1. Carga los archivos de `actualizacion_monitor_uaf_v1.0.4.zip` respetando sus rutas.
-2. No reemplaces manualmente los archivos dentro de `data/`.
-3. En GitHub abre `Actions`.
-4. Ejecuta `Reparar archivos grandes del monitor`.
-5. Verifica que los trabajos `repair` y `Publicar dashboard reparado` terminen en verde.
-6. Luego ejecuta una vez `Monitor legislativo UAF` para efectuar un barrido normal.
+## Archivos que no debes reemplazar
 
-## Tamaños esperados después de reparar
+Conserva los archivos históricos de tu repositorio:
 
-Los tamaños dependen del número de proyectos y alertas, pero normalmente deberían ser muy inferiores a 8 MB. Como referencia, el HTML base sin datos ocupa cerca de 40 KB.
+```text
+data/state.json
+data/alerts.json
+data/history.jsonl
+data/discovery_index.json
+data/projects.json
+data/status.json
+```
 
-## Sobre el commit grande anterior
+## Ejecución posterior
 
-La reparación reduce los archivos de la versión actual del repositorio. Los blobs grandes continúan en el historial Git del commit anterior. Esto no impide el funcionamiento. Si posteriormente se desea reducir también el peso histórico del repositorio, se puede reescribir el historial o crear un repositorio limpio, pero no es necesario para reactivar el monitor.
+Después de subir los cambios, ejecuta manualmente:
+
+```text
+Actions → Monitor legislativo UAF → Run workflow
+```
+
+No se requieren nuevos Secrets. La primera ejecución con v1.0.4 guarda como línea base las tablas recién extraídas y evita enviar correos masivos por ese enriquecimiento inicial. Desde las ejecuciones posteriores, una fila nueva o modificada en la tramitación o en las presentaciones ante comisión genera una alerta.

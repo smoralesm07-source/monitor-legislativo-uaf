@@ -152,3 +152,16 @@ Actions → Monitor legislativo UAF → Run workflow
 ```
 
 La ejecución migrará automáticamente el estado anterior: mantendrá los proyectos que sigan vigentes y retirará del dashboard los archivados, terminados o inactivos. No se requiere crear secrets adicionales.
+
+
+## 15. Actualización de ficha legislativa v1.0.4
+
+La versión 1.0.4 agrega a cada ficha la cronología de tramitación y las presentaciones ante comisión publicadas por el Congreso. También elimina de la ficha los cuadros de impacto institucional estimado y decisiones sugeridas.
+
+No se requieren nuevos Secrets. Después de reemplazar los archivos indicados en `MIGRACION_V1.0.4.md`, ejecuta:
+
+```text
+Actions → Monitor legislativo UAF → Run workflow
+```
+
+La primera ejecución con esta versión enriquecerá las fichas sin generar una alerta masiva por la incorporación inicial de las nuevas tablas. Desde la ejecución siguiente, una nueva tramitación o presentación sí podrá generar correo.
