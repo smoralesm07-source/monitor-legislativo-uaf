@@ -1,40 +1,36 @@
 {
   "version": "1.0.3",
-  "started_at": "2026-08-03T19:54:41-04:00",
-  "finished_at": "2026-08-03T20:19:19-04:00",
+  "finished_at": "",
+  "started_at": "",
   "sources": {
     "Cámara XML": {
-      "ok": true,
-      "items": 1980,
-      "years": [
-        2026,
-        2025,
-        2024
-      ]
+      "ok": false,
+      "error": "Pendiente de primera ejecución"
     },
     "Senado movimientos": {
-      "ok": true,
-      "items": 49
+      "ok": false,
+      "error": "Pendiente de primera ejecución"
     },
     "BCN Ley 19.913": {
-      "ok": true,
-      "items": 29,
-      "note": "Fuente histórica utilizada solo para descubrir candidatos; no acredita vigencia."
+      "ok": false,
+      "error": "Pendiente de primera ejecución; se usará solo para descubrimiento histórico"
     }
   },
-  "candidates_discovered": 2007,
-  "newly_discovered": 789,
-  "projects_monitored": 837,
-  "projects_enriched": 837,
-  "alerts_generated": 837,
-  "baseline": false,
+  "alerts_generated": 0,
+  "baseline": true,
+  "projects_monitored": 10,
+  "projects_enriched": 0,
+  "newly_discovered": 0,
   "lifecycle_counts": {
-    "active": 837,
-    "upcoming": 10
+    "new": 2,
+    "upcoming": 2,
+    "active": 10
   },
-  "excluded_count": 0,
-  "exclusion_counts": {},
+  "excluded_count": 4,
+  "exclusion_counts": {
+    "historical": 4
+  },
   "eligibility_rule": "Solo se publican iniciativas relevantes para la UAF con ingreso reciente, movimiento oficial reciente, urgencia vigente o próximo hito comprobable.",
-  "email_sent": true,
-  "email_message": "Correo enviado a 2 destinatario(s)"
+  "email_sent": false,
+  "email_message": "Pendiente de primera ejecución"
 }
