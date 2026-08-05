@@ -1,11 +1,11 @@
 {
   "version": "1.2.1",
-  "started_at": "2026-08-04T18:31:28-04:00",
-  "finished_at": "2026-08-04T18:51:46-04:00",
+  "started_at": "2026-08-05T10:38:17-04:00",
+  "finished_at": "2026-08-05T11:02:20-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
-      "items": 1993,
+      "items": 2011,
       "years": [
         2026,
         2025,
@@ -33,38 +33,38 @@
     "Documentos oficiales": {
       "ok": true,
       "items": 0,
-      "projects_searched": 101,
+      "projects_searched": 118,
       "note": "Se leen enlaces de Cámara y de la columna Documentos del Senado; las reseñas son extractivas y quedan vinculadas al documento original."
     },
     "Cámara web fichas": {
       "ok": false,
       "items": 0,
-      "errors": 66
+      "errors": 83
     },
     "Prensa de proyectos": {
       "ok": true,
       "items": 0,
-      "projects_searched": 2,
+      "projects_searched": 4,
       "note": "Google News Chile + lista blanca; no modifica el estado legislativo."
     }
   },
-  "candidates_discovered": 2019,
-  "newly_discovered": 1,
-  "projects_monitored": 2,
-  "projects_enriched": 66,
+  "candidates_discovered": 2037,
+  "newly_discovered": 18,
+  "projects_monitored": 4,
+  "projects_enriched": 83,
   "stages_verified": 0,
   "movements_verified": 0,
   "verified_detail_bulletins": 0,
   "continuity_fallback_used": false,
   "data_freshness": "actualizado desde fuentes oficiales",
-  "alerts_generated": 2,
+  "alerts_generated": 4,
   "baseline": false,
   "lifecycle_counts": {
-    "active": 2
+    "active": 4
   },
-  "excluded_count": 63,
+  "excluded_count": 61,
   "exclusion_counts": {
-    "unverified": 63
+    "unverified": 61
   },
   "eligibility_rule": "Solo iniciativas recientes o con movimiento legislativo verificado, de relevancia directa para la Ley 19.913 o pertinencia LA/FT comprobable. La etapa e informe provienen de la ficha individual oficial; las fechas solo se publican cuando pertenecen a una fila de tramitación del mismo boletín.",
   "email_sent": true,
