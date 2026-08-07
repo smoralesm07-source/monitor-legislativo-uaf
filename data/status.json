@@ -1,7 +1,7 @@
 {
   "version": "1.2.1",
-  "started_at": "2026-08-07T09:42:49-04:00",
-  "finished_at": "2026-08-07T10:03:16-04:00",
+  "started_at": "2026-08-07T17:58:27-04:00",
+  "finished_at": "2026-08-07T18:18:30-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
@@ -44,27 +44,27 @@
     "Prensa de proyectos": {
       "ok": true,
       "items": 0,
-      "projects_searched": 4,
+      "projects_searched": 2,
       "note": "Google News Chile + lista blanca; no modifica el estado legislativo."
     }
   },
   "candidates_discovered": 2048,
   "newly_discovered": 0,
-  "projects_monitored": 4,
+  "projects_monitored": 2,
   "projects_enriched": 65,
   "stages_verified": 0,
   "movements_verified": 0,
   "verified_detail_bulletins": 0,
   "continuity_fallback_used": false,
   "data_freshness": "actualizado desde fuentes oficiales",
-  "alerts_generated": 4,
+  "alerts_generated": 2,
   "baseline": false,
   "lifecycle_counts": {
-    "active": 4
+    "active": 2
   },
-  "excluded_count": 61,
+  "excluded_count": 63,
   "exclusion_counts": {
-    "unverified": 61
+    "unverified": 63
   },
   "eligibility_rule": "Solo iniciativas recientes o con movimiento legislativo verificado, de relevancia directa para la Ley 19.913 o pertinencia LA/FT comprobable. La etapa e informe provienen de la ficha individual oficial; las fechas solo se publican cuando pertenecen a una fila de tramitación del mismo boletín.",
   "email_sent": true,

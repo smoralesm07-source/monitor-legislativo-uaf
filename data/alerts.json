@@ -1,5 +1,115 @@
 [
   {
+    "detected_at": "2026-08-07T18:18:30-04:00",
+    "id": "7d0e6280ade06e9e0376",
+    "kind": "new_project",
+    "bulletin": "18080-03",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 71,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Sujetos obligados",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "operaciones prendarias"
+        ],
+        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
+      },
+      {
+        "name": "Reportes y operaciones",
+        "score": 10,
+        "level": 2,
+        "hits": [
+          "trazabilidad financiera"
+        ],
+        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
+      },
+      {
+        "name": "Tecnología y datos",
+        "score": 8,
+        "level": 2,
+        "hits": [
+          "trazabilidad"
+        ],
+        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
+      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
+      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18080-03"
+    ]
+  },
+  {
+    "detected_at": "2026-08-07T18:18:30-04:00",
+    "id": "9f3cad6e885283ba9b5f",
+    "kind": "new_project",
+    "bulletin": "18407-25",
+    "title": "Tramitación de Proyectos",
+    "severity": "Alta",
+    "priority_score": 65,
+    "relevance_level": 1,
+    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
+    "lifecycle_status": "En tramitación activa",
+    "changes": [
+      {
+        "field": "project",
+        "before": "",
+        "after": "Nueva iniciativa relevante detectada"
+      }
+    ],
+    "top_impacts": [
+      {
+        "name": "Delitos base",
+        "score": 12,
+        "level": 3,
+        "hits": [
+          "lavado de activos"
+        ],
+        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
+      },
+      {
+        "name": "Fiscalización y sanciones",
+        "score": 9,
+        "level": 2,
+        "hits": [
+          "sanciones"
+        ],
+        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+      }
+    ],
+    "decisions": [
+      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
+      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
+      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
+    ],
+    "source_urls": [
+      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
+      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25",
+      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18407-25"
+    ]
+  },
+  {
     "detected_at": "2026-08-07T10:03:16-04:00",
     "id": "a2a4e9f92c4956a00778",
     "kind": "new_project",
@@ -189,116 +299,6 @@
       "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
       "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18439-02",
       "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18439-02"
-    ]
-  },
-  {
-    "detected_at": "2026-08-06T21:23:08-04:00",
-    "id": "7d0e6280ade06e9e0376",
-    "kind": "new_project",
-    "bulletin": "18080-03",
-    "title": "Tramitación de Proyectos",
-    "severity": "Alta",
-    "priority_score": 71,
-    "relevance_level": 1,
-    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
-    "lifecycle_status": "En tramitación activa",
-    "changes": [
-      {
-        "field": "project",
-        "before": "",
-        "after": "Nueva iniciativa relevante detectada"
-      }
-    ],
-    "top_impacts": [
-      {
-        "name": "Sujetos obligados",
-        "score": 12,
-        "level": 3,
-        "hits": [
-          "operaciones prendarias"
-        ],
-        "recommendation": "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes."
-      },
-      {
-        "name": "Reportes y operaciones",
-        "score": 10,
-        "level": 2,
-        "hits": [
-          "trazabilidad financiera"
-        ],
-        "recommendation": "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis."
-      },
-      {
-        "name": "Tecnología y datos",
-        "score": 8,
-        "level": 2,
-        "hits": [
-          "trazabilidad"
-        ],
-        "recommendation": "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
-      }
-    ],
-    "decisions": [
-      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
-      "Dimensionar el universo potencial, brechas de inscripción, capacitación, fiscalización y capacidad del portal de reportes.",
-      "Estimar volumen, calidad y utilidad de los nuevos reportes; ajustar validaciones y reglas de análisis.",
-      "Evaluar interoperabilidad, almacenamiento, calidad, ciberseguridad y cambios en sistemas institucionales."
-    ],
-    "source_urls": [
-      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18080-03",
-      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18080-03"
-    ]
-  },
-  {
-    "detected_at": "2026-08-06T21:23:08-04:00",
-    "id": "9f3cad6e885283ba9b5f",
-    "kind": "new_project",
-    "bulletin": "18407-25",
-    "title": "Tramitación de Proyectos",
-    "severity": "Alta",
-    "priority_score": 65,
-    "relevance_level": 1,
-    "relevance_label": "Ley 19.913 o impacto explícito en funciones UAF",
-    "lifecycle_status": "En tramitación activa",
-    "changes": [
-      {
-        "field": "project",
-        "before": "",
-        "after": "Nueva iniciativa relevante detectada"
-      }
-    ],
-    "top_impacts": [
-      {
-        "name": "Delitos base",
-        "score": 12,
-        "level": 3,
-        "hits": [
-          "lavado de activos"
-        ],
-        "recommendation": "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente."
-      },
-      {
-        "name": "Fiscalización y sanciones",
-        "score": 9,
-        "level": 2,
-        "hits": [
-          "sanciones"
-        ],
-        "recommendation": "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
-      }
-    ],
-    "decisions": [
-      "Revisar artículo por artículo la modificación propuesta a la Ley 19.913 y asignar responsable institucional.",
-      "Actualizar taxonomías, matrices de riesgo, tipologías y fuentes vinculadas al nuevo delito precedente.",
-      "Revisar modelo supervisor, criterios de riesgo, procedimientos sancionatorios y recursos necesarios."
-    ],
-    "source_urls": [
-      "https://nuevo.leychile.cl/servicios/Navegar/scripts/exportarProyectos?formato=pdf&idNorma=219119&idParte=&idVersion=2022-12-30",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php",
-      "https://tramitacion.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=18407-25",
-      "https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmBOLETIN=18407-25"
     ]
   },
   {
