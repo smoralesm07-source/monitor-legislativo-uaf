@@ -1,7 +1,7 @@
 {
   "version": "1.2.1",
-  "started_at": "2026-08-06T10:39:10-04:00",
-  "finished_at": "2026-08-06T10:59:29-04:00",
+  "started_at": "2026-08-06T21:02:52-04:00",
+  "finished_at": "2026-08-06T21:23:08-04:00",
   "sources": {
     "Cámara XML": {
       "ok": true,
@@ -22,7 +22,7 @@
     },
     "Senado actividad reciente": {
       "ok": true,
-      "items": 50,
+      "items": 49,
       "note": "Filas exactas de Sala y comisiones tratadas recientemente."
     },
     "BCN Ley 19.913": {
@@ -33,38 +33,38 @@
     "Documentos oficiales": {
       "ok": true,
       "items": 0,
-      "projects_searched": 101,
+      "projects_searched": 100,
       "note": "Se leen enlaces de Cámara y de la columna Documentos del Senado; las reseñas son extractivas y quedan vinculadas al documento original."
     },
     "Cámara web fichas": {
       "ok": false,
       "items": 0,
-      "errors": 66
+      "errors": 65
     },
     "Prensa de proyectos": {
       "ok": true,
       "items": 0,
-      "projects_searched": 4,
+      "projects_searched": 2,
       "note": "Google News Chile + lista blanca; no modifica el estado legislativo."
     }
   },
   "candidates_discovered": 2048,
-  "newly_discovered": 1,
-  "projects_monitored": 4,
-  "projects_enriched": 66,
+  "newly_discovered": 0,
+  "projects_monitored": 2,
+  "projects_enriched": 65,
   "stages_verified": 0,
   "movements_verified": 0,
   "verified_detail_bulletins": 0,
   "continuity_fallback_used": false,
   "data_freshness": "actualizado desde fuentes oficiales",
-  "alerts_generated": 4,
+  "alerts_generated": 2,
   "baseline": false,
   "lifecycle_counts": {
-    "active": 4
+    "active": 2
   },
-  "excluded_count": 62,
+  "excluded_count": 63,
   "exclusion_counts": {
-    "unverified": 62
+    "unverified": 63
   },
   "eligibility_rule": "Solo iniciativas recientes o con movimiento legislativo verificado, de relevancia directa para la Ley 19.913 o pertinencia LA/FT comprobable. La etapa e informe provienen de la ficha individual oficial; las fechas solo se publican cuando pertenecen a una fila de tramitación del mismo boletín.",
   "email_sent": true,
